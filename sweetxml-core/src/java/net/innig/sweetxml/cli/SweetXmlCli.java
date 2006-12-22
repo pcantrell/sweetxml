@@ -1,9 +1,11 @@
 package net.innig.sweetxml.cli;
 
 import net.innig.sweetxml.ConversionMode;
+import net.innig.sweetxml.Converter;
 import net.innig.sweetxml.FileConverterEngine;
 
 import java.io.File;
+import java.io.InputStreamReader;
 
 public class SweetXmlCli
     {
@@ -31,13 +33,21 @@ public class SweetXmlCli
         FileConverterEngine engine = new FileConverterEngine(mode);
         for(int i = 1; i < args.length; i++)
             try {
-                engine.convert(new File(args[i]));
+                if(args[i].equals("-"))
+                    {
+                    Converter c = mode.createConverter();
+                    c.setInput(new InputStreamReader(System.in));
+                    System.out.print(c.getResult());
+                    }
+                else
+                    engine.convert(new File(args[i]));
                 }
             catch(Exception e)
                 {
                 System.err.println("Unable to convert " + args[i]);
                 for(Throwable chain = e; chain != null; chain = chain.getCause())
                     System.err.println("    " + chain);
+                System.exit(1);
                 }
         System.out.println("Done.");
         }
@@ -50,5 +60,6 @@ public class SweetXmlCli
         System.err.println("    -s2x    Convert SweetXML to XML");
         System.err.println("    <file>  Convert the given file");
         System.err.println("    <dir>   Convert files with appropriate extension under dir");
+        System.err.println("    -       Convert stdin -> stdout");
         }
     }

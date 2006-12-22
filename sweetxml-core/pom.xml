@@ -7,12 +7,8 @@
     <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
     <name>sweetxml</name>
-    <url>http://sourceforge.net/projects/sweetxml</url>
+    <url>http://innig.net/software/sweetxml</url>
     <repositories>
-        <repository>
-            <id>local</id>
-            <url>./lib</url>
-        </repository>
         <repository>
             <id>ibiblio</id>
             <url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
@@ -49,21 +45,4 @@
             </resource>
         </resources>
     </build>
-    <dependencies>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>innig</groupId>
-            <artifactId>innig-util</artifactId>
-            <version>local</version>
-        </dependency>
-        <dependency>
-            <groupId>innig</groupId>
-            <artifactId>innig-framework</artifactId>
-            <version>local</version>
-        </dependency>
-    </dependencies>
 </project>

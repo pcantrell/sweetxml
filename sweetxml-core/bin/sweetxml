@@ -1,0 +1,5 @@
+#!/bin/bash
+
+sxml_home="$(dirname "$0")/.."
+
+java -cp "$sxml_home/build/classes" net.innig.sweetxml.cli.SweetXmlCli $@
