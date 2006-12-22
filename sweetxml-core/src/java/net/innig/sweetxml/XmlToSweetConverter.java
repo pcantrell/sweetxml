@@ -10,6 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -71,8 +72,29 @@ public class XmlToSweetConverter
         public CharSequence go()
             {
             out = new StringBuilder();
+            handleDoctype(document.getDoctype());
             handleElement(document.getDocumentElement());
             return out;
+            }
+
+        private void handleDoctype(DocumentType doctype)
+            {
+            if(doctype != null)
+                {
+                System.err.println("WARNING: <!DOCTYPE> declaration may not be converted correctly; please check manually");
+                out.append("<!DOCTYPE ")
+                    .append(doctype.getName());
+                
+                if(doctype.getPublicId() != null)
+                    out.append(" PUBLIC \"")
+                        .append(doctype.getPublicId()).append("\" \"")
+                        .append(doctype.getSystemId()).append('"');
+                else
+                    out.append(" SYSTEM \"")
+                        .append(doctype.getSystemId()).append('"');
+                
+                out.append(">").append(newline).append(newline);
+                }
             }
 
         private void handleElement(Element elem)
