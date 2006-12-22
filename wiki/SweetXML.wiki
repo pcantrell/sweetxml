@@ -6,9 +6,9 @@ SweetXML is an alternate syntax for XML, designed to make configuration files mo
 
 It is XML in that it has the same document structure when parsed. It is not XML in that it has a more concise and readable syntax, which it achieves by:
 
-* using Python-style indentation-based nesting instead of closing tags,
-* reducing the need for delimiter characters (such as angle braces and quotation marks), and
-* focusing on simplifying the most common usage patterns of XML in real-world configuration files.
+  * using Python-style indentation-based nesting instead of closing tags,
+  * reducing the need for delimiter characters (such as angle braces and quotation marks), and
+  * focusing on simplifying the most common usage patterns of XML in real-world configuration files.
 
 SweetXML was inspired by YAML's conciseness. Unforunately, YAML has a different (and more complex) document structure which requires substantial code changes to tools which wish to support it instead of / in addition to XML. SweetXML has the same document structure as XML, and thus does not require tools to be aware of its special syntax. Instead, a converter can translate SweetXML to plain XML during the build process, allowing SweetXML to work as a drop-in replacement anywhere configuration files are too verbose and difficult to read. If a tool wishes to support SweetXML syntax directly, it can do it by inserting just a few lines of code to perform the conversion, and continue to use its existing XML parsing mechanism.
 
@@ -37,18 +37,3 @@ This XML:
                 artifactId: maven-compiler-plugin
                 configuration
                     source: 1.5  target: 1.5
-
-
-
-
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
