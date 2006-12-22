@@ -95,6 +95,8 @@ public class SweetToXmlConverter
 
             xml.append("<?xml version=\"1.0\"?>").append(newline);
             
+            readProcessingDirectives();
+            
             readLoop:
             while(true)
                 {
@@ -128,6 +130,39 @@ public class SweetToXmlConverter
             return xml;
             }
         
+        private void readProcessingDirectives() throws IOException
+            {
+            while(true)
+                {
+                skipWhitespace(true);
+                in.mark(2);
+                boolean directive = (in.read() == '<' && in.read() == '!');
+                in.reset();
+                if(!directive)
+                    break;
+                
+                int nest = 0;
+                while(true)
+                    {
+                    int c = read();
+                    switch(c)
+                        {
+                        case -1:
+                            return;
+                        case '<':
+                            nest++;
+                            break;
+                        case '>':
+                            nest--;
+                            break;
+                        }
+                    xml.append((char) c);
+                    if(nest == 0)
+                        break;
+                    }
+                }
+            }
+
         private void handleIndent() throws IOException
             {
             String indent = indentWork.toString();

@@ -24,14 +24,8 @@ public class ConvertResourcesMojo
     extends AbstractMojo
     {
     /**
-     * The character encoding scheme to be applied.
-     * 
-     * @parameter
-     */
-    private String encoding;
-
-    /**
-     * The output directory into which to copy the resources.
+     * The directory in which there are resources to be converted.
+     * By default, this is the project's outputDirectory;
      *
      * @parameter expression="${project.build.outputDirectory}"
      * @required
@@ -44,6 +38,14 @@ public class ConvertResourcesMojo
      * @parameter
      */
     private String mode;
+    
+    /**
+     * If true, the plugin will delete files from the output directory after converting them.
+     * False by default.
+     *
+     * @parameter
+     */
+    private boolean deleteSources;
 
     /**
      * The list of additional key-value pairs aside from that of the System, 
@@ -75,15 +77,17 @@ public class ConvertResourcesMojo
         scanner.scan();
         
         FileConverterEngine convert = new FileConverterEngine(modeParsed);
-        for(String inFile : scanner.getIncludedFiles())
+        for(String inFileName : scanner.getIncludedFiles())
             try {
-                convert.convertFile(
-                    new File(outputDir, inFile));
+                File inFile = new File(outputDir, inFileName);
+                convert.convertFile(inFile);
+                if(deleteSources)
+                    inFile.delete();
                 }
             catch(IOException ioe)
                 {
                 throw new MojoExecutionException(
-                    "Unable to convert " + inFile
+                    "Unable to convert " + inFileName
                         + " from " + modeParsed.getSourceExtension()
                         + " to " + modeParsed.getTargetExtension(),
                     ioe);

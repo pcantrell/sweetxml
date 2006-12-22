@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
     <name>sweetxml</name>
-    <url>http://innig.net/software/sweetxml</url>
+    <url>http://innig.net/software/sweetxml/</url>
     <repositories>
         <repository>
             <id>ibiblio</id>
