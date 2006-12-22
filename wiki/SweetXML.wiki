@@ -17,23 +17,24 @@ This project will provide converters in both directions between XML and SweetXML
 = Example =
 
 This XML:
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-        </plugins>
-
+{{{
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>1.5</source>
+                <target>1.5</target>
+            </configuration>
+        </plugin>
+    </plugins>
+}}}
 ...is equivalent to this SweetXML:
-
-        plugins
-            plugin
-                groupId: org.apache.maven.plugins
-                artifactId: maven-compiler-plugin
-                configuration
-                    source: 1.5  target: 1.5
+{{{
+    plugins
+        plugin
+            groupId: org.apache.maven.plugins
+            artifactId: maven-compiler-plugin
+            configuration
+                source: 1.5  target: 1.5
+}}}
