@@ -1,0 +1,60 @@
+project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance" xsi/schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+    modelVersion: 4.0.0
+    
+    groupId:    net.innig.sweetxml
+    artifactId: sweetxml-maven
+    packaging:  maven-plugin
+    version:    0.1-SNAPSHOT
+    name:       "SweetXml Maven plugin"
+    url:        "http://innig.net/software/sweetxml/"
+    
+    repositories
+        repository
+            id: ibiblio
+            url: "http://mirrors.ibiblio.org/pub/mirrors/maven2"
+            snapshots
+                enabled: false
+    
+    build
+        directory:             ${basedir}/build
+        sourceDirectory:       ${basedir}/src/java
+        scriptSourceDirectory: ${basedir}/src/scripts
+        testSourceDirectory:   ${basedir}/test/java
+        outputDirectory:       ${basedir}/build/classes
+        testOutputDirectory:   ${basedir}/build/test-classes
+        
+        plugins
+            plugin
+                groupId: org.apache.maven.plugins
+                artifactId: maven-compiler-plugin
+                configuration
+                    source: 1.5
+                    target: 1.5
+        
+        filters
+            filter: build.local.properties
+            filter: build.properties
+        
+        resources
+            resource
+                filtering: true
+                directory: ${basedir}/src/res
+
+    dependencies
+        dependency
+            groupId:    org.apache.maven
+            artifactId: maven-plugin-api
+            version:    2.0
+        dependency
+            groupId:    net.innig.sweetxml
+            artifactId: sweetxml
+            version:    0.1-SNAPSHOT
+        dependency
+            groupId:    org.apache.maven
+            artifactId: maven-project
+            version:    2.0
+        dependency
+            groupId:    org.apache.maven
+            artifactId: maven-model
+            version:    2.0
+    
