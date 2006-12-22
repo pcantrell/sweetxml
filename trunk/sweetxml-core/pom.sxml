@@ -6,13 +6,12 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     packaging:  jar
     version:    0.1-SNAPSHOT
     name:       sweetxml
-    url:        "http://sourceforge.net/projects/sweetxml"
+    url:        "http://innig.net/software/sweetxml/"
     
     repositories
         repository
-            id: local   url: ./lib
-        repository
-            id: ibiblio url: "http://mirrors.ibiblio.org/pub/mirrors/maven2"
+            id: ibiblio
+            url: "http://mirrors.ibiblio.org/pub/mirrors/maven2"
             snapshots
                 enabled: false
     
@@ -39,17 +38,3 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
             resource
                 filtering: true
                 directory: ${basedir}/src/res
-    
-    dependencies
-        dependency
-            groupId:    commons-lang
-            artifactId: commons-lang
-            version:    2.1
-        dependency
-            groupId:    innig
-            artifactId: innig-util
-            version:    local
-        dependency
-            groupId:    innig
-            artifactId: innig-framework
-            version:    local
