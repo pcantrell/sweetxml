@@ -3,9 +3,9 @@
 = In Development =
 
 == Release 0.1 ==
-  * First draft of syntax
-  * Converters in both directions
-  * Command-line interface
+  * First draft of syntax _(done)_
+  * Converters in both directions _(done)_
+  * Command-line interface _(done)_
   * User guide
 
 
@@ -13,7 +13,7 @@
 
 == Release 0.2 ==
   * Ant plugin
-  * Macker plugin
+  * Maven plugin
 
 == Release 0.3 ==
   * Support for multi-line tags (for numerous attributes)
