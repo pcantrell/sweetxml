@@ -1,0 +1,25 @@
+#summary Rough milestones for the project.
+
+= Currently working on: Release 0.1 =
+  * First draft of syntax
+  * Converters in both directions
+  * Command-line interface
+  * User guide
+
+= Future Releases =
+
+== Release 0.2 ==
+  * Ant plugin
+  * Macker plugin
+
+== Release 0.3 ==
+  * Support for multi-line tags (for numerous attributes)
+  * Possible support for multiple tags on a single line
+
+== Release 0.4 ==
+  * ???
+
+== Release 1.0 ==
+  * Syntax is stable, and ready to be saddled with backward compatibility
+  * Syntax is standardized in a specification
+  * All significant bugs fixed
