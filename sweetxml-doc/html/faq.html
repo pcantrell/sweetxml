@@ -180,19 +180,22 @@ Try the <a href="http://groups.google.com/group/sweetxml">SweetXML discussion gr
 <a href="http://www.yaml.org/">YAML</a> is, in fact, the direct inspiration for SweetXML. The important difference between the two is that SweetXML has the same document structure as XML, while YAML has its own very different document structure. Unlike SweetXML, therefore, YAML does not work as a drop-in replacement for XML; adding YAML support to an XML-based tool requires some effort.
 </p>
 <p>
-How do they compare? Forget for a moment the various validation and transformation schemes (DTD, XSL and all that jazz), and focus only on the document itself.
+How do they compare? Let's forget for a moment about the various validation and transformation schemes (DTD, XSL and all that jazz) — they aren't what make XML config files hard to maintain, and SweetXML isn't concerned with them at all. Instead, consider the document itself.
 </p>
 <p>
 In spite of its conciseness, YAML actually has a much more complicated document structure than XML, with different constructs for sequences, unordered sets, key-value mappings, aliases, document separators, explicit node types ... and so on. XML documents have only tags, attributes, text, and entities; that's it.
 </p>
 <p>
-SweetXML's syntax and structure are therefore both much simpler than YAML's. YAML is arguably more expressive.
+The result: SweetXML's syntax and structure are both much simpler than YAML's, while YAML is more expressive.
 </p>
 
 
 <h3><a name="similar">Are there other alternate similar projects?</a></h3>
 <p>
-Yes. <a href="http://www.langdale.com.au/SOX/">SOX</a> and <a href="http://www.scottsweeney.com/projects/slip/">SLiP</a> are both very similar to SweetXML. Then why another option, you ask? Aesthetic differences; SweetXML's author thinks it is more concise, easier to learn, and looks prettier. (He also talks about himself in the third person.)
+Yes. <a href="http://www.langdale.com.au/SOX/">SOX</a> and <a href="http://www.scottsweeney.com/projects/slip/">SLiP</a> are both <i>very</i> similar to SweetXML.
+</p>
+<p>
+Why build another option then, you ask? Aesthetic differences. SweetXML's author thinks it is more concise, easier to learn, and looks prettier. (He also talks about himself in the third person.)
 </p>
 <p>
 DeveloperWorks published a <a href="http://www-128.ibm.com/developerworks/xml/library/x-syntax.html">good article</a> on various alternate syntaxes for XML, and the pros and cons of the whole idea. Sadly, the article does not mention SweetXML, because it did not exist at the time!
@@ -207,7 +210,7 @@ Yes! Check the wiki for ideas on <a href="http://code.google.com/p/sweetxml/wiki
 
 <h3><a name="license">How is SweetXML licensed?</a></h3>
 <p>
-It uses the BSD license, so you are free to bundle in your application or tool.
+It uses the BSD license, so you are free to bundle it in your application or tool.
 </p>
 
 
@@ -235,7 +238,7 @@ It provides <a href="http://en.wikipedia.org/wiki/Syntactic_sugar">syntactic sug
 </div>
 
 <p align="right">
-<a href="http://innig.net/?logo"><img border=0 src="http://innig.net/images/innig_3C0000.gif" alt="innig"></a>
+<a href="http://innig.net/?logo"><img border=0 src="http://innig.net/images/innig_FFFFFF.gif" alt="innig"></a>
 
 </body>
 </html>
