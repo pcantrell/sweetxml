@@ -19,6 +19,10 @@
   * Support for multi-line tags (for numerous attributes)
   * Possible support for multiple tags on a single line
 
+== Release 0.4 ==
+  * Consider document preamble with version number
+  * Consider multiple encodings
+
 == Release 0.x ==
   * ???
 
