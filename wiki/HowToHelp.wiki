@@ -6,4 +6,4 @@ Want to help out? There are several tasks with which you can lend a hand:
   * Write a plug-in for your favorite IDE / build tool.
   * Build a regression testing framework which will work off of test files that all the different languages can share.
 
-If you can help with one of these tasks, post a message on <a href="http://groups.google.com/group/sweetxml">the discussion group</a>.
+If you can help with one of these tasks, post a message on [http://groups.google.com/group/sweetxml the discussion group].
