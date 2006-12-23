@@ -2,8 +2,9 @@
 
 Want to help out? There are several tasks with which you can lend a hand:
 
-  * Port the converters to Ruby, Python, or your favorite language.
-  * Write a plug-in for your favorite IDE / build tool.
-  * Build a regression testing framework which will work off of test files that all the different languages can share.
+  * Port the converters to your favorite language. Especially interested in: Ruby, Python, C# (should be an easy port from Java!), and Haskell (for the geek cachet).
+  * Add syntax highlighting and other editing support to your favorite IDE or text editor. Especially interested in: TextMate, Eclipse, IntelliJ, NetBeans.
+  * Write a processing plug-in for your favorite build tool.
+  * Help build a regression testing framework which will work off of test files that all the different languages can share.
 
 If you can help with one of these tasks, post a message on [http://groups.google.com/group/sweetxml the discussion group] and we'll talk!
