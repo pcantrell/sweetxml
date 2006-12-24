@@ -28,7 +28,8 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
                 groupId: org.apache.maven.plugins
                 artifactId: maven-compiler-plugin
                 configuration
-                    source: 1.5  target: 1.5
+                    source: 1.5
+                    target: 1.5
         
         filters
             filter: build.local.properties
