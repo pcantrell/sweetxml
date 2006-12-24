@@ -1,6 +1,5 @@
 package net.innig.sweetxml.cli;
 
-import net.innig.sweetxml.ConversionMode;
 import net.innig.sweetxml.Converter;
 import net.innig.sweetxml.FileConverterEngine;
 
@@ -11,55 +10,40 @@ public class SweetXmlCli
     {
     public static void main(String... args)
         {
-        if(args.length < 1)
+        Configurator config = new Configurator(args);
+        
+        if(config.getFiles().isEmpty() && !config.isStreamEnabled() && !config.isQuiet())
             {
-            usage();
-            return;
-            }
-        String modeS = args[0];
-        if(!modeS.startsWith("-"))
-            {
-            usage();
-            return;
-            }
-        ConversionMode mode;
-        try { mode = ConversionMode.valueOf(modeS.substring(1).toUpperCase()); }
-        catch(IllegalArgumentException iae)
-            {
-            System.err.println("No such mode \"" + modeS.substring(1) + "\"; expected \"x2s\" or \"s2x\"");
-            return;
+            System.err.println("Nothing to do.");
+            System.err.println("(specify --help for options)");
             }
         
-        FileConverterEngine engine = new FileConverterEngine(mode);
-        for(int i = 1; i < args.length; i++)
+        FileConverterEngine engine = new FileConverterEngine(
+            config.isOverwriteEnabled(), config.isQuiet());
+        
+        for(File file : config.getFiles())
             try {
-                if(args[i].equals("-"))
-                    {
-                    Converter c = mode.createConverter();
-                    c.setInput(new InputStreamReader(System.in));
-                    System.out.print(c.getResult());
-                    }
-                else
-                    engine.convert(new File(args[i]));
+                engine.convert(file, config.getModeFor(file));
                 }
             catch(Exception e)
+                { conversionError(file.toString(), e); }
+        
+        if(config.isStreamEnabled())
+            try
                 {
-                System.err.println("Unable to convert " + args[i]);
-                for(Throwable chain = e; chain != null; chain = chain.getCause())
-                    System.err.println("    " + chain);
-                System.exit(1);
+                Converter c = config.getExplicitMode().createConverter();
+                c.setInput(new InputStreamReader(System.in));
+                System.out.print(c.getResult());
                 }
-        System.out.println("Done.");
+            catch(Exception e)
+                { conversionError("stdin", e); }
         }
 
-    private static void usage()
+    private static void conversionError(String sourceName, Exception e)
         {
-        System.err.println("SweetXML <=> XML converter");
-        System.err.println("options: ");
-        System.err.println("    -x2s    Convert XML to SweetXML");
-        System.err.println("    -s2x    Convert SweetXML to XML");
-        System.err.println("    <file>  Convert the given file");
-        System.err.println("    <dir>   Convert files with appropriate extension under dir");
-        System.err.println("    -       Convert stdin -> stdout");
+        System.err.println("Unable to convert " + sourceName);
+        for(Throwable chain = e; chain != null; chain = chain.getCause())
+            System.err.println("    " + chain);
+        System.exit(1);
         }
     }

@@ -8,21 +8,24 @@ import java.io.IOException;
 
 public class FileConverterEngine
     {
-    private ConversionMode mode;
+    private boolean overwrite, quiet;
 
-    public FileConverterEngine(ConversionMode mode)
-        { this.mode = mode; }
-    
-    public void convert(File inFile)
+    public FileConverterEngine(boolean overwrite, boolean quiet)
+        {
+        this.overwrite = overwrite;
+        this.quiet = quiet;
+        }
+
+    public void convert(File inFile, ConversionMode mode)
         throws IOException
         {
         if(inFile.isDirectory())
-            convertDir(inFile);
+            convertDir(inFile, mode);
         else
-            convertFile(inFile);
+            convertFile(inFile, mode);
         }
 
-    public void convertDir(File dir)
+    public void convertDir(File dir, ConversionMode mode)
         throws IOException
         {
         checkExists(dir);
@@ -32,13 +35,13 @@ public class FileConverterEngine
         for(File f : dir.listFiles())
             {
             if(f.isDirectory() && !f.getName().startsWith("."))
-                convertDir(f);
+                convertDir(f, mode);
             else if(f.getName().endsWith(mode.getSourceExtension()))
-                convertFile(f);
+                convertFile(f, mode);
             }
         }
 
-    public void convertFile(File inFile)
+    public void convertFile(File inFile, ConversionMode mode)
         throws IOException
         {
         String outFileName = inFile.getName();
@@ -47,15 +50,22 @@ public class FileConverterEngine
         outFileName += mode.getTargetExtension();
         File outFile = new File(inFile.getParentFile(), outFileName);
         
-        convertFile(inFile, outFile);
+        convertFile(inFile, outFile, mode);
         }
 
-    public void convertFile(File inFile, File outFile)
+    public void convertFile(File inFile, File outFile, ConversionMode mode)
         throws IOException
         {
         checkExists(inFile);
+        if(outFile.exists() && !overwrite)
+            {
+            if(!quiet)
+                System.err.println("Warning: " + outFile + " already exists; skipping");
+            return;
+            }
         
-        System.out.println("Converting " + inFile + " to " + outFile);
+        if(!quiet)
+            System.err.println("Converting " + inFile + " to " + outFile);
         
         Converter converter = mode.createConverter();
         converter.setInput(new FileReader(inFile));

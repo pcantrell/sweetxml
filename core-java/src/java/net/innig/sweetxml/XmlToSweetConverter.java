@@ -23,7 +23,7 @@ public class XmlToSweetConverter
     extends Converter
     {
     private static final Pattern
-        quotingRequiredPat = Pattern.compile("[\"'#:,\r\n\\s]"),
+        quotingRequiredPat = Pattern.compile("[^A-Za-z0-9\\-\\./_]"),
         initialWhitespacePat = Pattern.compile("(\\s*)(.*)", Pattern.DOTALL),
         lineBreakPat = Pattern.compile("\r\n|\r|\n");
     private DocumentBuilderFactory parserFactory;
