@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html lang="en">
 <head>
-    <title>SweetXML User Guide</title>
+    <title>SweetXML User Guide - Command-Line Interface</title>
     <style type="text/css">@import "../sweetxml.css";</style>
     <meta name="generator" content="Paul"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -20,18 +20,44 @@
 </div>
 
 
-<h2>Table of Contents</h2>
+<h2>Command-Line Interface</h2>
 
 <ul class="pagecontents">
-    <li> <a href="syntax.html">The Syntax</a> </li>
-    <li> <a href="usage.html">Using SweetXML</a> </li>
-    <li> <a href="cli.html">Command-Line Interface</a> </li>
-    <li> <a href="plugins.html">Tool Integration</a> </li>
-    <li> <a href="api.html">Adding SweetXML Support to Your Code</a> </li>
+    <li><a href="#basics">The Basics</a></li>
+    <li><a href="#usage">Usage</a></li>
 </ul>
 
+<h3><a name="basics">The Basics</a></h3>
+<p>
+</p>
+
+<h3><a name="options">Options</a></h3>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>-x2s</td>
+<td class="description">Convert XML to SweetXML.</td>
+</tr>
+<tr valign="top">
+<td>-s2x</td>
+<td class="description">Convert SweetXML to XML.</td>
+</tr>
+<tr valign="top">
+<td><i>file</i></td>
+<td class="description">Convert <i>file</i> to a new file with the appropriate extension, in the same directory as the input.</td>
+</tr>
+<tr valign="top">
+<td><i>dir</i></td>
+<td class="description">Scan <i>dir</i> for files with the appropriate extension (either <code>.xml</code> or <code>.sxml</code>, depending on whether <code>-x2s</code> or <code>-s2x</code> is specified), converting each.</td>
+</tr>
+<tr valign="top">
+<td>-</td>
+<td class="description">Convert standard input to standard output.</td>
+</tr>
+</table>
+
+
 <div class="next">
-First section: <a href="basic.html">Basic Example</a>
+Next section: <a href="plugins.html">Tool Integration</a>
 </div>
 
 
