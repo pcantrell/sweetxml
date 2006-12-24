@@ -21,7 +21,7 @@ public class SweetToXmlConverter
     private static final Pattern
         xmlNameStartCharPat = Pattern.compile("[A-Za-z_/\\xC0-\\xD6\\xD8-\\xF6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD]"),
         xmlNameCharPat      = Pattern.compile("[A-Za-z_/\\xC0-\\xD6\\xD8-\\xF6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-\\.0-9\\xB7\\u0300-\\u036F\\u203F-\\u2040]"),
-        quotingRequiredPat  = Pattern.compile("[\"'#:,\r\n\\s]");
+        quotingRequiredPat  = Pattern.compile("[^A-Za-z0-9\\-\\./_]");
     private static String[] charEscapes = new String[128];
     static
         {
@@ -241,13 +241,13 @@ public class SweetToXmlConverter
             else
                 while(true)
                     {
-                    xml.append((char) c);
-                    c = read();
                     if(c == -1 || charMatches(c, quotingRequiredPat))
                         {
                         backOne();
                         break;
                         }
+                    xml.append((char) c);
+                    c = read();
                     }
             }
 
