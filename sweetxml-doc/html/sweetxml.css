@@ -100,14 +100,6 @@ li {
 .compact li {
     margin : 0em .4cm 0em 0cm;
 }
-pre {
-    margin : 0em 2cm .6em 2.2cm;
-    padding : .3cm;
-    font-family : Verdana,Monaco,Courier,Courier New;
-    font-size : 11px;
-    color : #222;
-    border-left : 0.8em solid #dde4e0;
-}
 .comment {
     color : #6666BB;
     font-style : italic;
@@ -138,7 +130,7 @@ pre {
 }
 
 .next {
-    padding : .3cm .3cm .3cm .3cm;
+    padding : 0.3cm;
     color : #999999;
     font-family : Verdana,Geneva,Helvetica;
     font-weight : bold;
@@ -146,37 +138,40 @@ pre {
     text-align : right;
 }
 
-.example-table {
-    margin : 1em 1cm 1em 1cm;
-    padding : 0em 0em 0em 0em;
-    background : #880000;
-    border-color : #000000;
-    border-style : solid;
-    border-width : 0px 1px 1px 1px;
+code, pre, .example-table {
+    font-family : Verdana,Monaco,Courier,Courier New;
+    font-size : 0.96em;
+    color : #222;
+}
+pre, .example-table {
+    margin : 0.8em 1.8cm;
+    padding : 0.3em 0;
+    border-left : 0.8em solid #dde4e0;
+    background : #f4f4f4;
 }
 .example-table th {
-    color : #FFFFFF;
-    background : #007700;
-    margin : 0px 0px 4px 0px;
-    padding : 4px 4px 4px .4cm;
-    font-family : Verdana,Geneva,Helvetica;
+    color : #888;
+    margin : 0;
+    padding : 0.2em 2em 0.2em 0.3em;
     font-weight : bold;
-    font-size : 10px;
+    font-size : 0.9em;
     text-align : left;
-    border-color : #000000;
-    border-style : solid;
-    border-width : 1px 0px 1px 0px;
 }
 .example-table td {
-    border-color : #000055;
-    border-style : solid;
-    border-width : 0px 0px 1px 0px;
-    margin : 0em 2cm .6em 2.2cm;
-    padding : .3cm .3cm .3cm .3cm;
-    font-family : Verdana,Monaco,Courier,Courier New;
-    font-size : 11px;
-    color : #FFFFFF;
-    background : #000011;
+    white-space : pre;
+    padding : 0.3em 2em 0.3em 0.8em;
+    
+    border-top : 1px solid #e4e4e4;
+    border-right : 1px solid #d6d6d6;
+}
+.example-table tr:first-child td {
+    border-top : none;
+}
+.example-table td:last-child {
+    border-right : none;
+}
+.example-table td.description {
+    white-space : normal;
 }
 .example-table .example {
     font-weight : bold;

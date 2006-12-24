@@ -85,14 +85,14 @@ SweetXML achieves its conciseness by:
 It looks like this:
 </p>
 <pre>
-    access-rule
-        message: "Only the model can talk to the persistence layer"
-        deny
-            to pattern="persist"
-            allow
-                from pattern="persist"
-            allow                     
-                from pattern="model"
+access-rule
+    message: "Only the model can talk to the persistence layer"
+    deny
+        to pattern="persist"
+        allow
+            from pattern="persist"
+        allow                     
+            from pattern="model"
 </pre>
 <p>
 In this example, "access-rule", "message", "deny", "allow", "to" and "from" are all tags.
@@ -116,13 +116,13 @@ It is good in most cases where:
     <li>you have control over how the XML is either packaged (i.e. in a build) or parsed.</li>
 </ul>
 <p>
-Prime candidates are configuration files for Macker, Ant, Maven, Hibernate, Tapestry, servlet containers, JSF....
+Prime candidates are configuration files for <a href="http://innig.net/macker/">Macker</a>, <a href="http://ant.apache.org">Ant</a>, <a href="http://maven.apache.org">Maven</a>, <a href="http://hibernate.org">Hibernate</a>, <a href="http://tapestry.apache.org">Tapestry</a>, servlet containers such as <a href="http://jetty.mortbay.org/">Jetty</a> and <a href="http://tomcat.apache.org">Tomcat</a>, app servers, <a href="http://www.mozilla.org/projects/xul/">XUL</a>, <a href="http://java.sun.com/javaee/javaserverfaces/">JSF</a> ... you get the idea.
 </p>
 
 
 <h3><a name="notgoodfor">What is SweetXML <i>not</i> good for?</a></h3>
 <p>
-It’s not good for computer-to-computer communication, such as XML-RPC. In this situations,human readability is not a major issue — but interoperability is, and changing syntax undermines it.
+It’s not good for computer-to-computer communication, such as XML-RPC or syndication feeds. In these situations, human readability is not a major issue — but interoperability is, and changing syntax seriously undermines it. Yes, in theory, "SweetXML-RPC" could save bandwidth, but in practice, it's a bad idea.
 </p>
 <p>
 It’s not good in performance-sensitive situations. The SweetXML converters are not yet optimized for high performance.
@@ -147,6 +147,9 @@ It is currently in experimental development. The syntax is not yet stable. It is
 </p>
 <p>
 However, the code is certainly solid enough for experimental use. Try it on a side project, and see how it works. Early experiments <i>before</i> backward compatibility is an issue will be key to making the syntax as good as possible.
+</p>
+<p>
+More details in the <a href="http://code.google.com/p/sweetxml/wiki/Roadmap">roadmap</a>.
 </p>
 
 
@@ -222,7 +225,7 @@ It provides <a href="http://en.wikipedia.org/wiki/Syntactic_sugar">syntactic sug
 
 <h3><a name="who">Who wrote SweetXML?</a></h3>
 <p>
-<a href="http://innig.net/">Paul Cantrell</a>, who also <a href="http://innig.net/music/inthehands/">plays the piano</a> and has some <a href="http://innig.net/software/">has some other open-source projects</a>.
+<a href="http://innig.net/">Paul Cantrell</a>, who also <a href="http://innig.net/music/inthehands/">plays the piano</a> and has some <a href="http://innig.net/software/">other open-source projects</a>.
 </p>
 
 
