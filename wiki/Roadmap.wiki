@@ -6,7 +6,7 @@
   * First draft of syntax _(done)_
   * Converters in both directions _(done)_
   * Command-line interface _(done)_
-  * User guide
+  * User guide _(done)_
 
 
 = Future Releases =
