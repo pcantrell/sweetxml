@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+    <title>SweetXML - FAQ</title>
+    <style type="text/css">@import "sweetxml.css";</style>
+    <meta name="generator" content="Paul"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>SweetXML</h1>
+
+<div class="navbar">
+    <a href="index.html">Home</a> | 
+    <a href="faq.html">FAQ</a> |
+    <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+    <a href="guide/index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+    <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://groups.google.com/group/sweetxml">Support</a>
+</div>
+
+
+<h2>FAQ</h2>
+
+<ul class="pagecontents">
+    <li> <a href="#whatis">What is SweetXML?</a> </li>
+    <li> <a href="#xml">What is the relationship between XML and SweetXML?</a> </li>
+    <li> <a href="#looks">What does the syntax look like?</a> </li>
+    <li> <a href="#goodfor">What is SweetXML good for?</a> </li>
+    <li> <a href="#notgoodfor">What is SweetXML <i>not</i> good for?</a> </li>
+    <li> <a href="#functionality">What exactly does the SweetXML project provide?</a> </li>
+    <li> <a href="#status">What is its status?  Is it ready for real-world use?</a> </li>
+    <li> <a href="#download">Where do I get it?</a> </li>
+    <li> <a href="#instructions">How do I use it?</a> </li>
+    <li> <a href="#help">Where can I get help using SweetXML?</a> </li>
+    <li> <a href="#yaml">It looks kind of like YAML. Is it?</a> </li>
+    <li> <a href="#similar">Are there other similar projects?</a> </li>
+    <li> <a href="#contribute">Can I contribute to the project?</a> </li>
+    <li> <a href="#license">How is SweetXML licensed?</a> </li>
+    <li> <a href="#name">What does the name “SweetXML” mean?</a> </li>
+    <li> <a href="#who">Who wrote SweetXML?</a> </li>
+</ul>
+
+
+<h3><a name="whatis">What is SweetXML?</a></h3>
+<p>
+Tool developers are fond of using XML for configuration files. This has many advantages: it provides a standard, universally understood syntax for configuration. It allows text editors and IDEs provide reasonable editing and highlighting features for files they do not understand. It makes parsing configuration very easy for tool developers.
+</p>
+<p>
+The drawback is that XML is quite verbose. It requires a lot of keystrokes, and can be very difficult for humans to read.
+</p>
+<p>
+SweetXML is an alternate syntax for XML, designed to make configuration files more concise and readable by adding a bit of syntactic sugar. It changes XML's syntax without changing its fundamental structure, so that it can work as a replacement for XML wherever readability is an issue.
+</p>
+
+
+<h3><a name="xml">What is the relationship between XML and SweetXML?</a></h3>
+<p>
+The two are equivalent in that they have the same document structure when parsed. In other words, both XML and SweetXML have the same constructs (tags, attributes, text, and entities) and yield exactly the same DOM or exactly the same SAX. After parsing, there is no distinction between them.
+</p>
+<p>
+SweetXML is not XML in that it has a different syntax, designed to be more concise and human-readable in configuration files.
+</p>
+<p>
+Because SweetXML has the same document structure as XML, tools can use it without needing to be aware of its special syntax. Instead, a converter translates SweetXML to plain XML during the build process or at tool launch time, allowing SweetXML to work as a drop-in replacement anywhere XML configuration files are too verbose.
+</p>
+<p>
+If a tool wishes to support SweetXML syntax directly, it can do it by inserting just a few lines of code to perform the conversion, and continue to use its existing XML parsing mechanism.
+</p>
+
+
+<h3><a name="looks">What does the syntax look like?</a></h3>
+<p>
+SweetXML achieves its conciseness by:
+</p>
+<ul>
+    <li>using indentation-based nesting (like Python) instead of closing tags,</li>
+    <li>reducing the need for delimiter characters (such as angle braces and quotation marks), and</li>
+    <li>focusing on how configuration files typically use XML instead of trying to be a general-purpose syntax.</li>
+</ul>
+<p>
+It looks like this:
+</p>
+<pre>
+access-rule
+    message: "Only the model can talk to the persistence layer"
+    deny
+        to pattern="persist"
+        allow
+            from pattern="persist"
+        allow                     
+            from pattern="model"
+</pre>
+<p>
+In this example, "access-rule", "message", "deny", "allow", "to" and "from" are all tags.
+Several tags have a "pattern" attribute.
+The indentation determines how the tags are nested, so there are no closing tags.
+The colon on line 2 signifies text nested within the "message" element.
+</p>
+<p>
+The <a href="guide/index.html">user guide</a> contains a <a href="guide/syntax.html">complete description of the syntax</a>, and more extensive examples.
+</p>
+
+    
+
+<h3><a name="goodfor">What is SweetXML good for?</a></h3>
+<p>
+It is good in most cases where:
+</p>
+<ul>
+    <li>you are using XML as a file format,</li>
+    <li>readability and/or keystrokes are a problem, and</li>
+    <li>you have control over how the XML is either packaged (i.e. in a build) or parsed.</li>
+</ul>
+<p>
+Prime candidates are configuration files for <a href="http://innig.net/macker/">Macker</a>, <a href="http://ant.apache.org">Ant</a>, <a href="http://maven.apache.org">Maven</a>, <a href="http://hibernate.org">Hibernate</a>, <a href="http://tapestry.apache.org">Tapestry</a>, servlet containers such as <a href="http://jetty.mortbay.org/">Jetty</a> and <a href="http://tomcat.apache.org">Tomcat</a>, app servers, <a href="http://www.mozilla.org/projects/xul/">XUL</a>, <a href="http://java.sun.com/javaee/javaserverfaces/">JSF</a> ... you get the idea.
+</p>
+
+
+<h3><a name="notgoodfor">What is SweetXML <i>not</i> good for?</a></h3>
+<p>
+It’s not good for computer-to-computer communication, such as XML-RPC or syndication feeds. In these situations, human readability is not a major issue — but interoperability is, and changing syntax seriously undermines it. Yes, in theory, "SweetXML-RPC" could save bandwidth, but in practice, it's a bad idea.
+</p>
+<p>
+It’s not good in performance-sensitive situations. The SweetXML converters are not yet optimized for high performance.
+</p>
+<p>
+It’s not good for formats such as XHTML which consist of large amounts of text interspersed with tags. SweetXML's focus is configuration files, and it is not well suited to marking up documents.
+</p>
+
+
+<h3><a name="functionality">What exactly does the SweetXML project provide?</a></h3>
+<p>
+It provides converters in both directions between XML and SweetXML syntaxes. It also provides plugins to make the converters available in popular build tools (currently Ant and Maven). <i>[These plugins are currently in development — see the <a href="http://code.google.com/p/sweetxml/wiki/Roadmap">roadmap</a>.]</i> The initial converters are written in Java, because Java tools tend to be the most enamored of the XML config file. Volunteers are welcome for ports to other languages, particularly Ruby and Python.
+</p>
+<p>
+Once the syntax is well established, the project will also provide a syntax specification. However, the plan is to kick the tires for a while before nailing down the syntax.
+</p>
+
+
+<h3><a name="status">What is its status?  Is it ready for real-world use?</a></h3>
+<p>
+It is currently in experimental development. The syntax is not yet stable. It is therefore not a good idea to switch all your projects over just yet, unless you enjoy being on the bleeding edge, and are willing to do some mop-up work if the syntax changes.
+</p>
+<p>
+However, the code is certainly solid enough for experimental use. Try it on a side project, and see how it works. Early experiments <i>before</i> backward compatibility is an issue will be key to making the syntax as good as possible.
+</p>
+<p>
+In short: don't put all your eggs in this basket just yet, but please try it out!
+</p>
+<p>
+More details in the <a href="http://code.google.com/p/sweetxml/wiki/Roadmap">roadmap</a>.
+</p>
+
+
+<h3><a name="download">Where do I get it?</a></h3>
+<p>
+Binaries are available from the <a href="http://code.google.com/p/sweetxml/downloads/list">downloads area</a>.
+Source is available from the <a href="http://sweetxml.googlecode.com/svn/">Subversion repository</a>.
+</p>
+
+
+<h3><a name="instructions">How do I use it?</a></h3>
+<p>
+There are several basic ways of using it. One is to add support for it to your application, by dropping in a converter into your input stream just before XML parsing.
+</p>
+<p>
+If you don't control the code that is parsing the XML, you'll need to convert the SweetXML file to XML before it gets parsed — i.e. during the build process, or before launching a tool. Until tools start adding built-in support for SweetXML, this second approach will be far more common.
+</p>
+<p>
+You can also do a one-off manual conversion just to try it out.
+</p>
+<p>
+The user's guide explains these options <a href="guide/usage.html">in much more detail</a>.
+</p>
+
+
+<h3><a name="help">Where can I get help using SweetXML?</a></h3>
+<p>
+Try the <a href="http://groups.google.com/group/sweetxml">SweetXML discussion group</a>.
+</p>
+
+
+<h3><a name="yaml">It looks kind of like YAML. Is it?</a></h3>
+<p>
+<a href="http://www.yaml.org/">YAML</a> is, in fact, the direct inspiration for SweetXML. The important difference between the two is that SweetXML has the same document structure as XML, while YAML has its own very different document structure. Unlike SweetXML, therefore, YAML does not work as a drop-in replacement for XML; adding YAML support to an XML-based tool requires substantial coding.
+</p>
+<p>
+How do they compare? Let's forget for a moment about the various validation and transformation schemes (DTD, XSL and all that jazz) — these things aren't what make XML config files hard to maintain, and SweetXML isn't concerned with them at all. Instead, consider the document itself, since that's what we're really talking about here.
+</p>
+<p>
+In spite of its conciseness, YAML actually has a much more complicated document structure than XML, with different constructs for sequences, unordered sets, key-value mappings, aliases, document separators, explicit node types ... and so on. XML documents have only tags, attributes, text, and entities; that's it.
+</p>
+<p>
+The result: SweetXML's syntax and structure are both much simpler than YAML's, while YAML is more expressive. That's not an "X is better than Y" difference; it's a clear trade-off, which you should consider if you're choosing between them for your project.
+</p>
+
+
+<h3><a name="similar">Are there other similar projects?</a></h3>
+<p>
+Yes. <a href="http://www.langdale.com.au/SOX/">SOX</a> and <a href="http://www.scottsweeney.com/projects/slip/">SLiP</a> are both <i>very</i> similar to SweetXML.
+</p>
+<p>
+Why build another option then, you ask? Aesthetic differences. SweetXML's author thinks it is more concise, easier to learn, and looks prettier. (He also talks about himself in the third person.)
+</p>
+<p>
+DeveloperWorks published a <a href="http://www-128.ibm.com/developerworks/xml/library/x-syntax.html">good article</a> on various alternate syntaxes for XML, and the pros and cons of the whole idea. Sadly, the article does not mention SweetXML, because it did not exist at the time! The article comes down somewhat against switching syntax; hopefully, SweetXML will develop into something undeniably awesome, and thus prove him wrong. Naturally, being the person of sharp wits and impeccable taste that you are, you also want SweetXML to be awesome, which leads you to ask the question...
+</p>
+
+
+<h3><a name="contribute">Can I contribute to the project?</a></h3>
+<p>
+Yes! Check the wiki for ideas on <a href="http://code.google.com/p/sweetxml/wiki/HowToHelp">how to help</a>.
+</p>
+
+
+<h3><a name="license">How is SweetXML licensed?</a></h3>
+<p>
+It uses the BSD license, so you are free to bundle it in your application or tool.
+</p>
+
+
+<h3><a name="name">What does the name “SweetXML” mean?</a></h3>
+<p>
+It provides <a href="http://en.wikipedia.org/wiki/Syntactic_sugar">syntactic sugar</a> for XML, thus making it sweet.
+</p>
+
+
+<h3><a name="who">Who wrote SweetXML?</a></h3>
+<p>
+<a href="http://innig.net/">Paul Cantrell</a>, who also <a href="http://innig.net/music/inthehands/">plays the piano</a> and has some <a href="http://innig.net/software/">other open-source projects</a>.
+</p>
+
+
+<div class="footer">
+    <div class="navbar">
+        <a href="index.html">Home</a> | 
+        <a href="faq.html">FAQ</a> |
+        <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+        <a href="guide/index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+        <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+        <a href="http://groups.google.com/group/sweetxml">Support</a>
+    </div>
+</div>
+
+<p align="right">
+<a href="http://innig.net/?logo"><img border=0 src="http://innig.net/images/innig_FFFFFF.gif" alt="innig"></a>
+
+</body>
+</html>
+

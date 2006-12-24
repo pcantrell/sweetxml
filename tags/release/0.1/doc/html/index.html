@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+    <title>SweetXML</title>
+    <style type="text/css">@import "sweetxml.css";</style>
+    <meta name="keywords" content="sweetxml,xml,alternate syntax,alternative syntax,java,ruby,python,configuration,readability,conciseness,simplify,simplification"/>
+    <meta name="description" content="A spoonful of syntactic sugar for your config files. Makes XML easier to type and read with a more concise alternate syntax."/>
+    <meta name="generator" content="Paul"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>
+    SweetXML
+    <div class="tagline">A spoonful of syntactic sugar for your config files</div>
+</h1>
+
+<div class="navbar">
+    <a href="index.html">Home</a> | 
+    <a href="faq.html">FAQ</a> |
+    <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+    <a href="guide/index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+    <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://groups.google.com/group/sweetxml">Support</a>
+</div>
+
+<h2>About SweetXML</h2>
+<p>
+SweetXML is an alternate syntax for XML, designed to make configuration files more concise and readable by adding a bit of syntactic sugar.
+</p>
+<p>
+For example, this XML:
+</p>
+<pre>
+&lt;plugins&gt;
+    &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+            &lt;source&gt;1.5&lt;/source&gt;
+            &lt;target&gt;1.5&lt;/target&gt;
+        &lt;/configuration&gt;
+    &lt;/plugin&gt;
+&lt;/plugins&gt;
+</pre>
+<p>...is equivalent to this SweetXML:</p>
+<pre>
+plugins
+    plugin
+        groupId: org.apache.maven.plugins
+        artifactId: maven-compiler-plugin
+        configuration
+            source: 1.5
+            target: 1.5
+</pre>
+<p>
+    Read more about what it does and what it's for in the <a href="faq.html">very exciting FAQ</a>.
+    If your curiousity's piqued, skim the <a href="guide/index.html">user guide</a>.
+</p>
+<p>
+It's open source (under a BSD-style license).  You can  <a href="http://code.google.com/p/sweetxml/downloads/list">download it</a> and try it out.
+</p>
+<p>
+Questions or suggestions?  Feel free to <a href="contact.html">share them</a>.
+</p>
+
+<h2>SweetXML now in development</h2>
+<p>
+    Initial development on SweetXML is under way. Want to jump in? There are several
+    <a href="http://code.google.com/p/sweetxml/wiki/HowToHelp?updated=HowToHelp&ts=1166818408">opportunities to help</a>.
+</p>
+
+<div class="footer">
+    <div class="navbar">
+        <a href="index.html">Home</a> | 
+        <a href="faq.html">FAQ</a> |
+        <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+        <a href="guide/index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+        <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+        <a href="http://groups.google.com/group/sweetxml">Support</a>
+    </div>
+</div>
+
+<p align="right">
+<a href="http://innig.net/?logo"><img border=0 src="http://innig.net/images/innig_FFFFFF.gif" alt="innig"></a>
+
+</body>
+</html>
+

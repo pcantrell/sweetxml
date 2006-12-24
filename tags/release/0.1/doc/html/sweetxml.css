@@ -1,0 +1,208 @@
+body {
+    background-color:#FFF;
+    color:#222;
+    font-family: Palatino,Georgia,Times;
+}
+A:link    { color:#070; }
+A:visited { color:#242; }
+A:active  { color:#0F0; }
+
+.pagecontents {
+    color : #88BB88;
+}
+.pagecontents {
+    margin : 0em 1em .8em 1.8cm;
+    padding-left : 0cm;
+}
+.pagecontents li {
+    margin : 0em 1em .3em 0cm;
+    padding : 0cm 0cm 0cm 0cm;
+    font-family : Verdana,Geneva,Helvetica;
+    font-weight : bold;
+}
+.pagecontents li ul {
+    margin : .4em 1em .4em 0.6cm;
+    padding-left : 0cm;
+    list-style-type : circle;
+}
+.pagecontents A, .pagecontents A:link, .pagecontents A:visited {
+    text-decoration : none;
+}
+
+
+h1 {
+    background-color:#072;
+    color:#FFFFFF;
+    margin  : 0cm 0cm 0cm 0cm;
+    padding : .14cm .14cm .14cm .4cm;
+    border-style : solid;
+    border-color : #000000;
+    border-width : 2px 2px 0px 2px;
+    font-family : Baskerville,Georgia,Palatino,Times,Times New Roman;
+    font-size:2.4em;
+    font-weigth:bold;
+}
+h2 {
+/*    background-color:#d0eed4;*/
+    padding : .14cm .14cm .14cm .7cm;
+    border-style : none;
+    border-color : #778880;
+    border-width : 1px;
+    font-family : Verdana,Geneva,Helvetica;
+    font-size:1.6em;
+    font-weigth:bold;
+}
+h3 {
+/*    background-color : #d0eed4;*/
+    padding : .14cm .14cm .08cm 0.9cm;
+    border-style : none;
+    border-color : #778880;
+    border-width : 1px;
+    font-family : Verdana,Geneva,Helvetica;
+    font-size   : 1.2em;
+    font-weigth : bold;
+}
+h4 {
+/*    background-color : #d0eed4;*/
+    padding : 0.14cm 0.14cm 0 1.2cm;
+    border : 2px 1px;
+    border-style : none;
+    border-color : #778880;
+    border-width : 1px;
+    font-family : Verdana,Geneva,Helvetica;
+    font-size   : 1em;
+    font-weigth : bold;
+}
+.tagline {
+    float : right;
+    text-align : right;
+    width : 60%;
+    color : #EEEEEE;
+    margin : 0.8em;
+    font-size : 0.5em;
+    font-weight : normal;
+    font-style : italic;
+}
+
+p {
+    margin : 0em .8cm .8em 1.2cm;
+}
+ul {
+    margin : 0em 0cm .8em 2cm;
+    padding-left : 0cm;
+}
+li {
+    margin : 0em .4cm .3em 0cm;
+}
+.compact li {
+    margin : 0em .4cm 0em 0cm;
+}
+.comment {
+    color : #6666BB;
+    font-style : italic;
+    font-weight : normal;
+}
+
+.navbar {
+    clear : both;
+    color : #668866;
+    background : #000000;
+    margin : 0px 0px 4px 0px;
+    padding : 4px 4px 4px .4cm;
+    font-family : Verdana,Geneva,Helvetica;
+    font-weight : bold;
+    font-size : 10px;
+}
+.navbar A, .navbar A:link, .navbar A:visited {
+    color : #FFF;
+    text-decoration : none;
+    padding : 0em .2em 0em .2em;
+}
+.navbar .next {
+    color : #666;
+    padding : 0em .1em 0em .2em;
+}
+.footer {
+    margin-top : .6cm;
+    margin-bottom : .4cm;
+}
+
+.next, .toc {
+    float : right;
+    padding : 0.3cm;
+    color : #999999;
+    font-family : Verdana,Geneva,Helvetica;
+    font-weight : bold;
+    font-size : 0.9em;
+    text-align : right;
+}
+
+code, pre, .example-table {
+    font-family : Verdana,Monaco,Courier,Courier New;
+    font-size : 0.96em;
+    color : #000;
+}
+pre, .example-table {
+    margin : 0.8em 1.8cm;
+    padding : 0.3em 0;
+    border-left : 0.8em solid #dde4e0;
+    background : #f4f4f4;
+}
+pre {
+    padding : 0.3em 1em 0.3em 0.8em;
+}
+.example-table th {
+    color : #888;
+    margin : 0;
+    padding : 0.2em 2em 0.2em 0.3em;
+    font-weight : bold;
+    font-size : 0.9em;
+    text-align : left;
+}
+.example-table td {
+    white-space : pre;
+    padding : 0.3em 2em 0.3em 0.8em;
+    
+    border-top : 1px solid #e4e4e4;
+    border-right : 1px solid #d6d6d6;
+}
+.example-table tr:first-child td {
+    border-top : none;
+}
+.example-table td:last-child {
+    border-right : none;
+}
+.example-table td.description {
+    white-space : normal;
+}
+.example-table .example {
+    font-weight : bold;
+    color : #DDDDDD;
+    background : #000033;
+}
+.example-table p {
+    margin : 0.6em 0em 0em 0cm;
+}
+.example-table code {
+    font-size : 11px;
+}
+
+.example-nav {
+    font-family : Verdana,Monaco,Courier,Courier New;
+    font-size : 11px;
+    list-style-type : circle;
+}
+.example-nav li {
+    margin : 0em 0em .3em 0cm;
+}
+
+.moreinfo {
+    font-family : Verdana,Geneva,Helvetica;
+    font-size : 9px;
+    color : #888888;
+}
+.moreinfo a, .moreinfo A:link, .moreinfo A:visited {
+    font-weight : bold;
+}
+
+

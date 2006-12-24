@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+    <title>SweetXML User Guide - Using SweetXML</title>
+    <style type="text/css">@import "../sweetxml.css";</style>
+    <meta name="generator" content="Paul"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>SweetXML User Guide</h1>
+
+<div class="navbar">
+    <a href="../index.html">Home</a> | 
+    <a href="../faq.html">FAQ</a> |
+    <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+    <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+    <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://groups.google.com/group/sweetxml">Support</a>
+</div>
+
+
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+<h2>Using SweetXML</h2>
+
+<ul class="pagecontents">
+    <li><a href="#patterns">Basic Usage Patterns</a>
+        <ul>
+            <li><a href="#build">Conversion at Build Time</a></li>
+            <li><a href="#launch">Conversion at Launch Time</a></li>
+            <li><a href="#run">Conversion at Runtime</a></li>
+            <li><a href="#manual">Manual Conversion</a></li>
+        </ul>
+    </li>
+</ul>
+
+<h3><a name="patterns">Basic Usage Patterns</a></h3>
+<p>
+How you use SweetXML essentially boils down to one question: Where does the conversion to plain XML happen? There are different answers to that question, which fall into four categories:
+</p>
+
+<h4><a name="build">Conversion at Build Time</a></h4>
+<p>
+If your application needs XML configuration files at runtime and does not have built-in support for SweetXML, you can convert the files at build time. This is the most common way to use SweetXML: include a conversion step in your build process, during the resource copying phase.
+</p>
+<p>
+SweetXML plans to provide support for doing this in several different build tools; see the <a href="plugins.html">tool integration</a> section for more information.
+</p>
+<p>
+<i>Applies to: configuration files for Macker, Hibernate, Tapestry, web application context, JSF, etc.</i>
+</p>
+
+<h4><a name="launch">Conversion at Launch Time</a></h4>
+<p>
+Sometimes, you cannot convert a file at build time. This is usually for one of two reasons: either the file is not part of any build process, or the file <i>controls</i> the build process, and thus must be converted before the build can begin.
+</p>
+<p>
+In either case, your best bet is to whip together a little shell script which first calls SweetXML's <a href="cli.html">command-line interface</a> to convert the necessary files, then launches the tool in question. Place that script so that your shell finds it instead of the tool's own launch script, and you'll hardly notice that it doesn't have native SweetXML support.
+</p>
+<p>
+For example, I have the following code in <code>~/scripts/mvn</code>, which is the first entry in my <code>PATH</code>:
+</p>
+<pre>#!/bin/bash
+
+if [ -f pom.sxml ]; then
+    sweetxml -s2x --overwrite pom.sxml || exit 1
+fi
+
+exec "/usr/local/java/maven/bin/mvn" $@
+</pre>
+<p>
+(You'll need to adapt that to your own OS and environment, of course.)
+</p>
+<p>
+<i>Applies to: Ant's <code>build.xml</code>, Maven's <code>pom.xml</code>, Jetty's <code>jetty.xml</code>, etc.</i>
+</p>
+
+<h4><a name="run">Conversion at Runtime</a></h4>
+<p>
+The easiest way to use SweetXML by far is to use a tool which has built-in support for it: just use the file extension <code>.sxml</code> instead of <code>.xml</code>, and you're off and running!
+</p>
+<p>
+Since SweetXML is currently in early development, no such tools exist ... yet. However, <a href="http://innig.net/macker/">Macker</a> will be adding experimental support for it in the not-too-distant future. As the syntax stabilizes, you can start lobbying your favorite tool for native support as well!
+</p>
+
+<h4><a name="manual">Manual Conversion</a></h4>
+<p>
+For files which rarely change, it may be more trouble than it's worth to automate the conversion. You can always manually run the <a href="cli.html">command-line interface</a> to do a one-off conversion of a config file. </p>
+<p>
+This is also a great low-risk way to get started with SweetXML: manually convert one XML config file to SweetXML, edit it a bit, and manually convert it back to test your changes. If you like the sweeter syntax, then you can think about automating the conversion — and if you don't like it, well, at least you haven't invested much time in it.
+</p>
+
+<div class="next">
+Next section: <a href="cli.html">Command-Line Interface</a>
+</div>
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+
+<div class="footer">
+    <div class="navbar">
+        <a href="../index.html">Home</a> | 
+        <a href="../faq.html">FAQ</a> |
+        <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+        <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+        <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+        <a href="http://groups.google.com/group/sweetxml">Support</a>
+    </div>
+</div>
+
+<p align="right">
+<a href="http://innig.net/?logo"><img border=0 src="http://innig.net/images/innig_FFFFFF.gif" alt="innig"></a>
+
+</body>
+</html>
+

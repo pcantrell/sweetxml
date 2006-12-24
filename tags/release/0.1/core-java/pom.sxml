@@ -1,0 +1,49 @@
+project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance" xsi/schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+    modelVersion: 4.0.0
+    
+    groupId:    net.innig.sweetxml
+    artifactId: sweetxml
+    packaging:  jar
+    version:    0.1
+    name:       sweetxml
+    url:        "http://innig.net/software/sweetxml/"
+
+    scm
+        connection:          "scm:svn:http://sweetxml.googlecode.com/svn/trunk/core-java"
+        developerConnection: "scm:svn:https://sweetxml.googlecode.com/svn/trunk/core-java"
+      
+    repositories
+        repository
+            id: ibiblio
+            url: "http://mirrors.ibiblio.org/pub/mirrors/maven2"
+            snapshots
+                enabled: false
+    
+    build
+        directory:             "${basedir}/build"
+        sourceDirectory:       "${basedir}/src/java"
+        scriptSourceDirectory: "${basedir}/src/scripts"
+        testSourceDirectory:   "${basedir}/test/java"
+        outputDirectory:       "${basedir}/build/classes"
+        testOutputDirectory:   "${basedir}/build/test-classes"
+        
+        plugins
+            plugin
+                groupId: org.apache.maven.plugins
+                artifactId: maven-compiler-plugin
+                configuration
+                    source: 1.5
+                    target: 1.5
+            # plugin
+            #     artifactId: maven-release-plugin
+            #     configuration
+            #         tagBase: "scm:svn:https://sweetxml.googlecode.com/svn/tags/"
+        
+        filters
+            filter: build.local.properties
+            filter: build.properties
+        
+        resources
+            resource
+                filtering: true
+                directory: "${basedir}/src/res"

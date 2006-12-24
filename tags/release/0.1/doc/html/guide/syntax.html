@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+    <title>SweetXML User Guide - Syntax</title>
+    <style type="text/css">@import "../sweetxml.css";</style>
+    <meta name="generator" content="Paul"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>SweetXML User Guide</h1>
+
+<div class="navbar">
+    <a href="../index.html">Home</a> | 
+    <a href="../faq.html">FAQ</a> |
+    <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+    <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+    <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://groups.google.com/group/sweetxml">Support</a>
+</div>
+
+
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+<h2>Syntax</h2>
+
+<ul class="pagecontents">
+    <li><a href="#tag">Tags</a></li>
+    <li><a href="#attributes">Attributes</a></li>
+    <li><a href="#text">Text</a></li>
+    <li><a href="#basic-misc">Other Basics</a></li>
+    <li><a href="#preamble">Document Preamble</a></li>
+</ul>
+
+<h3><a name="tag">Tags</a></h3>
+
+<p>
+Tags appear simply as a tag name — no delimiters, no nothing.
+</p>
+
+<table class="example-table" cellspacing=0>
+<tr><th>This SweetXML...</th><th>...is equivalent to this XML.</th></tr>
+<tr valign="top">
+<td>tag
+another-tag</td>
+<td>&lt;tag/&gt;
+&lt;another-tag/&gt;</td>
+</tr>
+</table>
+
+<p>
+Indentation determines nesting.
+</p>
+
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>rivers
+    mississippi
+    poudre
+        north-fork
+lakes
+    superior
+    calhoun</td>
+<td>&lt;rivers&gt;
+    &lt;mississippi/&gt;
+    &lt;poudre&gt;
+        &lt;north-fork/&gt;
+    &lt;poudre/&gt;
+&lt;/rivers&gt;    
+&lt;lakes&gt;
+    &lt;superior/&gt;
+    &lt;calhoun/&gt;
+&lt;/lakes&gt;</td>
+</tr>
+</table>
+
+<p>
+SweetXML requires consistent indentation. <b>Be careful of tabs!</b> If different lines are indented with different mixtures of tabs and spaces, SweetXML will give a parse error. If your text editor allows it, it is best to avoid confusion by using soft tabs (i.e. no actual tab characters, only spaces).
+</p>
+
+<p>
+Each tag appear on a line by itself. There is currently no syntax that allows multiple tags on the same line. This feature is in the <a href="http://code.google.com/p/sweetxml/wiki/Roadmap">roadmap</a>.
+</p>
+
+
+<h3><a name="attributes">Attributes</a></h3>
+
+<p>
+Attributes follow a tag on the same line, in the form <code>name="value"</code> (either double or single quotes work):
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>pet type="budgie" name="Pegasus"
+pet type='dog' name='Goulash'</td>
+<td>&lt;pet type="budgie" name="Pegasus"/&gt;
+&lt;pet type="dog" name="Goulash"/&gt;</td>
+</tr>
+</table>
+
+<p>
+If the attribute value contains only letters, numbers, dashes, periods, and underscores, then the quotes are optional:
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>pet type=cat name=Luke status=very_clumsy
+pet type=cat name="Mr. Man"</td>
+<td>&lt;pet type="cat" name="Luke" status="very_clumsy"/&gt;
+&lt;pet type="cat" name="Mr. Man"/&gt;</td>
+</tr>
+</table>
+<p>
+Note that the attribute value <code>"Mr. Man"</code> requires quotes because it contains a space.
+</p>
+
+<p>
+There is currently no way to split a long tag with many attributes across multiple lines. This feature is in the <a href="http://code.google.com/p/sweetxml/wiki/Roadmap">roadmap</a>.
+</p>
+
+<h3><a name="text">Text</a></h3>
+
+<p>
+Text appears in quotes on a line by itself.
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>name
+    "Pogo Possum"</td>
+<td>&lt;name&gt;Pogo Possum&lt;/name&gt;</td>
+</tr>
+</table>
+
+<p>
+Quoted text can span multiple lines. White space (including line breaks) is preserved if and only if it is inside quotes.
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>name
+    "Pogo"
+    "Possum"
+description
+    "Inhabitant of Okefenokee Swamp, and
+    star of the comic strip of the
+    same name."</td>
+<td>&lt;name&gt;PogoPossum&lt;/name&gt;
+&lt;description&gt;Inhabitant of Okefenokee Swamp, and
+    star of the comic strip of the
+    same name.&lt;/description&gt;</td>
+</tr>
+</table>
+
+<p>
+Quotes inside quoted text can be escaped with a backslash.
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>name: "Hayao \"Ghibli\" Miyazaki"
+remark: 'We\'re making a mystery here,
+    so make it mysterious.'</td>
+<td>&lt;name&gt;Hayao "Ghibli" Miyazaki&lt;/name&gt;
+&lt;remark&gt;We're making a mystery here,
+    so make it mysterious.&lt;/remark&gt;</td>
+</tr>
+</table>
+
+<p>
+Note that you can often avoid the need for escaping by using single instead of double quotes or vice versa.
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>name: 'Hayao "Ghibli" Miyazaki'
+remark: "We're making a mystery here,
+    so make it mysterious."</td>
+<td>&lt;name&gt;Hayao "Ghibli" Miyazaki&lt;/name&gt;
+&lt;remark&gt;We're making a mystery here,
+    so make it mysterious.&lt;/remark&gt;</td>
+</tr>
+</table>
+
+<p>
+Text nested inside a tag may appear on the same line as the tag when preceded by a colon.
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>name: "Pogo Possum"</td>
+<td>&lt;name&gt;Pogo Possum&lt;/name&gt;</td>
+</tr>
+</table>
+
+<p>
+When text appears after a colon, the quotes are optional if the text contains only letters, numbers, dashes, periods, and underscores.
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>name: "Pogo Possum"
+species: opossum</td>
+<td>&lt;name&gt;Pogo Possum&lt;/name&gt;
+&lt;species&gt;opossum&lt;/species&gt;</td>
+</tr>
+</table>
+
+<p>
+Note that quotes are optional only when the text follow a colon. If text appears on a line by itself, quotes are <i>always</i> required. Without quotes, SweetXML will see a tag, not text.
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>marco
+    "polo"
+marco
+    polo</td>
+<td>&lt;marco&gt;polo&lt;/marco&gt;
+&lt;marco&gt;
+    &lt;polo/&gt;
+&lt;/marco&gt;</td>
+</tr>
+</table>
+
+<h3><a name="basic-misc">Other Basics</a></h3>
+
+<p>
+A <code>#</code> character makes the remainer of the line a comment.
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td># here follows a name
+name : "Harold J. Smooter" # not a real name</td>
+<td>&lt;!--here follows a name--&gt;
+&lt;name&gt;Harold J. Smooter &lt;!--not a real name--&gt; &lt;/name&gt;</td>
+</tr>
+</table>
+
+<p>
+Entities have exactly the same syntax as in XML.
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>&amp;foo;</td>
+<td>&amp;foo;</td>
+</tr>
+</table>
+
+<h3><a name="preamble">Document Preamble</a></h3>
+
+<p>SweetXML documents have no place to specify a version number or encoding. Consideration of this feature is in the <a href="http://code.google.com/p/sweetxml/wiki/Roadmap">roadmap</a>.</p>
+
+<p>SweetXML is not particularly concerned with features of XML other than the document body itself. It does not address validation and transformation in any special way.
+</p>
+<p>
+You can specify a DOCTYPE at the beginning of your document, using exactly the same syntax as XML. Line breaks and indentation in the DOCTYPE are not significant.
+</p>
+<table class="example-table" cellspacing=0>
+<tr valign="top">
+<td>&lt;!DOCTYPE hibernate-configuration PUBLIC
+      "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+      "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;
+
+hibernate-configuration
+    session-factory
+        ...
+</td>
+<td>&lt;!DOCTYPE hibernate-configuration PUBLIC
+      "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+      "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;
+
+&lt;hibernate-configuration&gt;
+    &lt;session-factory&gt;
+        ...
+</td>
+</tr>
+</table>
+
+<p>
+That is the complete syntax of SweetXML.
+</p>
+
+<div class="next">
+Next section: <a href="usage.html">Using SweetXML</a>
+</div>
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+
+<div class="footer">
+    <div class="navbar">
+        <a href="../index.html">Home</a> | 
+        <a href="../faq.html">FAQ</a> |
+        <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+        <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+        <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+        <a href="http://groups.google.com/group/sweetxml">Support</a>
+    </div>
+</div>
+
+<p align="right">
+<a href="http://innig.net/?logo"><img border=0 src="http://innig.net/images/innig_FFFFFF.gif" alt="innig"></a>
+
+</body>
+</html>
+
