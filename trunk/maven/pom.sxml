@@ -4,7 +4,7 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     groupId:    net.innig.sweetxml
     artifactId: sweetxml-maven
     packaging:  maven-plugin
-    version:    0.1-SNAPSHOT
+    version:    0.1
     name:       "SweetXml Maven plugin"
     url:        "http://innig.net/software/sweetxml/"
     
