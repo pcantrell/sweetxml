@@ -40,6 +40,21 @@ public class ConvertResourcesMojo
     private String mode;
     
     /**
+     * If true, the plugin will not print information about which files are being converted.
+     * True by default.
+     *
+     * @parameter
+     */
+    private boolean quiet = true;
+    
+    /**
+     * If true, the plugin will overwrite existing output files. True by default.
+     *
+     * @parameter
+     */
+    private boolean overwrite = true;
+    
+    /**
      * If true, the plugin will delete files from the output directory after converting them.
      * False by default.
      *
@@ -76,11 +91,11 @@ public class ConvertResourcesMojo
         scanner.addDefaultExcludes();
         scanner.scan();
         
-        FileConverterEngine convert = new FileConverterEngine(modeParsed);
+        FileConverterEngine convert = new FileConverterEngine(overwrite, quiet);
         for(String inFileName : scanner.getIncludedFiles())
             try {
                 File inFile = new File(outputDir, inFileName);
-                convert.convertFile(inFile);
+                convert.convertFile(inFile, modeParsed);
                 if(deleteSources)
                     inFile.delete();
                 }

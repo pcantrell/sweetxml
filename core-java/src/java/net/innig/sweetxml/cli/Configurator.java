@@ -116,7 +116,6 @@ class Configurator
         ResourceBundle coreBundle = ResourceBundle.getBundle("net.innig.sweetxml.core");
         System.err.println("SweetXML, version " + coreBundle.getString("version"));
         System.err.println("  Copyright (c) 2006 Paul Cantrell");
-        System.err.println("  Compiled " + coreBundle.getString("compileDate"));
         System.err.println();
         System.err.println("  options: ");
         System.err.println("    -x2s            Convert XML to SweetXML");

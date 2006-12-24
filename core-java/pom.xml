@@ -8,6 +8,10 @@
     <version>0.1-SNAPSHOT</version>
     <name>sweetxml</name>
     <url>http://innig.net/software/sweetxml/</url>
+    <scm>
+        <connection>scm:svn:http://sweetxml.googlecode.com/svn/trunk/core-java</connection>
+        <developerConnection>scm:svn:https://sweetxml.googlecode.com/svn/trunk/core-java</developerConnection>
+    </scm>
     <repositories>
         <repository>
             <id>ibiblio</id>

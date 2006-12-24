@@ -7,7 +7,11 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     version:    0.1-SNAPSHOT
     name:       sweetxml
     url:        "http://innig.net/software/sweetxml/"
-    
+
+    scm
+        connection:          "scm:svn:http://sweetxml.googlecode.com/svn/trunk/core-java"
+        developerConnection: "scm:svn:https://sweetxml.googlecode.com/svn/trunk/core-java"
+      
     repositories
         repository
             id: ibiblio
@@ -30,6 +34,10 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
                 configuration
                     source: 1.5
                     target: 1.5
+            # plugin
+            #     artifactId: maven-release-plugin
+            #     configuration
+            #         tagBase: "scm:svn:https://sweetxml.googlecode.com/svn/tags/"
         
         filters
             filter: build.local.properties

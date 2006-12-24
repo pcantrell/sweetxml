@@ -16,12 +16,12 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
                 enabled: false
     
     build
-        directory:             ${basedir}/build
-        sourceDirectory:       ${basedir}/src/java
-        scriptSourceDirectory: ${basedir}/src/scripts
-        testSourceDirectory:   ${basedir}/test/java
-        outputDirectory:       ${basedir}/build/classes
-        testOutputDirectory:   ${basedir}/build/test-classes
+        directory:             "${basedir}/build"
+        sourceDirectory:       "${basedir}/src/java"
+        scriptSourceDirectory: "${basedir}/src/scripts"
+        testSourceDirectory:   "${basedir}/test/java"
+        outputDirectory:       "${basedir}/build/classes"
+        testOutputDirectory:   "${basedir}/build/test-classes"
         
         plugins
             plugin
@@ -38,7 +38,7 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
         resources
             resource
                 filtering: true
-                directory: ${basedir}/src/res
+                directory: "${basedir}/src/res"
 
     dependencies
         dependency
