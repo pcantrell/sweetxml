@@ -1,6 +1,6 @@
 #summary Rough milestones for the project.
 
-= In Development =
+= Current Release =
 
 == Release 0.1 ==
   * First draft of syntax _(done)_
@@ -8,12 +8,13 @@
   * Command-line interface _(done)_
   * User guide _(done)_
 
-
-= Future Releases =
+= In Development =
 
 == Release 0.2 ==
-  * Ant plugin
-  * Maven plugin
+  * Ant plugin _(implemented; need docs)_
+  * Maven plugin  _(in progress)_
+
+= Future Releases =
 
 == Release 0.3 ==
   * Support for multi-line tags (for numerous attributes)
