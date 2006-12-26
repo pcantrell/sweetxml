@@ -1,0 +1,13 @@
+
+project name="Sweetxml ant test" default="test" basedir="."
+    
+    target name="test"
+    
+        taskdef name="sweetxml" classname="net.innig.sweetxml.ant.SweetXmlTask"
+            classpath
+                pathelement location="../build/classes/"
+                pathelement location="../../core-java/build/classes/"
+            
+        sweetxml outputDir="outfiles"
+            inputFileSet dir="infiles"
+            inputFileSet dir="." includes="*.sxml"

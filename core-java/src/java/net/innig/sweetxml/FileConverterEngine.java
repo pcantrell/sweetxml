@@ -44,13 +44,17 @@ public class FileConverterEngine
     public void convertFile(File inFile, ConversionMode mode)
         throws IOException
         {
+        // Convert file in place
+        convertFile(inFile, adjustFileExtentsion(inFile, mode), mode);
+        }
+
+    public File adjustFileExtentsion(File inFile, ConversionMode mode)
+        {
         String outFileName = inFile.getName();
         if(outFileName.endsWith(mode.getSourceExtension()))
             outFileName = outFileName.substring(0, outFileName.length() - mode.getSourceExtension().length());
         outFileName += mode.getTargetExtension();
-        File outFile = new File(inFile.getParentFile(), outFileName);
-        
-        convertFile(inFile, outFile, mode);
+        return new File(inFile.getParentFile(), outFileName);
         }
 
     public void convertFile(File inFile, File outFile, ConversionMode mode)

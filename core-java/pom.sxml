@@ -4,7 +4,7 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     groupId:    net.innig.sweetxml
     artifactId: sweetxml
     packaging:  jar
-    version:    0.1
+    version:    0.2-SHAPSHOT
     name:       sweetxml
     url:        "http://innig.net/software/sweetxml/"
 
@@ -39,9 +39,9 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
             #     configuration
             #         tagBase: "scm:svn:https://sweetxml.googlecode.com/svn/tags/"
         
-        filters
-            filter: build.local.properties
-            filter: build.properties
+        # filters
+        #     filter: build.local.properties
+        #     filter: build.properties
         
         resources
             resource
