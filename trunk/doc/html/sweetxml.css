@@ -30,17 +30,17 @@ A:active  { color:#0F0; }
 }
 
 
-h1 {
-    background-color:#072;
+h1, title {
+    background-color : #072;
     color:#FFFFFF;
     margin  : 0cm 0cm 0cm 0cm;
     padding : .14cm .14cm .14cm .4cm;
     border-style : solid;
     border-color : #000000;
     border-width : 2px 2px 0px 2px;
-    font-family : Baskerville,Georgia,Palatino,Times,Times New Roman;
+    font-family : Baskerville,Georgia,Palatino,Times,'Times New Roman';
     font-size:2.4em;
-    font-weigth:bold;
+    font-weight:bold;
 }
 h2 {
 /*    background-color:#d0eed4;*/
@@ -50,7 +50,7 @@ h2 {
     border-width : 1px;
     font-family : Verdana,Geneva,Helvetica;
     font-size:1.6em;
-    font-weigth:bold;
+    font-weight:bold;
 }
 h3 {
 /*    background-color : #d0eed4;*/
@@ -60,18 +60,14 @@ h3 {
     border-width : 1px;
     font-family : Verdana,Geneva,Helvetica;
     font-size   : 1.2em;
-    font-weigth : bold;
+    font-weight : bold;
 }
 h4 {
 /*    background-color : #d0eed4;*/
     padding : 0.14cm 0.14cm 0 1.2cm;
-    border : 2px 1px;
-    border-style : none;
-    border-color : #778880;
-    border-width : 1px;
     font-family : Verdana,Geneva,Helvetica;
     font-size   : 1em;
-    font-weigth : bold;
+    font-weight : bold;
 }
 .tagline {
     float : right;
@@ -138,7 +134,7 @@ li {
 }
 
 code, pre, .example-table {
-    font-family : Verdana,Monaco,Courier,Courier New;
+    font-family : Verdana,Monaco,Courier,'Courier New';
     font-size : 0.96em;
     color : #000;
 }
@@ -169,9 +165,6 @@ pre {
 .example-table tr:first-child td {
     border-top : none;
 }
-.example-table td:last-child {
-    border-right : none;
-}
 .example-table td.description {
     white-space : normal;
 }
@@ -188,7 +181,7 @@ pre {
 }
 
 .example-nav {
-    font-family : Verdana,Monaco,Courier,Courier New;
+    font-family : Verdana,Monaco,Courier,'Courier New';
     font-size : 11px;
     list-style-type : circle;
 }
@@ -205,4 +198,7 @@ pre {
     font-weight : bold;
 }
 
-
+.opsipod {
+    margin : 1em;
+    text-align : right;
+}
