@@ -1,6 +1,8 @@
 project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance" xsi/schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
     modelVersion: 4.0.0
     
+    # Basic metadata
+        
     groupId:    net.innig.sweetxml
     artifactId: sweetxml-ant
     packaging:  jar
@@ -8,6 +10,11 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     name:       "SweetXml Ant plugin"
     url:        "http://innig.net/software/sweetxml/"
     
+    description
+        "Ant plugin to convert files to and from SweetXML."
+
+    # Build
+
     repositories
         repository
             id: ibiblio
@@ -45,3 +52,23 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
             groupId:    net.innig.sweetxml
             artifactId: sweetxml
             version:    0.2-SHAPSHOT
+    
+    # Detailed metadata
+    
+    licenses
+        license
+            name: "New BSD License"
+            url:  "http://www.opensource.org/licenses/bsd-license.php"
+            distribution: repo
+            
+    organization
+        name: "Paul Cantrell"
+        url:  "http://innig.net"
+
+    issueManagement
+        system: "Google Code"
+        url:    "http://code.google.com/p/sweetxml/issues/list"
+    
+    scm
+        connection:          "scm:svn:http://sweetxml.googlecode.com/svn/trunk/ant"
+        developerConnection: "scm:svn:https://sweetxml.googlecode.com/svn/trunk/ant"
