@@ -6,12 +6,12 @@
     <artifactId>sweetxml</artifactId>
     <packaging>jar</packaging>
     <version>0.2-SHAPSHOT</version>
-    <name>sweetxml</name>
+    <name>SweetXML core</name>
     <url>http://innig.net/software/sweetxml/</url>
-    <scm>
-        <connection>scm:svn:http://sweetxml.googlecode.com/svn/trunk/core-java</connection>
-        <developerConnection>scm:svn:https://sweetxml.googlecode.com/svn/trunk/core-java</developerConnection>
-    </scm>
+    <description>Core Java library and command-line interface for SweetXML, an
+         alternate syntax for XML which focuses on improving the conciseness
+         and readability of configuration files.
+    </description>
     <repositories>
         <repository>
             <id>ibiblio</id>
@@ -22,12 +22,12 @@
         </repository>
     </repositories>
     <build>
-        <directory>${basedir}/build</directory>
-        <sourceDirectory>${basedir}/src/java</sourceDirectory>
+        <directory>            ${basedir}/build</directory>
+        <sourceDirectory>      ${basedir}/src/java</sourceDirectory>
         <scriptSourceDirectory>${basedir}/src/scripts</scriptSourceDirectory>
-        <testSourceDirectory>${basedir}/test/java</testSourceDirectory>
-        <outputDirectory>${basedir}/build/classes</outputDirectory>
-        <testOutputDirectory>${basedir}/build/test-classes</testOutputDirectory>
+        <testSourceDirectory>  ${basedir}/test/java</testSourceDirectory>
+        <outputDirectory>      ${basedir}/build/classes</outputDirectory>
+        <testOutputDirectory>  ${basedir}/build/test-classes</testOutputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -45,4 +45,23 @@
             </resource>
         </resources>
     </build>
+    <licenses>
+        <license>
+            <name>New BSD License</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <organization>
+        <name>Paul Cantrell</name>
+        <url>http://innig.net</url>
+    </organization>
+    <issueManagement>
+        <system>Google Code</system>
+        <url>http://code.google.com/p/sweetxml/issues/list</url>
+    </issueManagement>
+    <scm>
+        <connection>scm:svn:http://sweetxml.googlecode.com/svn/trunk/core-java</connection>
+        <developerConnection>scm:svn:https://sweetxml.googlecode.com/svn/trunk/core-java</developerConnection>
+    </scm>
 </project>

@@ -33,7 +33,7 @@ public class ConvertResourcesMojo
     private String outputDirectory;
     
     /**
-     * The conversion mode. Maybe be "s2x" (the default) or "x2s".
+     * The conversion mode. May be "s2x" (the default) or "x2s".
      *
      * @parameter
      */
