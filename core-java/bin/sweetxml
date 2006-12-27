@@ -12,4 +12,4 @@ if [ ! -d "$cp" ]; then
     fi
 fi
 
-java -cp "$cp" net.innig.sweetxml.cli.SweetXmlCli $@
+java -cp "$cp" net.innig.sweetxml.cli.SweetXmlCli "$@"
