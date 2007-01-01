@@ -30,7 +30,7 @@ A:active  { color:#0F0; }
 }
 
 
-h1, title {
+h1, .title {
     background-color : #072;
     color:#FFFFFF;
     margin  : 0cm 0cm 0cm 0cm;
