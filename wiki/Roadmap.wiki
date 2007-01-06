@@ -13,6 +13,7 @@
 == Release 0.2 ==
   * Ant plugin _(implemented; need docs)_
   * Maven plugin  _(in progress)_
+  * Improved XML -> SweetXML conversion
 
 = Future Releases =
 
@@ -25,6 +26,7 @@
   * Consider multiple encodings
 
 == Release 0.x ==
+  * I18N
   * ???
 
 == Release 1.0 ==
