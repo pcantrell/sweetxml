@@ -18,10 +18,6 @@ import org.xml.sax.InputSource;
 public class SweetToXmlConverter
     extends Converter
     {
-    private static final Pattern
-        xmlNameStartCharPat = Pattern.compile("[A-Za-z_/\\xC0-\\xD6\\xD8-\\xF6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD]"),
-        xmlNameCharPat      = Pattern.compile("[A-Za-z_/\\xC0-\\xD6\\xD8-\\xF6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD\\-\\.0-9\\xB7\\u0300-\\u036F\\u203F-\\u2040]"),
-        quotingRequiredPat  = Pattern.compile("[^A-Za-z0-9\\-\\./_]");
     private static String[] charEscapes = new String[128];
     static
         {
@@ -85,7 +81,7 @@ public class SweetToXmlConverter
         public CharSequence go()
             throws IOException
             {
-            xml = new StringBuilder();
+            xml = new StringBuilder(32768);
             tagStack = new LinkedList<String>();
             indentStack = new LinkedList<String>();
             indenting = true;
@@ -124,7 +120,7 @@ public class SweetToXmlConverter
                     }
                 }
             
-            indentWork = new StringBuilder();
+            indentWork = new StringBuilder(0);
             handleIndent(); // close all tags
             
             return xml;
@@ -241,7 +237,7 @@ public class SweetToXmlConverter
             else
                 while(true)
                     {
-                    if(c == -1 || charMatches(c, quotingRequiredPat))
+                    if(c == -1 || charMatches(c, Patterns.quotingRequired))
                         {
                         backOne();
                         break;
@@ -283,7 +279,7 @@ public class SweetToXmlConverter
     
         private String readName() throws IOException
             {
-            StringBuilder name = new StringBuilder();
+            StringBuilder name = new StringBuilder(32);
             int c;
             if(!isXmlNameStartCharacter(c = read()))
                 throw new SweetXmlParseException(line, column, "expected name, but found non-name character '" + (char)c + "'");
@@ -295,10 +291,10 @@ public class SweetToXmlConverter
             }
         
         private boolean isXmlNameStartCharacter(int c)
-            { return charMatches(c, xmlNameStartCharPat); }
+            { return charMatches(c, Patterns.xmlNameStartChar); }
     
         private boolean isXmlNameCharacter(int c)
-            { return charMatches(c, xmlNameCharPat); }
+            { return charMatches(c, Patterns.xmlNameChar); }
     
         private void skipWhitespace(boolean skipNewlines) throws IOException
             {
@@ -349,7 +345,7 @@ public class SweetToXmlConverter
                 {
                 line++;
                 column = 0;
-                indentWork = new StringBuilder();
+                indentWork = new StringBuilder(64);
                 indenting = true;
                 }
             else

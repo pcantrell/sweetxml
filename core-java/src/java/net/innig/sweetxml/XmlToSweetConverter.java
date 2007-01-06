@@ -2,7 +2,6 @@ package net.innig.sweetxml;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,10 +21,6 @@ import org.xml.sax.SAXException;
 public class XmlToSweetConverter
     extends Converter
     {
-    private static final Pattern
-        quotingRequiredPat = Pattern.compile("[^A-Za-z0-9\\-\\./_]"),
-        initialWhitespacePat = Pattern.compile("(\\s*)(.*)", Pattern.DOTALL),
-        lineBreakPat = Pattern.compile("\r\n|\r|\n");
     private DocumentBuilderFactory parserFactory;
     
     public XmlToSweetConverter()
@@ -145,10 +140,10 @@ public class XmlToSweetConverter
         
         private void handleText(Text textNode)
             {
-            Matcher space = initialWhitespacePat.matcher(textNode.getTextContent());
+            Matcher space = Patterns.initialWhitespace.matcher(textNode.getTextContent());
             space.find();
             
-            for(Matcher m = lineBreakPat.matcher(space.group(1)); m.find(); )
+            for(Matcher m = Patterns.lineBreak.matcher(space.group(1)); m.find(); )
                 lineBreaksPending++;
             
             if(space.group(2).length() > 0)
@@ -175,7 +170,7 @@ public class XmlToSweetConverter
         
         private void printQuoted(String s, boolean forceQuotes)
             {
-            if(!forceQuotes && !quotingRequiredPat.matcher(s).find())
+            if(!forceQuotes && !Patterns.quotingRequired.matcher(s).find())
                 out.append(s);
             else if(s.contains("'") || !s.contains("\""))
                 out.append("\"").append(s.replace("\"", "&quot;")).append("\"");
