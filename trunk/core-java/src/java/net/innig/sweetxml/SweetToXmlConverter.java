@@ -1,5 +1,7 @@
 package net.innig.sweetxml;
 
+import static net.innig.sweetxml.Patterns.newline;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,7 +30,6 @@ public class SweetToXmlConverter
         }
     
     private String xml;
-    private String newline = "\n";
 
     public SweetToXmlConverter()
         { }
