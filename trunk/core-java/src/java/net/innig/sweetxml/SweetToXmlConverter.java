@@ -282,20 +282,20 @@ public class SweetToXmlConverter
             {
             StringBuilder name = new StringBuilder(32);
             int c;
-            if(!isXmlNameStartCharacter(c = read()))
+            if(!isSxmlNameStartCharacter(c = read()))
                 throw new SweetXmlParseException(line, column, "expected name, but found non-name character '" + (char)c + "'");
             name.append((char) c);
-            while(isXmlNameCharacter(c = read()))
+            while(isSxmlNameCharacter(c = read()))
                 name.append((char) c);
             backOne();
             return name.toString().replace('/', ':');
             }
         
-        private boolean isXmlNameStartCharacter(int c)
-            { return charMatches(c, Patterns.xmlNameStartChar); }
+        private boolean isSxmlNameStartCharacter(int c)
+            { return charMatches(c, Patterns.xmlNameStartChar) || c == '/'; }
     
-        private boolean isXmlNameCharacter(int c)
-            { return charMatches(c, Patterns.xmlNameChar); }
+        private boolean isSxmlNameCharacter(int c)
+            { return charMatches(c, Patterns.xmlNameChar) || c == '/'; }
     
         private void skipWhitespace(boolean skipNewlines) throws IOException
             {
