@@ -34,7 +34,7 @@ public class SweetXmlCli
             try
                 {
                 Converter c = config.getExplicitMode().createConverter();
-                c.setInput(new InputStreamReader(System.in));
+                c.setInput(new InputStreamReader(System.in), "<stdin>");
                 System.out.print(c.getResult());
                 }
             catch(Exception e)

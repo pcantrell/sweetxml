@@ -24,24 +24,24 @@ public class SweetToXmlConverter
     public SweetToXmlConverter()
         { }
     
-    public SweetToXmlConverter(Reader in)
-        { setInput(in); }
+    public SweetToXmlConverter(Reader in, String sourceName)
+        { setInput(in, sourceName); }
     
-    public SweetToXmlConverter(InputStream in)
+    public SweetToXmlConverter(InputStream in, String sourceName)
         throws UnsupportedEncodingException
-        { this(new InputStreamReader(in, "utf-8")); }
+        { this(new InputStreamReader(in, "utf-8"), sourceName); }
 
-    public SweetToXmlConverter(InputStream in, String encoding)
+    public SweetToXmlConverter(InputStream in, String encoding, String sourceName)
         throws UnsupportedEncodingException
-        { this(new InputStreamReader(in, encoding)); }
+        { this(new InputStreamReader(in, encoding), sourceName); }
     
     public SweetToXmlConverter(File document)
         throws UnsupportedEncodingException, FileNotFoundException
-        { this(new FileInputStream(document)); }
+        { this(new FileInputStream(document), document.getPath()); }
 
     public SweetToXmlConverter(URL document)
         throws IOException
-        { this(document.openStream()); }
+        { this(document.openStream(), document.toExternalForm()); }
 
     public InputSource getResultInputSource() throws IOException
         { return new InputSource(getResultReader()); }
@@ -50,7 +50,7 @@ public class SweetToXmlConverter
     protected String convert()
         throws IOException
         {
-        return new Conversion(getInput()).go().toString();
+        return new Conversion().go().toString();
         }
         
     private class Conversion
@@ -61,9 +61,9 @@ public class SweetToXmlConverter
         private boolean indenting;
         private StringBuilder indentWork;
         
-        public Conversion(Reader in)
+        public Conversion()
             {
-            this.in = new ConverterInput(in)
+            this.in = new ConverterInput(getInput(), getSourceName())
                 {
                 public int countChar(int c)
                     throws IOException
@@ -188,9 +188,10 @@ public class SweetToXmlConverter
                 }
             
             if(!indentStack.isEmpty() && !indent.startsWith(indentStack.getFirst()))
-                throw new SweetXmlParseException(in.getLine(), in.getColumn(),
+                throw new SweetXmlParseException(
+                    in.getPosition(),
                     "Inconsistent indentation: expected a line starting with "
-                    + explainIndent(indentStack.getFirst()) + ", but got " + explainIndent(indent));
+                        + explainIndent(indentStack.getFirst()) + ", but got " + explainIndent(indent));
             
             indentStack.addFirst(indent);
             tagStack.addFirst(null);
@@ -228,7 +229,7 @@ public class SweetToXmlConverter
                 skipWhitespace(false);
                 c = in.read();
                 if(c != '=')
-                    throw new SweetXmlParseException(in.getLine(), in.getColumn(), "expected '=' while parsing tag attributes, but got '" + (char) c + "'");
+                    throw new SweetXmlParseException(in.getPosition(), "expected '=' while parsing tag attributes, but got '" + (char) c + "'");
                 skipWhitespace(false);
                 xml.append("=\"");
                 readText();
@@ -262,13 +263,12 @@ public class SweetToXmlConverter
 
         private void readQuotedText(int quoteChar) throws IOException
             {
-            int quoteStartLine = in.getLine();
-            int quoteStartColumn = in.getColumn();
+            InputPosition quoteStart = in.getPosition();
             while(true)
                 {
                 int c = in.read();
                 if(c == -1)
-                    throw new SweetXmlParseException(quoteStartLine, quoteStartColumn, "Unterminated quote");
+                    throw new SweetXmlParseException(quoteStart, "Unterminated quote");
                 if(c == quoteChar)
                     return;
                 if(c == '<')
@@ -297,7 +297,7 @@ public class SweetToXmlConverter
             StringBuilder name = new StringBuilder(32);
             int c;
             if(!isSxmlNameStartCharacter(c = in.read()))
-                throw new SweetXmlParseException(in.getLine(), in.getColumn(), "expected name, but found non-name character '" + (char)c + "'");
+                throw new SweetXmlParseException(in.getPosition(), "expected name, but found non-name character '" + (char)c + "'");
             name.append((char) c);
             while(isSxmlNameCharacter(c = in.read()))
                 name.append((char) c);

@@ -10,10 +10,14 @@ public abstract class Converter
     {
     private Reader input;
     private String output;
+    private String sourceName;
     private boolean header = true;
     
-    public synchronized void setInput(Reader input)
-        { this.input = input; }
+    public synchronized void setInput(Reader input, String sourceName)
+        {
+        this.input = input;
+        this.sourceName = sourceName;
+        }
     
     public synchronized String getResult() throws IOException
         {
@@ -45,6 +49,9 @@ public abstract class Converter
 
     protected synchronized Reader getInput()
         { return input; }
+    
+    protected synchronized String getSourceName()
+        { return sourceName; }
     
     protected abstract String convert() throws IOException;
     }
