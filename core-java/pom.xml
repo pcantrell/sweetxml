@@ -22,12 +22,12 @@
         </repository>
     </repositories>
     <build>
-        <directory>            ${basedir}/build</directory>
-        <sourceDirectory>      ${basedir}/src/java</sourceDirectory>
+        <directory>${basedir}/build</directory>
+        <sourceDirectory>${basedir}/src/java</sourceDirectory>
         <scriptSourceDirectory>${basedir}/src/scripts</scriptSourceDirectory>
-        <testSourceDirectory>  ${basedir}/test/java</testSourceDirectory>
-        <outputDirectory>      ${basedir}/build/classes</outputDirectory>
-        <testOutputDirectory>  ${basedir}/build/test-classes</testOutputDirectory>
+        <testSourceDirectory>${basedir}/test/java</testSourceDirectory>
+        <outputDirectory>${basedir}/build/classes</outputDirectory>
+        <testOutputDirectory>${basedir}/build/test-classes</testOutputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -48,7 +48,7 @@
     <licenses>
         <license>
             <name>New BSD License</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <url>http://www.opensource.org/licenses/bsd-license.php</url>
             <distribution>repo</distribution>
         </license>
     </licenses>

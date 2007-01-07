@@ -13,5 +13,8 @@ final class Patterns
     
     public static final String newline = System.getProperty("line.separator");
     
+    public static boolean charMatches(int c, Pattern pat)
+        { return pat.matcher(String.valueOf((char) c)).matches(); }
+
     private Patterns() { }
     }

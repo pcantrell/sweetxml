@@ -2,8 +2,10 @@ package net.innig.sweetxml.cli;
 
 import net.innig.sweetxml.Converter;
 import net.innig.sweetxml.FileConverterEngine;
+import net.innig.sweetxml.SweetXmlParseException;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class SweetXmlCli
@@ -42,8 +44,13 @@ public class SweetXmlCli
     private static void conversionError(String sourceName, Exception e)
         {
         System.err.println("Unable to convert " + sourceName);
-        for(Throwable chain = e; chain != null; chain = chain.getCause())
-            System.err.println("    " + chain);
+        if(e instanceof SweetXmlParseException)
+            System.err.println(e.getMessage());
+        else if(e instanceof IOException)
+            for(Throwable chain = e; chain != null; chain = chain.getCause())
+                System.err.println("    " + chain);
+        else
+            e.printStackTrace();
         System.exit(1);
         }
     }
