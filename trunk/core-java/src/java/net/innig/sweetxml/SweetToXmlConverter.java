@@ -2,7 +2,6 @@ package net.innig.sweetxml;
 
 import static net.innig.sweetxml.Patterns.newline;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,7 +12,6 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.LinkedList;
-import java.util.regex.Pattern;
 
 import org.xml.sax.InputSource;
 
@@ -65,18 +63,37 @@ public class SweetToXmlConverter
         
     private class Conversion
         {
-        private BufferedReader in;
+        private ConverterInput in;
         private StringBuilder xml;
         private LinkedList<String> tagStack, indentStack;
         private boolean indenting;
         private StringBuilder indentWork;
-        private int line, column;
         
         public Conversion(Reader in)
             {
-            this.in = (in instanceof BufferedReader)
-                ? (BufferedReader) in
-                : new BufferedReader(in);
+            this.in = new ConverterInput(in)
+                {
+                public int countChar(int c)
+                    throws IOException
+                    {
+                    c = super.countChar(c);
+                    
+                    if(c == '\n')
+                        {
+                        indentWork = new StringBuilder(64);
+                        indenting = true;
+                        }
+                    else if(indenting)
+                        {
+                        if(Character.isWhitespace(c))
+                            indentWork.append((char) c);
+                        else
+                            indenting = false;
+                        }
+                    
+                    return c;
+                    }
+                };
             }
 
         public CharSequence go()
@@ -87,8 +104,6 @@ public class SweetToXmlConverter
             indentStack = new LinkedList<String>();
             indenting = true;
             indentWork = new StringBuilder();
-            line = 1;
-            column = 0;
 
             xml.append("<?xml version=\"1.0\"?>").append(newline);
             
@@ -99,7 +114,7 @@ public class SweetToXmlConverter
                 {
                 skipWhitespace(true);
                 handleIndent();
-                int c = peek();
+                int c = in.peek();
                 switch(c)
                     {
                     case -1:
@@ -111,7 +126,7 @@ public class SweetToXmlConverter
                     
                     case '"':
                     case '\'':
-                        read(); // skip the quote
+                        in.read(); // skip the quote
                         readQuotedText(c);
                         break;
                     
@@ -132,16 +147,19 @@ public class SweetToXmlConverter
             while(true)
                 {
                 skipWhitespace(true);
-                in.mark(2);
-                boolean directive = (in.read() == '<' && in.read() == '!');
-                in.reset();
-                if(!directive)
+                if(in.peek() == '#')
+                    {
+                    readComment();
+                    continue;
+                    }
+                if(!in.lookingAt("<!"))
                     break;
+                in.reset();
                 
                 int nest = 0;
                 while(true)
                     {
-                    int c = read();
+                    int c = in.read();
                     switch(c)
                         {
                         case -1:
@@ -176,7 +194,7 @@ public class SweetToXmlConverter
                 }
             
             if(!indentStack.isEmpty() && !indent.startsWith(indentStack.getFirst()))
-                throw new SweetXmlParseException(line, column,
+                throw new SweetXmlParseException(in.getLine(), in.getColumn(),
                     "Inconsistent indentation: expected a line starting with "
                     + explainIndent(indentStack.getFirst()) + ", but got " + explainIndent(indent));
             
@@ -205,18 +223,18 @@ public class SweetToXmlConverter
             while(true)
                 {
                 skipWhitespace(false);
-                int c = read();
+                int c = in.read();
                 if(c == ':')
                     subsequentText = true;
                 if(c == -1 || c == ':' || c == '\n')
                     break;
-                backOne();
+                in.reset();
                 
                 xml.append(' ').append(readName());
                 skipWhitespace(false);
-                c = read();
+                c = in.read();
                 if(c != '=')
-                    throw new SweetXmlParseException(line, column, "expected '=' while parsing tag attributes, but got '" + (char)c + "'");
+                    throw new SweetXmlParseException(in.getLine(), in.getColumn(), "expected '=' while parsing tag attributes, but got '" + (char) c + "'");
                 skipWhitespace(false);
                 xml.append("=\"");
                 readText();
@@ -232,33 +250,33 @@ public class SweetToXmlConverter
     
         private void readText() throws IOException
             {
-            int c = read();
+            int c = in.read();
             if(c == '"' || c == '\'')
                 readQuotedText(c);
             else
                 while(true)
                     {
-                    if(c == -1 || charMatches(c, Patterns.quotingRequired))
+                    if(c == -1 || Patterns.charMatches(c, Patterns.quotingRequired))
                         {
-                        backOne();
+                        in.reset();
                         break;
                         }
                     xml.append((char) c);
-                    c = read();
+                    c = in.read();
                     }
             }
 
         private void readQuotedText(int quoteChar) throws IOException
             {
-            int quoteStartLine = line;
-            int quoteStartColumn = column;
+            int quoteStartLine = in.getLine();
+            int quoteStartColumn = in.getColumn();
             while(true)
                 {
-                int c = read();
+                int c = in.read();
                 if(c == -1)
                     throw new SweetXmlParseException(quoteStartLine, quoteStartColumn, "Unterminated quote");
                 if(c == '\\')
-                    xml.append((char) read());
+                    xml.append((char) in.read());
                 if(c == quoteChar)
                     return;
                 if(c < 128 && charEscapes[c] != null)
@@ -272,7 +290,7 @@ public class SweetToXmlConverter
             {
             while(true)
                 {
-                int c = read();
+                int c = in.read();
                 if(c == -1 || c == '\r' || c == '\n')
                     return;
                 }
@@ -282,91 +300,30 @@ public class SweetToXmlConverter
             {
             StringBuilder name = new StringBuilder(32);
             int c;
-            if(!isSxmlNameStartCharacter(c = read()))
-                throw new SweetXmlParseException(line, column, "expected name, but found non-name character '" + (char)c + "'");
+            if(!isSxmlNameStartCharacter(c = in.read()))
+                throw new SweetXmlParseException(in.getLine(), in.getColumn(), "expected name, but found non-name character '" + (char)c + "'");
             name.append((char) c);
-            while(isSxmlNameCharacter(c = read()))
+            while(isSxmlNameCharacter(c = in.read()))
                 name.append((char) c);
-            backOne();
+            in.reset();
             return name.toString().replace('/', ':');
             }
         
         private boolean isSxmlNameStartCharacter(int c)
-            { return charMatches(c, Patterns.xmlNameStartChar) || c == '/'; }
+            { return Patterns.charMatches(c, Patterns.xmlNameStartChar); }
     
         private boolean isSxmlNameCharacter(int c)
-            { return charMatches(c, Patterns.xmlNameChar) || c == '/'; }
+            { return Patterns.charMatches(c, Patterns.xmlNameChar) || c == '/'; }
     
         private void skipWhitespace(boolean skipNewlines) throws IOException
             {
             int c;
-            while(Character.isWhitespace(c = read()))
+            while(Character.isWhitespace(c = in.read()))
                 if(c == '\n' && !skipNewlines)
                     break;
-            backOne();
-            }
-    
-        private int read() throws IOException
-            {
-            in.mark(1);
-            return countChar(in.read());
-            }
-    
-        private int peek() throws IOException
-            { return skip('\0', false); }
-        
-        private int skip(char skippable, boolean count) throws IOException
-            {
-            in.mark(1);
-            int c = in.read();
-            if(c != skippable)
-                in.reset();
-            else if(count)
-                c = countChar(c);
-            return c;
-            }
-    
-        private void backOne() throws IOException
-            {
             in.reset();
-            if(--column < 0)
-                line--;
-            }
-
-        private int countChar(int c)
-            throws IOException
-            {
-            if(c == '\r')
-                {
-                skip('\n', false); // \r\n is one line break, not two
-                c = '\n';          // normalize to UNIX line endings
-                }
-            
-            if(c == '\n')
-                {
-                line++;
-                column = 0;
-                indentWork = new StringBuilder(64);
-                indenting = true;
-                }
-            else
-                {
-                column++;
-                if(indenting)
-                    {
-                    if(Character.isWhitespace(c))
-                        indentWork.append((char) c);
-                    else
-                        indenting = false;
-                    }
-                }
-            
-            return c;
             }
         
-        private boolean charMatches(int c, Pattern pat)
-            { return pat.matcher(String.valueOf((char)c)).matches(); }
-
         private String explainIndent(String indent)
             {
             if(indent.length() == 0)
