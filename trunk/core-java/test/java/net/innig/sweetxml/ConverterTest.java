@@ -35,7 +35,7 @@ public class ConverterTest
         throws IOException
         {
         Converter converter = mode.createConverter();
-        converter.setInput(new StringReader(input.toString()));
+        converter.setInput(new StringReader(input.toString()), name);
         converter.setHeaderIncluded(false);
         String output = trim(converter.getResult());
         assert expectedOutput.equals(output)

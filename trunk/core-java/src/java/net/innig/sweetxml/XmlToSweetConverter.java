@@ -3,7 +3,6 @@ package net.innig.sweetxml;
 import static net.innig.sweetxml.Patterns.newline;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 
@@ -24,7 +23,7 @@ public class XmlToSweetConverter
     protected String convert()
         throws IOException
         {
-        return new Conversion(getInput()).go().toString();
+        return new Conversion().go().toString();
         }
     
     private class Conversion
@@ -38,8 +37,8 @@ public class XmlToSweetConverter
         private StringBuilder text;
         private boolean insideTag, onTagLine, lineFull;
         
-        public Conversion(Reader in)
-            { this.in = new ConverterInput(in); }
+        public Conversion()
+            { this.in = new ConverterInput(getInput(), getSourceName()); }
 
         public CharSequence go()
             throws IOException
@@ -81,7 +80,7 @@ public class XmlToSweetConverter
                 readWhitespace(true, true);
                 
                 //! follwing code won't handle < or > inside comments or quotes
-                int startLine = in.getLine(), startColumn = in.getColumn() + 1;
+                InputPosition start = in.getPosition();
                 if(in.lookingAt("<?"))
                     {
                     while(true)
@@ -90,7 +89,7 @@ public class XmlToSweetConverter
                         if(c == '>')
                             break;
                         if(c == -1)
-                            throw new SweetXmlParseException(startLine, startColumn, "XML declaration runs off end of file");
+                            throw new SweetXmlParseException(start, "XML declaration runs off end of file");
                         }
                     }
                 else if(in.lookingAt("<!--"))
@@ -103,7 +102,7 @@ public class XmlToSweetConverter
                         {
                         int c = in.read();
                         if(c == -1)
-                            throw new SweetXmlParseException(startLine, startColumn, "Processing directive runs off end of file");
+                            throw new SweetXmlParseException(start, "Processing directive runs off end of file");
                         sxml.append((char) c);
                         if(c == '<')
                             nest++;
@@ -142,9 +141,9 @@ public class XmlToSweetConverter
             insideTag = true;
             onTagLine = true;
             
-            int tagStartLine = in.getLine(), tagStartColumn = in.getColumn();
+            InputPosition tagStart = in.getPosition();
             
-            String name = readName(tagStartLine, tagStartColumn);
+            String name = readName(tagStart);
             tagStack.addLast(name);
             sxml.append(name);
             indent++;
@@ -155,38 +154,38 @@ public class XmlToSweetConverter
                 
                 int c = in.read();
                 if(c == -1)
-                    throw new SweetXmlParseException(tagStartLine, tagStartColumn, "Tag <" + name + "> runs off end of file");
+                    throw new SweetXmlParseException(tagStart, "Tag <" + name + "> runs off end of file");
                 else if(c == '>')
                     return;
                 else if(c == '/' && in.lookingAt(">"))
                     {
-                    tagEnded(name, tagStartLine, tagStartColumn);
+                    tagEnded(name, tagStart);
                     return;
                     }
                 else if(Patterns.charMatches(c, Patterns.xmlNameStartChar))
                     {
                     in.reset();
-                    readAttribute(name, tagStartLine, tagStartColumn);
+                    readAttribute(name, tagStart);
                     }
                 else
-                    throw new SweetXmlParseException(in.getLine(), in.getColumn(), "Unexpected character '" + (char) c + "' in tag <" + name + ">");
+                    throw new SweetXmlParseException(in.getPosition(), "Unexpected character '" + (char) c + "' in tag <" + name + ">");
                 }
             }
         
-        private void readAttribute(String tagName, int tagStartLine, int tagStartColumn)
+        private void readAttribute(String tagName, InputPosition tagStart)
             throws IOException
             {
-            String name = readName(tagStartLine, tagStartColumn);
+            String name = readName(tagStart);
             readWhitespace(true, false);
             if(!in.lookingAt("="))
-                throw new SweetXmlParseException(in.getLine(), in.getColumn(), "Expected '=' but found '" + (char) in.read() + "' in tag <" + name + ">");
+                throw new SweetXmlParseException(in.getPosition(), "Expected '=' but found '" + (char) in.read() + "' in tag <" + name + ">");
             readWhitespace(true, false);
             
             sxml.append(' ').append(name).append('=');
             
             int c = in.read();
             if(c == -1)
-                throw new SweetXmlParseException(tagStartLine, tagStartColumn, "Tag <" + name + "> runs off end of file");
+                throw new SweetXmlParseException(tagStart, "Tag <" + name + "> runs off end of file");
             if(c == '\'' || c == '"')
                 {
                 int quote = c;
@@ -195,7 +194,7 @@ public class XmlToSweetConverter
                     {
                     c = in.read();
                     if(c == -1)
-                        throw new SweetXmlParseException(tagStartLine, tagStartColumn, "Tag <" + name + "> runs off end of file");
+                        throw new SweetXmlParseException(tagStart, "Tag <" + name + "> runs off end of file");
                     if(c == quote)
                         break;
                     text.append((char) c);
@@ -203,29 +202,29 @@ public class XmlToSweetConverter
                 printQuoted(text.toString(), false);
                 }
             else
-                throw new SweetXmlParseException(in.getLine(), in.getColumn(), "Expected quoted attribute value, but found '" + (char) in.read() + "' in tag <" + name + ">");
+                throw new SweetXmlParseException(in.getPosition(), "Expected quoted attribute value, but found '" + (char) in.read() + "' in tag <" + name + ">");
             }
 
         private void readEndTag()
             throws IOException, SweetXmlParseException
             {
             flushText(true);
-            int tagStartLine = in.getLine(), tagStartColumn = in.getColumn();
-            String name = readName(in.getLine(), in.getColumn());
+            InputPosition tagStart = in.getPosition();
+            String name = readName(in.getPosition());
             readWhitespace(true, false);
             if(!in.lookingAt(">"))
-                throw new SweetXmlParseException(in.getLine(), in.getColumn(), "Unexpected content in end tag </" + name + ">");
-            tagEnded(name, tagStartLine, tagStartColumn);
+                throw new SweetXmlParseException(in.getPosition(), "Unexpected content in end tag </" + name + ">");
+            tagEnded(name, tagStart);
             }
         
-        private void tagEnded(String name, int tagStartLine, int tagStartColumn)
+        private void tagEnded(String name, InputPosition tagStart)
             throws IOException
             {
             if(tagStack.isEmpty())
-                throw new SweetXmlParseException(tagStartLine, tagStartColumn, "Unexpected closing tag </" + name + ">");
+                throw new SweetXmlParseException(tagStart, "Unexpected closing tag </" + name + ">");
             String popped = tagStack.removeLast();
             if(!popped.equals(name))
-                throw new SweetXmlParseException(tagStartLine, tagStartColumn, "Mismatched closing tag: expected </" + popped + ">, but found </" + name + ">");
+                throw new SweetXmlParseException(tagStart, "Mismatched closing tag: expected </" + popped + ">, but found </" + name + ">");
             
             if(onTagLine)
                 lineFull = true;
@@ -235,23 +234,23 @@ public class XmlToSweetConverter
                 lineBreaksPending--;
             }
 
-        private String readName(int tagStartLine, int tagStartColumn)
+        private String readName(InputPosition tagStart)
             throws IOException
             {
             StringBuilder name = new StringBuilder(16);
             
             int c = in.read();
             if(c == -1)
-                throw new SweetXmlParseException(tagStartLine, tagStartColumn, "Tag runs off end of file");
+                throw new SweetXmlParseException(tagStart, "Tag runs off end of file");
             if(!Patterns.charMatches(c, Patterns.xmlNameStartChar))
-                throw new SweetXmlParseException(in.getLine(), in.getColumn(), "Unexpected character in tag: '" + (char) c + '\'');
+                throw new SweetXmlParseException(in.getPosition(), "Unexpected character in tag: '" + (char) c + '\'');
             name.append((char) c);
             
             while(true)
                 {
                 c = in.read();
                 if(c == -1)
-                    throw new SweetXmlParseException(tagStartLine, tagStartColumn, "Tag runs off end of file");
+                    throw new SweetXmlParseException(tagStart, "Tag <" + name + "> runs off end of file");
                 if(c == ':')
                     name.append('/');
                 else if(Patterns.charMatches(c, Patterns.xmlNameChar))

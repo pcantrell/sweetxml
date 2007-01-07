@@ -72,7 +72,7 @@ public class FileConverterEngine
             System.err.println("Converting " + inFile + " to " + outFile);
         
         Converter converter = mode.createConverter();
-        converter.setInput(new FileReader(inFile));
+        converter.setInput(new FileReader(inFile), inFile.getPath());
         
         FileWriter out = new FileWriter(outFile);
         out.write(converter.getResult());

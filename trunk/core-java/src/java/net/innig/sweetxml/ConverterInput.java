@@ -7,21 +7,20 @@ import java.io.Reader;
 class ConverterInput
     {
     private BufferedReader in;
+    private String sourceName;
     private int line = 1, column = 0;
     private int markLine, markColumn;
     
-    public ConverterInput(Reader reader)
+    public ConverterInput(Reader reader, String sourceName)
         {
         this.in = (reader instanceof BufferedReader)
             ? (BufferedReader) reader
             : new BufferedReader(reader);
+        this.sourceName = sourceName;
         }
     
-    public int getLine()
-        { return line; }
-    
-    public int getColumn()
-        { return column; }
+    public InputPosition getPosition()
+        { return new InputPosition(sourceName, line, column); }
 
     public int read() throws IOException
         {
