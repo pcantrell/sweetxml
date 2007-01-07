@@ -1,0 +1,432 @@
+macker
+————————————————————————
+<?xml version="1.0"?>
+
+<macker>    
+    <ruleset name="Modularity rules">
+        <var name="module-base" value="net.innig.macker.example.modularity" />
+        
+        <foreach var="module" class="${module-base}.(**).impl.**">
+
+            <pattern name="inside" class="${module-base}.${module}.impl.**" />
+            <pattern name="factory" class="${module-base}.${module}.*Factory" />
+            
+            <access-rule>
+                <message>${from} must access the ${module} module through its API</message>
+                <deny> <to pattern="inside" /> </deny>
+                <allow><from pattern="inside" /></allow>
+                <allow><from pattern="factory" /></allow>
+            </access-rule>
+            
+        </foreach>
+    </ruleset>
+</macker>
+————————————————————————
+macker
+    ruleset name="Modularity rules"
+        var name=module-base value=net.innig.macker.example.modularity
+        
+        foreach var=module class="${module-base}.(**).impl.**"
+            
+            pattern name=inside class="${module-base}.${module}.impl.**"
+            pattern name=factory class="${module-base}.${module}.*Factory"
+            
+            access-rule
+                message: "${from} must access the ${module} module through its API"
+                deny
+                    to pattern=inside
+                allow
+                    from pattern=inside
+                allow
+                    from pattern=factory
+—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+ant
+————————————————————————
+<?xml version="1.0"?>
+
+<project name="web app" default="war" basedir=".">
+    
+    <!-- ================================================================= -->
+    <!-- Properties                                                        -->
+    <!-- ================================================================= -->
+    
+    <property file="build.local.properties" />
+    <property file="build.properties" />
+    
+    <property name="src.dir"              location="${basedir}/src/java" />
+    <property name="res.dir"              location="${basedir}/src/res" />
+    <property name="web.dir"              location="${basedir}/src/web" />
+    <property name="webinf.dir"           location="${basedir}/src/web/WEB-INF" />
+    <property name="sql.dir"              location="${basedir}/src/sql" />
+    <property name="lib.dir"              location="${basedir}/lib" />
+    <property name="conf.dir"             location="${basedir}/conf" />
+    <property name="test.dir"             location="${basedir}/test" />
+    <property name="doc.dir"              location="${basedir}/doc" />
+    <property name="build.lib.dir"        location="${lib.dir}/build-only" />
+    
+    <property name="build.dir"            location="${java.io.tmpdir}/ant/${name}" />
+    <property name="build.classes.dir"    location="${build.dir}/classes" />
+    <property name="build.web.dir"        location="${build.dir}/web/" />
+    <property name="build.webinf.dir"     location="${build.dir}/web/WEB-INF" />
+    <property name="build.test.dir"       location="${build.dir}/test" />
+    <property name="dist.dir"             location="${build.dir}/dist" />
+    
+    <property name="web.context.name"     value="${name}" />
+    <property name="war.file"             location="${build.dir}/${web.context.name}.war" />
+    <property name="war.manifest"         location="${web.dir}/META-INF/MANIFEST.MF" />
+    
+    <property name="javadoc.dir"          location="${doc.dir}/javadoc"/>
+    <property name="javadoc.packages"     value="${base.package}.*"/>
+    
+    <!-- ================================================================= -->
+    <!-- prepare:                                                          -->
+    <!-- Sets up directories and such for compilation                      -->
+    <!-- ================================================================= -->
+    
+    <target name="prepare">
+        <mkdir dir="${build.dir}" />
+        <mkdir dir="${build.classes.dir}" />
+        <mkdir dir="${build.lib.dir}" /> <!-- because it's often empty -->
+
+        <path id="build.classpath">
+            <fileset dir="${lib.dir}" includes="**/*.jar" />
+            <fileset dir="${build.lib.dir}" />
+        </path>
+        <property name="build.classpath" refid="build.classpath" />
+        
+        <path id="run.classpath">
+            <pathelement location="${build.classes.dir}" />
+            <fileset dir="${lib.dir}" includes="**/*.jar" />
+        </path>
+        <property name="run.classpath" refid="run.classpath" />
+
+        <path id="test.classpath">
+            <pathelement location="${build.test.dir}" />
+            <path refid="run.classpath" />
+        </path>
+
+        <tstamp><format property="timestamp" pattern="yyyy/MM/dd HH:mm:ss z" locale="en"/></tstamp>
+        <condition property="dist.version.long" value="version ${dist.version}">
+            <isset property="dist.version" />
+        </condition>
+        <property name="dist.version" value="[${timestamp}]" />
+        <property name="dist.version.long" value="built at ${timestamp}" />
+    </target>
+
+    <!-- ================================================================= -->
+    <!-- copy-resources:                                                   -->
+    <!-- Copies resource files to the build directory                      -->
+    <!-- ================================================================= -->
+
+    <target name="copy-resources" 
+        depends="prepare"
+        description="Copies resource files to the build directory">
+        
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${res.dir}">
+                <exclude name="**/*.properties"/>
+                <exclude name="**/*.xml"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.classes.dir}" overwrite="yes">
+            <filterset>
+                <filtersfile file="build.local.properties" />
+                <filtersfile file="build.properties" />
+                <filter token="dist.version"      value="${dist.version}"/>
+                <filter token="dist.version.long" value="${dist.version.long}"/>
+                <filter token="web.context.name" value="${web.context.name}"/>
+            </filterset>
+            <fileset dir="${res.dir}">
+                <include name="**/*.properties"/>
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${build.web.dir}" preservelastmodified="yes" overwrite="yes">
+            <fileset dir="${web.dir}">
+                <exclude name="**/*.properties"/>
+                <exclude name="**/*.xml"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.web.dir}" preservelastmodified="yes" overwrite="yes">
+            <filterset>
+                <filtersfile file="build.local.properties" />
+                <filtersfile file="build.properties" />
+                <filter token="dist.version"      value="${dist.version}"/>
+                <filter token="dist.version.long" value="${dist.version.long}"/>
+                <filter token="web.context.name"  value="${web.context.name}"/>
+            </filterset>
+            <fileset dir="${web.dir}">
+                <include name="**/*.properties"/>
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${build.webinf.dir}" preservelastmodified="yes" overwrite="yes">
+            <fileset dir="${webinf.dir}"/>
+        </copy>
+    </target>
+</project>
+————————————————————————
+project name="web app" default=war basedir=.
+    
+    # ================================================================= 
+    # Properties                                                        
+    # ================================================================= 
+    
+    property file=build.local.properties
+    property file=build.properties
+    
+    property name=src.dir location="${basedir}/src/java"
+    property name=res.dir location="${basedir}/src/res"
+    property name=web.dir location="${basedir}/src/web"
+    property name=webinf.dir location="${basedir}/src/web/WEB-INF"
+    property name=sql.dir location="${basedir}/src/sql"
+    property name=lib.dir location="${basedir}/lib"
+    property name=conf.dir location="${basedir}/conf"
+    property name=test.dir location="${basedir}/test"
+    property name=doc.dir location="${basedir}/doc"
+    property name=build.lib.dir location="${lib.dir}/build-only"
+    
+    property name=build.dir location="${java.io.tmpdir}/ant/${name}"
+    property name=build.classes.dir location="${build.dir}/classes"
+    property name=build.web.dir location="${build.dir}/web/"
+    property name=build.webinf.dir location="${build.dir}/web/WEB-INF"
+    property name=build.test.dir location="${build.dir}/test"
+    property name=dist.dir location="${build.dir}/dist"
+    
+    property name=web.context.name value="${name}"
+    property name=war.file location="${build.dir}/${web.context.name}.war"
+    property name=war.manifest location="${web.dir}/META-INF/MANIFEST.MF"
+    
+    property name=javadoc.dir location="${doc.dir}/javadoc"
+    property name=javadoc.packages value="${base.package}.*"
+    
+    # ================================================================= 
+    # prepare:                                                          
+    # Sets up directories and such for compilation                      
+    # ================================================================= 
+    
+    target name=prepare
+        mkdir dir="${build.dir}"
+        mkdir dir="${build.classes.dir}"
+        mkdir dir="${build.lib.dir}"
+        # because it's often empty 
+        
+        path id=build.classpath
+            fileset dir="${lib.dir}" includes="**/*.jar"
+            fileset dir="${build.lib.dir}"
+        property name=build.classpath refid=build.classpath
+        
+        path id=run.classpath
+            pathelement location="${build.classes.dir}"
+            fileset dir="${lib.dir}" includes="**/*.jar"
+        property name=run.classpath refid=run.classpath
+        
+        path id=test.classpath
+            pathelement location="${build.test.dir}"
+            path refid=run.classpath
+        
+        tstamp
+            format property=timestamp pattern="yyyy/MM/dd HH:mm:ss z" locale=en
+        condition property=dist.version.long value="version ${dist.version}"
+            isset property=dist.version
+        property name=dist.version value="[${timestamp}]"
+        property name=dist.version.long value="built at ${timestamp}"
+    
+    # ================================================================= 
+    # copy-resources:                                                   
+    # Copies resource files to the build directory                      
+    # ================================================================= 
+    
+    target name=copy-resources depends=prepare description="Copies resource files to the build directory"
+        
+        copy todir="${build.classes.dir}"
+            fileset dir="${res.dir}"
+                exclude name="**/*.properties"
+                exclude name="**/*.xml"
+        copy todir="${build.classes.dir}" overwrite=yes
+            filterset
+                filtersfile file=build.local.properties
+                filtersfile file=build.properties
+                filter token=dist.version value="${dist.version}"
+                filter token=dist.version.long value="${dist.version.long}"
+                filter token=web.context.name value="${web.context.name}"
+            fileset dir="${res.dir}"
+                include name="**/*.properties"
+                include name="**/*.xml"
+        
+        copy todir="${build.web.dir}" preservelastmodified=yes overwrite=yes
+            fileset dir="${web.dir}"
+                exclude name="**/*.properties"
+                exclude name="**/*.xml"
+        copy todir="${build.web.dir}" preservelastmodified=yes overwrite=yes
+            filterset
+                filtersfile file=build.local.properties
+                filtersfile file=build.properties
+                filter token=dist.version value="${dist.version}"
+                filter token=dist.version.long value="${dist.version.long}"
+                filter token=web.context.name value="${web.context.name}"
+            fileset dir="${web.dir}"
+                include name="**/*.properties"
+                include name="**/*.xml"
+        
+        copy todir="${build.webinf.dir}" preservelastmodified=yes overwrite=yes
+            fileset dir="${webinf.dir}"
+—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
+
+
+maven
+————————————————————————
+<?xml version="1.0"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>   net.innig.sweetxml</groupId>
+    <artifactId>parent-pom</artifactId>
+    <version>   0.2-SNAPSHOT</version>
+    <packaging> pom</packaging>
+    
+    <repositories>
+        <repository>
+            <id>ibiblio</id>
+            <url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    
+    <build>
+        <directory>            ${basedir}/build</directory>
+        <sourceDirectory>      ${basedir}/src/java</sourceDirectory>
+        <scriptSourceDirectory>${basedir}/src/scripts</scriptSourceDirectory>
+        <testSourceDirectory>  ${basedir}/test/java</testSourceDirectory>
+        <outputDirectory>      ${basedir}/build/classes</outputDirectory>
+        <testOutputDirectory>  ${basedir}/build/test-classes</testOutputDirectory>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>utf-8</encoding>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>utf-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+        
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/res</directory>
+            </resource>
+        </resources>
+    </build>
+    
+    <dependencies>
+        <dependency>
+            <groupId>   org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>   5.1</version>
+            <scope>     test</scope>
+            <classifier>jdk15</classifier>
+        </dependency>
+    </dependencies>
+    
+    <licenses>
+        <license>
+            <name>New BSD License</name>
+            <url> http://www.opensource.org/licenses/bsd-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
+    <organization>
+        <name>Paul Cantrell</name>
+        <url> http://innig.net</url>
+    </organization>
+    
+    <issueManagement>
+        <system>Google Code</system>
+        <url>   http://code.google.com/p/sweetxml/issues/list</url>
+    </issueManagement>
+</project>
+————————————————————————
+project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance" xsi/schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+    modelVersion: 4.0.0
+    
+    groupId:    net.innig.sweetxml
+    artifactId: parent-pom
+    version:    0.2-SNAPSHOT
+    packaging:  pom
+    
+    repositories
+        repository
+            id: ibiblio
+            url: "http://mirrors.ibiblio.org/pub/mirrors/maven2"
+            snapshots
+                enabled: false
+    
+    build
+        directory:             "${basedir}/build"
+        sourceDirectory:       "${basedir}/src/java"
+        scriptSourceDirectory: "${basedir}/src/scripts"
+        testSourceDirectory:   "${basedir}/test/java"
+        outputDirectory:       "${basedir}/build/classes"
+        testOutputDirectory:   "${basedir}/build/test-classes"
+        
+        plugins
+            plugin
+                groupId: org.apache.maven.plugins
+                artifactId: maven-compiler-plugin
+                configuration
+                    source: 1.5
+                    target: 1.5
+                    encoding: utf-8
+        
+            plugin
+                groupId: org.apache.maven.plugins
+                artifactId: maven-resources-plugin
+                configuration
+                    encoding: utf-8
+
+        resources
+            resource
+                filtering: true
+                directory: "${basedir}/src/res"
+        
+    dependencies
+        dependency
+            groupId:    org.testng
+            artifactId: testng
+            version:    5.1
+            scope:      test
+            classifier: jdk15
+    
+    licenses
+        license
+            name: "New BSD License"
+            url:  "http://www.opensource.org/licenses/bsd-license.php"
+            distribution: repo
+            
+    organization
+        name: "Paul Cantrell"
+        url:  "http://innig.net"
+
+    issueManagement
+        system: "Google Code"
+        url:    "http://code.google.com/p/sweetxml/issues/list"
+    
+—————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————

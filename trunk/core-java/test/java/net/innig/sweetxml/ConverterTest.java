@@ -22,8 +22,8 @@ public class ConverterTest
              ConversionMode mode)
         {
         this.name = name;
-        this.input = input.trim();
-        this.expectedOutput = expectedOutput.trim();
+        this.input = trim(input);
+        this.expectedOutput = trim(expectedOutput);
         this.mode = mode;
         }
     
@@ -37,11 +37,16 @@ public class ConverterTest
         Converter converter = mode.createConverter();
         converter.setInput(new StringReader(input.toString()));
         converter.setHeaderIncluded(false);
-        String output = converter.getResult().trim();
+        String output = trim(converter.getResult());
         assert expectedOutput.equals(output)
             : "Mismatched conversion result."
                 + "\n\nExpected:\n" + showInvisibles(expectedOutput)
                 + "\n\nActual:\n" + showInvisibles(output);
+        }
+
+    private String trim(String s)
+        {
+        return s.trim().replaceAll("(\n|^) *(\n|$)", "$1$2");
         }
 
     private String showInvisibles(String s)
