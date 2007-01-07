@@ -39,7 +39,7 @@ public class XmlToSweetConverter
         private int indent;
         private int lineBreaksPending;
         private StringBuilder text;
-        private boolean insideTag, onTagLine;
+        private boolean insideTag, onTagLine, lineFull;
         
         public Conversion(Reader in)
             {
@@ -238,6 +238,9 @@ public class XmlToSweetConverter
             if(!popped.equals(name))
                 throw new SweetXmlParseException(tagStartLine, tagStartColumn, "Mismatched closing tag: expected </" + popped + ">, but found </" + name + ">");
             
+            if(onTagLine)
+                lineFull = true;
+            
             indent--;
             if(lineBreaksPending > 0)
                 lineBreaksPending--;
@@ -283,9 +286,9 @@ public class XmlToSweetConverter
                 {
                 int c = read();
                 if(c == -1)
-                    return;
+                    break;
                 else if(c == '-' && lookingAt("->"))
-                    return;
+                    break;
                 else if(c == '\n')
                     {
                     if(!hashed)
@@ -308,6 +311,7 @@ public class XmlToSweetConverter
                         sxml.append((char) c);
                     }
                 }
+            lineFull = hashed;
             }
         
         private void readCData()
@@ -430,16 +434,23 @@ public class XmlToSweetConverter
             Matcher space = Patterns.trimWhitespace.matcher(text);
             space.find();
             
+            int breaksInText = 0;
             for(Matcher m = Patterns.lineBreak.matcher(space.group(1)); m.find(); )
-                lineBreaksPending++;
+                breaksInText++;
+            lineBreaksPending += breaksInText;
             
             if(space.group(2).length() > 0)
                 {
                 flushLineBreaks();
                 if(insideTag)
+                    {
                     sxml.append(": ");
+                    if(breaksInText == 0)
+                        sxml.append(space.group(1));
+                    }
                 insideTag = false;
                 printQuoted(space.group(2), !onTagLine);
+                lineFull = true;
                 }
             
             text = new StringBuilder();
@@ -447,9 +458,11 @@ public class XmlToSweetConverter
         
         private void flushLineBreaks()
             {
+            if(lineFull && lineBreaksPending <= 0)
+                lineBreaksPending = 1;
             while(lineBreaksPending-- > 0)
                 {
-                insideTag = onTagLine = false;
+                lineFull = insideTag = onTagLine = false;
                 sxml.append('\n');
                 indent();
                 }
