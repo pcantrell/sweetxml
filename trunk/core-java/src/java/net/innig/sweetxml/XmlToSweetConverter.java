@@ -48,7 +48,7 @@ public class XmlToSweetConverter
             tagStack = new LinkedList<String>();
             text = new StringBuilder();
 
-            readProcessingDirectives();
+            readProlog();
             
             readLoop:
             while(true)
@@ -69,12 +69,11 @@ public class XmlToSweetConverter
                     }
                 }
             
-            flushText();
-            flushLineBreaks();
+            flush();
             return sxml;
             }
 
-        private void readProcessingDirectives()
+        private void readProlog()
             throws IOException
             {
             while(true)
@@ -96,10 +95,10 @@ public class XmlToSweetConverter
                     }
                 else if(in.lookingAt("<!--"))
                     readComment();
-                else if(in.lookingAt("<!"))
+                else if(in.lookingAt("<!DOCTYPE"))
                     {
                     flushLineBreaks();
-                    sxml.append("<!");
+                    sxml.append("<!DOCTYPE");
                     for(int nest = 1; nest > 0; )
                         {
                         int c = in.read();
@@ -133,8 +132,7 @@ public class XmlToSweetConverter
         private void readStartOrEmptyTag()
             throws IOException
             {
-            flushText();
-            flushLineBreaks();
+            flush();
             if(onTagLine)
                 {
                 sxml.append(newline);
@@ -211,7 +209,7 @@ public class XmlToSweetConverter
         private void readEndTag()
             throws IOException, SweetXmlParseException
             {
-            flushText();
+            flushText(true);
             int tagStartLine = in.getLine(), tagStartColumn = in.getColumn();
             String name = readName(in.getLine(), in.getColumn());
             readWhitespace(true, false);
@@ -269,8 +267,7 @@ public class XmlToSweetConverter
         private void readComment()
             throws IOException
             {
-            flushText();
-            flushLineBreaks();
+            flush();
             sxml.append('#');
             boolean hashed = true;
             while(true)
@@ -308,17 +305,22 @@ public class XmlToSweetConverter
         private void readCData()
             throws IOException
             {
+            flush();
             while(true)
                 {
                 int c = in.read();
                 if(c == -1)
-                    return;
+                    break;
                 if(c == ']' && in.lookingAt("]>"))
-                    return;
-                text.append((char) c);
+                    break;
+                if(c == '&')
+                    text.append("&amp;");
+                else
+                    text.append((char) c);
                 }
+            flushText(false);
             }
-        
+
         private CharSequence readWhitespace(boolean includeNewlines, boolean countBreaks)
             throws IOException
             {
@@ -355,27 +357,41 @@ public class XmlToSweetConverter
                 sxml.append("'").append(s).append("'");
             }
         
-        private void flushText()
+        private void flush()
             {
-            Matcher space = Patterns.trimWhitespace.matcher(text);
-            space.find();
+            flushText(true);
+            flushLineBreaks();
+            }
+        
+        private void flushText(boolean trim)
+            {
+            String content, spaceBefore = "";
+            int breaksBefore = 0;
+            if(trim)
+                {
+                Matcher space = Patterns.trimWhitespace.matcher(text);
+                space.find();
+                spaceBefore = space.group(1);
+                content = space.group(2);
+                
+                for(Matcher m = Patterns.lineBreak.matcher(spaceBefore); m.find(); )
+                    breaksBefore++;
+                lineBreaksPending += breaksBefore;
+                }
+            else
+                content = text.toString();
             
-            int breaksInText = 0;
-            for(Matcher m = Patterns.lineBreak.matcher(space.group(1)); m.find(); )
-                breaksInText++;
-            lineBreaksPending += breaksInText;
-            
-            if(space.group(2).length() > 0)
+            if(content.length() > 0)
                 {
                 flushLineBreaks();
                 if(insideTag)
                     {
                     sxml.append(": ");
-                    if(breaksInText == 0)
-                        sxml.append(space.group(1));
+                    if(breaksBefore == 0)
+                        sxml.append(spaceBefore);
                     }
                 insideTag = false;
-                printQuoted(space.group(2), !onTagLine);
+                printQuoted(content, !onTagLine);
                 lineFull = true;
                 }
             

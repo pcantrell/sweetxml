@@ -34,13 +34,14 @@ description
 
 escaped quotes
 ————————
-name: "Hayao \"Ghibli\" Miyazaki"
-remark: 'We\'re making a mystery here,
+name: "Hayao &quot;Ghibli&quot; Miyazaki"
+remark: 'We&apos;re making a mystery here,
     so make it mysterious.'
 ————————
-<name>Hayao "Ghibli" Miyazaki</name>
-<remark>We're making a mystery here,
-    so make it mysterious.</remark>
+<name>Hayao &quot;Ghibli&quot; Miyazaki</name>
+<remark>We&apos;re making a mystery here,
+    so make it mysterious.
+</remark>
 —————————————————————————————————————————————————————
 
 unescaped quotes
@@ -51,8 +52,10 @@ remark: "We're making a mystery here,
 ————————
 <name>Hayao "Ghibli" Miyazaki</name>
 <remark>We're making a mystery here,
-    so make it mysterious.</remark>
+    so make it mysterious.
+</remark>
 —————————————————————————————————————————————————————
+
 
 same line
 ————————
