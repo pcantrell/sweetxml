@@ -18,14 +18,6 @@ import org.xml.sax.InputSource;
 public class SweetToXmlConverter
     extends Converter
     {
-    private static String[] charEscapes = new String[128];
-    static
-        {
-        charEscapes['<'] = "&lt;";
-        charEscapes['>'] = "&gt;";
-        charEscapes['"'] = "&quot;";
-        charEscapes['\\'] = "&apos;"; //! is this right?
-        }
     
     private String xml;
 
@@ -276,12 +268,14 @@ public class SweetToXmlConverter
                 int c = in.read();
                 if(c == -1)
                     throw new SweetXmlParseException(quoteStartLine, quoteStartColumn, "Unterminated quote");
-                if(c == '\\')
-                    xml.append((char) in.read());
                 if(c == quoteChar)
                     return;
-                if(c < 128 && charEscapes[c] != null)
-                    xml.append(charEscapes[c]);
+                if(c == '<')
+                    xml.append("&lt;");
+                else if(c == '>')
+                    xml.append("&gt;");
+                else if(c == quoteChar)
+                    xml.append((c == '"') ? "&quot;" : "&apos;");
                 else
                     xml.append((char) c);
                 }
