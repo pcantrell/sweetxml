@@ -22,7 +22,7 @@ public class ConverterTest
              ConversionMode mode)
         {
         this.name = name;
-        this.input = trim(input);
+        this.input = input.trim();
         this.expectedOutput = trim(expectedOutput);
         this.mode = mode;
         }

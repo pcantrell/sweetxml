@@ -31,3 +31,53 @@ lakes
 </lakes>
 —————————————————————————————————————————————————————
 
+
+nesting with misleading blanks
+————————
+rivers
+    mississippi
+        
+    poudre
+
+        north-fork
+lakes
+    superior
+    calhoun
+————————
+<rivers>
+    <mississippi></mississippi>
+    <poudre>
+        <north-fork></north-fork>
+    </poudre>
+</rivers>
+<lakes>
+    <superior></superior>
+    <calhoun></calhoun>
+</lakes>
+—————————————————————————————————————————————————————
+
+
+nesting with misleading comments
+————————
+rivers
+    mississippi
+        #comment
+    poudre
+#comment
+        north-fork
+lakes
+    superior
+    calhoun
+————————
+<rivers>
+    <mississippi></mississippi>
+    <poudre>
+        <north-fork></north-fork>
+    </poudre>
+</rivers>
+<lakes>
+    <superior></superior>
+    <calhoun></calhoun>
+</lakes>
+—————————————————————————————————————————————————————
+
