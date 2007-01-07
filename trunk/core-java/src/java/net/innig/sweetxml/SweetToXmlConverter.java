@@ -106,7 +106,6 @@ public class SweetToXmlConverter
             while(true)
                 {
                 skipWhitespace(true);
-                handleIndent();
                 int c = in.peek();
                 switch(c)
                     {
@@ -119,11 +118,13 @@ public class SweetToXmlConverter
                     
                     case '"':
                     case '\'':
+                        handleIndent();
                         in.read(); // skip the quote
                         readQuotedText(c);
                         break;
                     
                     default:
+                        handleIndent();
                         readTag();
                         break;
                     }
