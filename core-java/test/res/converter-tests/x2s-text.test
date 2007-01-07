@@ -1,0 +1,76 @@
+basic
+————————
+Pogo Possum
+————————
+"Pogo Possum"
+—————————————————————————————————————————————————————
+
+nested
+————————
+<name>
+    Pogo Possum
+</name>
+————————
+name
+    "Pogo Possum"
+—————————————————————————————————————————————————————
+
+multiline
+————————
+<description>
+    Inhabitant of Okefenokee Swamp, and
+    star of the comic strip of the
+    same name.
+</description>
+————————
+description
+    "Inhabitant of Okefenokee Swamp, and
+    star of the comic strip of the
+    same name."
+—————————————————————————————————————————————————————
+
+quote type autoselect
+————————
+<name>Hayao "Ghibli" Miyazaki</name>
+<remark>We're making a mystery here,
+    so make it mysterious.</remark>
+<example-film>"Howl's Moving Castle"</example-film>
+————————
+name: 'Hayao "Ghibli" Miyazaki'
+remark: "We're making a mystery here,
+    so make it mysterious."
+example-film: "\"Howl's Moving Castle\""
+—————————————————————————————————————————————————————
+
+same line
+————————
+<name>Pogo Possum</name>
+————————
+name: "Pogo Possum"
+—————————————————————————————————————————————————————
+
+
+same line unquoted
+————————
+<name>Pogo Possum</name>
+<species>opossum</species>
+————————
+name: "Pogo Possum"
+species: opossum
+—————————————————————————————————————————————————————
+
+
+nested tag vs. nested text
+————————
+<marco>
+    polo
+</marco>
+<marco>
+    <polo/>
+</marco>
+————————
+marco
+    "polo"
+marco
+    polo
+—————————————————————————————————————————————————————

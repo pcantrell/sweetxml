@@ -1,0 +1,19 @@
+
+attributes
+————————
+<pet type="budgie" name="Pegasus"/>
+<pet type='dog' name='Goulash'></pet>
+————————
+pet type=budgie name=Pegasus
+pet type=dog name=Goulash
+—————————————————————————————————————————————————————
+
+
+quoted attributes
+————————
+<pet type="cat" name="Luke" status="very_clumsy"/>
+<pet type="cat" name="Mr. Man"></pet>
+————————
+pet type=cat name=Luke status=very_clumsy
+pet type=cat name="Mr. Man"
+—————————————————————————————————————————————————————

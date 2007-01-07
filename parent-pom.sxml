@@ -1,20 +1,11 @@
 project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance" xsi/schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
     modelVersion: 4.0.0
     
-    # Basic metadata
-    
     groupId:    net.innig.sweetxml
-    artifactId: sweetxml-maven
-    packaging:  maven-plugin
-    version:    0.2-SHAPSHOT
-    name:       "SweetXml Maven plugin"
-    url:        "http://innig.net/software/sweetxml/"
+    artifactId: parent-pom
+    version:    0.2-SNAPSHOT
+    packaging:  pom
     
-    description
-        "Maven plugin to convert files to and from SweetXML."
-
-    # Build
-
     repositories
         repository
             id: ibiblio
@@ -32,36 +23,31 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
         
         plugins
             plugin
-                groupId:    org.apache.maven.plugins
+                groupId: org.apache.maven.plugins
                 artifactId: maven-compiler-plugin
                 configuration
                     source: 1.5
                     target: 1.5
+                    encoding: utf-8
         
+            plugin
+                groupId: org.apache.maven.plugins
+                artifactId: maven-resources-plugin
+                configuration
+                    encoding: utf-8
+            
         resources
             resource
                 filtering: true
                 directory: "${basedir}/src/res"
-
+        
     dependencies
         dependency
-            groupId:    org.apache.maven
-            artifactId: maven-plugin-api
-            version:    2.0
-        dependency
-            groupId:    net.innig.sweetxml
-            artifactId: sweetxml
-            version:    0.2-SHAPSHOT
-        dependency
-            groupId:    org.apache.maven
-            artifactId: maven-project
-            version:    2.0
-        dependency
-            groupId:    org.apache.maven
-            artifactId: maven-model
-            version:    2.0
-    
-    # Detailed metadata
+            groupId:    org.testng
+            artifactId: testng
+            version:    5.1
+            scope:      test
+            classifier: jdk15
     
     licenses
         license
@@ -76,8 +62,4 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     issueManagement
         system: "Google Code"
         url:    "http://code.google.com/p/sweetxml/issues/list"
-    
-    scm
-        connection:          "scm:svn:http://sweetxml.googlecode.com/svn/trunk/maven"
-        developerConnection: "scm:svn:https://sweetxml.googlecode.com/svn/trunk/maven"
     
