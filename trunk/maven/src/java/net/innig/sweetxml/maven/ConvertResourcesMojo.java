@@ -12,12 +12,12 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.util.DirectoryScanner;
 
 /**
- * Converts SweetXML files in the output directory to XML files.
- * <p>
- * Portions based on ResourceMojo.java from Maven, written by Michal Maczka, Jason van Zyl and Andreas Hoheneder.
+ * Converts SweetXML files in the output directory to (or from) XML files.
  *
- * @author Paul Cantrell
- * @goal convert-resources
+ * @author Paul Cantrell.
+ *      Portions based on ResourceMojo.java from Maven, written
+ *      by Michal Maczka, Jason van Zyl and Andreas Hoheneder.
+ * @goal  convert-resources
  * @phase process-resources
  */
 public class ConvertResourcesMojo
@@ -61,7 +61,7 @@ public class ConvertResourcesMojo
      * @parameter
      */
     private boolean deleteSources;
-
+    
     /**
      * The list of additional key-value pairs aside from that of the System, 
      * and that of the project, which would be used for the filtering. 

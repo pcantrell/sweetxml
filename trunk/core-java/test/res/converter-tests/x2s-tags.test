@@ -1,0 +1,33 @@
+
+basic tag
+————————
+<tag></tag>
+<another-tag></another-tag>
+————————
+tag
+another-tag
+—————————————————————————————————————————————————————
+
+
+nesting
+————————
+<rivers>
+    <mississippi/>
+    <poudre>
+        <north-fork/>
+    </poudre>
+</rivers>    
+<lakes>
+    <superior/>
+    <calhoun/>
+</lakes>
+————————
+rivers
+    mississippi
+    poudre
+        north-fork
+lakes
+    superior
+    calhoun
+—————————————————————————————————————————————————————
+

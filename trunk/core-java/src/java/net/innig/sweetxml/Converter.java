@@ -10,6 +10,7 @@ public abstract class Converter
     {
     private Reader input;
     private String output;
+    private boolean header = true;
     
     public synchronized void setInput(Reader input)
         { this.input = input; }
@@ -36,6 +37,12 @@ public abstract class Converter
     public InputStream getResultInputStream(String encoding) throws IOException
         { return new ByteArrayInputStream(getResult().getBytes(encoding)); }
     
+    public boolean isHeaderIncluded()
+        { return header; }
+
+    public void setHeaderIncluded(boolean header)
+        { this.header = header; }
+
     protected synchronized Reader getInput()
         { return input; }
     

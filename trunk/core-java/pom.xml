@@ -8,58 +8,29 @@
     <version>0.2-SHAPSHOT</version>
     <name>SweetXML core</name>
     <url>http://innig.net/software/sweetxml/</url>
+    <parent>
+        <groupId>net.innig.sweetxml</groupId>
+        <artifactId>parent-pom</artifactId>
+        <version>0.2-SNAPSHOT</version>
+        <relativePath>../parent-pom.xml</relativePath>
+    </parent>
     <description>Core Java library and command-line interface for SweetXML, an
          alternate syntax for XML which focuses on improving the conciseness
          and readability of configuration files.
     </description>
-    <repositories>
-        <repository>
-            <id>ibiblio</id>
-            <url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
     <build>
-        <directory>${basedir}/build</directory>
-        <sourceDirectory>${basedir}/src/java</sourceDirectory>
-        <scriptSourceDirectory>${basedir}/src/scripts</scriptSourceDirectory>
-        <testSourceDirectory>${basedir}/test/java</testSourceDirectory>
-        <outputDirectory>${basedir}/build/classes</outputDirectory>
-        <testOutputDirectory>${basedir}/build/test-classes</testOutputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${basedir}/test/res/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
                 </configuration>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <filtering>true</filtering>
-                <directory>${basedir}/src/res</directory>
-            </resource>
-        </resources>
     </build>
-    <licenses>
-        <license>
-            <name>New BSD License</name>
-            <url>http://www.opensource.org/licenses/bsd-license.php</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-    <organization>
-        <name>Paul Cantrell</name>
-        <url>http://innig.net</url>
-    </organization>
-    <issueManagement>
-        <system>Google Code</system>
-        <url>http://code.google.com/p/sweetxml/issues/list</url>
-    </issueManagement>
     <scm>
         <connection>scm:svn:http://sweetxml.googlecode.com/svn/trunk/core-java</connection>
         <developerConnection>scm:svn:https://sweetxml.googlecode.com/svn/trunk/core-java</developerConnection>

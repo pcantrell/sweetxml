@@ -10,56 +10,29 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     name:       "SweetXML core"
     url:        "http://innig.net/software/sweetxml/"
     
+    parent
+        groupId:    net.innig.sweetxml
+        artifactId: parent-pom
+        version:    0.2-SNAPSHOT
+        relativePath: "../parent-pom.xml"
+    
     description
         "Core Java library and command-line interface for SweetXML, an
          alternate syntax for XML which focuses on improving the conciseness
          and readability of configuration files."
-
+         
     # Build
 
-    repositories
-        repository
-            id: ibiblio
-            url: "http://mirrors.ibiblio.org/pub/mirrors/maven2"
-            snapshots
-                enabled: false
-    
     build
-        directory:             "${basedir}/build"
-        sourceDirectory:       "${basedir}/src/java"
-        scriptSourceDirectory: "${basedir}/src/scripts"
-        testSourceDirectory:   "${basedir}/test/java"
-        outputDirectory:       "${basedir}/build/classes"
-        testOutputDirectory:   "${basedir}/build/test-classes"
-        
         plugins
             plugin
                 groupId: org.apache.maven.plugins
-                artifactId: maven-compiler-plugin
+                artifactId: maven-surefire-plugin
                 configuration
-                    source: 1.5
-                    target: 1.5
-        
-        resources
-            resource
-                filtering: true
-                directory: "${basedir}/src/res"
+                    suiteXmlFiles
+                        suiteXmlFile: "${basedir}/test/res/testng.xml"
     
     # Detailed metadata
-    
-    licenses
-        license
-            name: "New BSD License"
-            url:  "http://www.opensource.org/licenses/bsd-license.php"
-            distribution: repo
-            
-    organization
-        name: "Paul Cantrell"
-        url:  "http://innig.net"
-
-    issueManagement
-        system: "Google Code"
-        url:    "http://code.google.com/p/sweetxml/issues/list"
     
     scm
         connection:          "scm:svn:http://sweetxml.googlecode.com/svn/trunk/core-java"

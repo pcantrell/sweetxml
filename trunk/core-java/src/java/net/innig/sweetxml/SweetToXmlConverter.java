@@ -104,8 +104,9 @@ public class SweetToXmlConverter
             indentStack = new LinkedList<String>();
             indenting = true;
             indentWork = new StringBuilder();
-
-            xml.append("<?xml version=\"1.0\"?>").append(newline);
+            
+            if(isHeaderIncluded())
+                xml.append("<?xml version=\"1.0\"?>").append(newline);
             
             readProcessingDirectives();
             
