@@ -77,7 +77,7 @@ Alternatively, if you set Maven up to recognize SweetXML POM files (see <a href=
 Note that it is currently necessary to explicitly specify execution of the <code>convert-resources</code> goal. This will hopefully change in the future.
 </p>
 <p>
-The plugin converts SweetXML to XML by default, but can convert in either direction. Depending on the conversion mode you choose, it will search for files with the appropriate input extension. By default, it will convert resources in your project's <code>outputDirectory</code>. If this is not what you want, you can provide configuration to the plugin:
+The plugin converts SweetXML to XML by default, but can convert in either direction. It convert only files with the appropriate input extension, depending on the conversion mode you choose. By default, it will convert resources in your project's <code>outputDirectory</code>. If this is not what you want, you can provide configuration to the plugin:
 </p>
 <table class="example-table" cellspacing="0">
 <tr><th>pom.sxml</th></tr>
