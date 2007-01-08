@@ -15,10 +15,21 @@ import java.util.LinkedList;
 
 import org.xml.sax.InputSource;
 
+/**
+ * Converts SweetXML to XML. Accepts a variety of input sources (via the various constructors)
+ * and output sources (via the <tt>getResult*()</tt> methods). Each instance of this class
+ * converts at most one input source, though you can read the output repeatedly.
+ * <p>
+ * Typical usage:
+ * <pre>
+ *   mySaxParser.parse(
+ *       new SweetToXmlConverter(myInput).getResultInputSource(),
+ *       mySaxHandler);
+ * </pre>
+ */
 public class SweetToXmlConverter
     extends Converter
     {
-    
     private String xml;
 
     public SweetToXmlConverter()
@@ -263,7 +274,7 @@ public class SweetToXmlConverter
 
         private void readQuotedText(int quoteChar) throws IOException
             {
-            InputPosition quoteStart = in.getPosition();
+            DocumentPosition quoteStart = in.getPosition();
             while(true)
                 {
                 int c = in.read();

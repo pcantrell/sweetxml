@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Entry point for the SweetXML command line interface.
+ */
 public class SweetXmlCli
     {
     public static void main(String... args)

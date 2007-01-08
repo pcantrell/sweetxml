@@ -2,17 +2,20 @@ package net.innig.sweetxml;
 
 import java.io.IOException;
 
+/**
+ * An error during a conversion to or from SweetXML.
+ */
 public class SweetXmlParseException
     extends IOException
     {
-    private final InputPosition position;
+    private final DocumentPosition position;
 
-    public SweetXmlParseException(InputPosition position, String message)
+    public SweetXmlParseException(DocumentPosition position, String message)
         {
         super(position + ": " + message);
         this.position = position;
         }
     
-    public InputPosition getPosition()
+    public DocumentPosition getPosition()
         { return position; }
     }

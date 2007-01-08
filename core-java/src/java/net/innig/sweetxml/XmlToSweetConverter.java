@@ -8,6 +8,9 @@ import java.util.regex.Matcher;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
+/**
+ * Converts XML to SweetXML, attempting to preserve formatting where it makes sense.
+ */
 public class XmlToSweetConverter
     extends Converter
     {
@@ -80,7 +83,7 @@ public class XmlToSweetConverter
                 readWhitespace(true, true);
                 
                 //! follwing code won't handle < or > inside comments or quotes
-                InputPosition start = in.getPosition();
+                DocumentPosition start = in.getPosition();
                 if(in.lookingAt("<?"))
                     {
                     while(true)
@@ -141,7 +144,7 @@ public class XmlToSweetConverter
             insideTag = true;
             onTagLine = true;
             
-            InputPosition tagStart = in.getPosition();
+            DocumentPosition tagStart = in.getPosition();
             
             String name = readName(tagStart);
             tagStack.addLast(name);
@@ -172,7 +175,7 @@ public class XmlToSweetConverter
                 }
             }
         
-        private void readAttribute(String tagName, InputPosition tagStart)
+        private void readAttribute(String tagName, DocumentPosition tagStart)
             throws IOException
             {
             String name = readName(tagStart);
@@ -209,7 +212,7 @@ public class XmlToSweetConverter
             throws IOException, SweetXmlParseException
             {
             flushText(true);
-            InputPosition tagStart = in.getPosition();
+            DocumentPosition tagStart = in.getPosition();
             String name = readName(in.getPosition());
             readWhitespace(true, false);
             if(!in.lookingAt(">"))
@@ -217,7 +220,7 @@ public class XmlToSweetConverter
             tagEnded(name, tagStart);
             }
         
-        private void tagEnded(String name, InputPosition tagStart)
+        private void tagEnded(String name, DocumentPosition tagStart)
             throws IOException
             {
             if(tagStack.isEmpty())
@@ -234,7 +237,7 @@ public class XmlToSweetConverter
                 lineBreaksPending--;
             }
 
-        private String readName(InputPosition tagStart)
+        private String readName(DocumentPosition tagStart)
             throws IOException
             {
             StringBuilder name = new StringBuilder(16);
