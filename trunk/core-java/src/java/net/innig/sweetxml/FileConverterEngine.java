@@ -6,16 +6,30 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * A utility class for converting files, either singly or en masse.
+ */
 public class FileConverterEngine
     {
     private boolean overwrite, quiet;
 
+    /**
+     * Creates a new converter.
+     * @param overwrite Should the converter overwrite existing output files?
+     * @param quiet     Should the converter suppress non-error output?
+     */
     public FileConverterEngine(boolean overwrite, boolean quiet)
         {
         this.overwrite = overwrite;
         this.quiet = quiet;
         }
-
+    
+    /**
+     * Converts the given file or directory.
+     * 
+     * @see #convertFile(File, ConversionMode)
+     * @see #convertDir(File, ConversionMode)
+     */
     public void convert(File inFile, ConversionMode mode)
         throws IOException
         {
@@ -24,7 +38,11 @@ public class FileConverterEngine
         else
             convertFile(inFile, mode);
         }
-
+    
+    /**
+     * Traverses the given directory and its descendants, converting files
+     * in place as it finds them.
+     */
     public void convertDir(File dir, ConversionMode mode)
         throws IOException
         {
@@ -40,15 +58,23 @@ public class FileConverterEngine
                 convertFile(f, mode);
             }
         }
-
+    
+    /**
+     * Converts the given file in place, i@.e@. placing the output file in the same directory as
+     * the input file. The output file will have an extension appropriate to the given mode, in
+     * the manner of {@link #outputFileFor(File, ConversionMode)}.
+     */
     public void convertFile(File inFile, ConversionMode mode)
         throws IOException
         {
-        // Convert file in place
-        convertFile(inFile, adjustFileExtentsion(inFile, mode), mode);
+        convertFile(inFile, outputFileFor(inFile, mode), mode);
         }
-
-    public File adjustFileExtentsion(File inFile, ConversionMode mode)
+    
+    /**
+     * Determines the appropriate name the output of the given file being converted in the
+     * given mode. Does not create the file.
+     */
+    public File outputFileFor(File inFile, ConversionMode mode)
         {
         String outFileName = inFile.getName();
         if(outFileName.endsWith(mode.getSourceExtension()))
@@ -57,6 +83,9 @@ public class FileConverterEngine
         return new File(inFile.getParentFile(), outFileName);
         }
 
+    /**
+     * Converts a file, creating the given output file if necessary.
+     */
     public void convertFile(File inFile, File outFile, ConversionMode mode)
         throws IOException
         {

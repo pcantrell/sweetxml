@@ -4,13 +4,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * Represents an input / output format combination for conversion. 
+ */
 public enum ConversionMode
     {
+    /**
+     * Converion from XML to SweetXML.
+     */
     X2S("xml", "sxml") {
         public Converter createConverter()
             { return new XmlToSweetConverter(); }
         },
         
+    /**
+     * Converion from SweetXML to XML.
+     */
     S2X("sxml", "xml") {
         public Converter createConverter()
             { return new SweetToXmlConverter(); }
@@ -30,9 +39,19 @@ public enum ConversionMode
             }
         }
     
+    /**
+     * Returns the conversion mode which converts <i>from</i> files with the given extension.
+     * @param ext A file extension, including the dot.
+     * @throws IllegalArgumentException If no converter handles the given file extension.
+     */
     public static ConversionMode forSourceExtension(String ext)
         { return bySourceExt.get(ext); }
         
+    /**
+     * Returns the conversion mode which converts <i>to</i> files with the given extension.
+     * @param ext A file extension, including the dot.
+     * @throws IllegalArgumentException If no converter handles the given file extension.
+     */
     public static ConversionMode forTargetExtension(String ext)
         { return byTargetExt.get(ext); }
     
@@ -46,11 +65,20 @@ public enum ConversionMode
         this.targetExt = "." + targetExt;
         }
     
+    /**
+     * Creates a converter which operates in this mode.
+     */
     public abstract Converter createConverter();
 
+    /**
+     * Returns the extension (including the dot) of file which this mode accepts as input.
+     */
     public String getSourceExtension()
         { return sourceExt; }
 
+    /**
+     * Returns the extension (including the dot) of file which this mode produces as output.
+     */
     public String getTargetExtension()
         { return targetExt; }
     }

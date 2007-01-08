@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
+/**
+ * Tracks positional information and provides look-ahead utilities during coversion.
+ */
 class ConverterInput
     {
     private BufferedReader in;
@@ -19,8 +22,8 @@ class ConverterInput
         this.sourceName = sourceName;
         }
     
-    public InputPosition getPosition()
-        { return new InputPosition(sourceName, line, column); }
+    public DocumentPosition getPosition()
+        { return new DocumentPosition(sourceName, line, column); }
 
     public int read() throws IOException
         {
