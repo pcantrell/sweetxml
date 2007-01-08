@@ -5,7 +5,7 @@ sxml_home="$(dirname "$0")/.."
 
 cp="$sxml_home/build/classes/"
 if [ ! -d "$cp" ]; then
-    cp=$(ls "$sxml_home"/build/sweetxml-*.jar | head -1)
+    cp=$(ls "$sxml_home"/sweetxml-*.jar | head -1)
     if [ ! -f "$cp" ]; then
         echo "Unable to find SweetXML classes in $sxml_home"
         exit 1

@@ -25,7 +25,15 @@ public class ConvertResourcesMojo
     {
     /**
      * The directory in which there are resources to be converted.
-     * By default, this is the project's outputDirectory;
+     * By default, this is the same as the outputDirectory.
+     *
+     * @parameter
+     */
+    private String inputDirectory;
+    
+    /**
+     * The directory in which to place the converted resources.
+     * By default, this is the project's outputDirectory.
      *
      * @parameter expression="${project.build.outputDirectory}"
      * @required
@@ -61,14 +69,6 @@ public class ConvertResourcesMojo
      * @parameter
      */
     private boolean deleteSources;
-    
-    /**
-     * The list of additional key-value pairs aside from that of the System, 
-     * and that of the project, which would be used for the filtering. 
-     * 
-     * @parameter expression="${project.build.filters}"
-     */
-    private List filters;
 
     public void execute()
         throws MojoExecutionException
@@ -80,13 +80,18 @@ public class ConvertResourcesMojo
         catch(IllegalArgumentException iae)
             { throw new MojoExecutionException("No such mode \"" + mode + "\"; expected \"x2s\" or \"s2x\""); }
         
+        if(inputDirectory == null)
+            inputDirectory = outputDirectory;
+        File inputDir = new File(inputDirectory);
         File outputDir = new File(outputDirectory);
+        if(!inputDir.exists())
+            throw new MojoExecutionException("Input directory does not exist: " + inputDir);
         if(!outputDir.exists())
             throw new MojoExecutionException("Output directory does not exist: " + outputDir);
 
         DirectoryScanner scanner = new DirectoryScanner();
 
-        scanner.setBasedir(outputDir);
+        scanner.setBasedir(inputDir);
         scanner.setIncludes(new String[] { "**/**" + modeParsed.getSourceExtension() });
         scanner.addDefaultExcludes();
         scanner.scan();

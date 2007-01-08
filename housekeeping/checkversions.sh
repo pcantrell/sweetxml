@@ -5,6 +5,6 @@
 
 cd "$(dirname "$0")"/..
 
-for f in */pom.sxml; do
-    echo "$(echo "$f:                        " | cut -c 1-24)" $(grep '^    version:' "$f")
+for f in pom.sxml */pom.sxml; do
+    echo "$(echo "$f:                        " | cut -c 1-24)" $(egrep '^    (    )?version:' "$f")
 done

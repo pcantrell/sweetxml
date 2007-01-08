@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ "$1" == "--xml" ]; then
+    shift
+else
+    if [ -f pom.sxml ]; then
+        echo "Converting POM..."
+        sweetxml --overwrite pom.sxml || exit 1
+        echo "Launching Maven..."
+    fi
+fi
+
+"$M2_HOME/bin/mvn" "$@"

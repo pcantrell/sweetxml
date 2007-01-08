@@ -6,7 +6,6 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     groupId:    net.innig.sweetxml
     artifactId: sweetxml
     packaging:  jar
-    version:    0.2-SHAPSHOT
     name:       "SweetXML core"
     url:        "http://innig.net/software/sweetxml/"
     

@@ -6,6 +6,8 @@
     <artifactId>parent-pom</artifactId>
     <version>0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <name>SweetXML parent POM</name>
+    <url>http://innig.net/software/sweetxml/</url>
     <repositories>
         <repository>
             <id>ibiblio</id>

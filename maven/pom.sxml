@@ -6,42 +6,19 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     groupId:    net.innig.sweetxml
     artifactId: sweetxml-maven
     packaging:  maven-plugin
-    version:    0.2-SHAPSHOT
-    name:       "SweetXml Maven plugin"
+    name:       "SweetXML Maven plugin"
     url:        "http://innig.net/software/sweetxml/"
+    
+    parent
+        groupId:    net.innig.sweetxml
+        artifactId: parent-pom
+        version:    0.2-SNAPSHOT
+        relativePath: "../parent-pom.xml"
     
     description
         "Maven plugin to convert files to and from SweetXML."
 
     # Build
-
-    repositories
-        repository
-            id: ibiblio
-            url: "http://mirrors.ibiblio.org/pub/mirrors/maven2"
-            snapshots
-                enabled: false
-    
-    build
-        directory:             "${basedir}/build"
-        sourceDirectory:       "${basedir}/src/java"
-        scriptSourceDirectory: "${basedir}/src/scripts"
-        testSourceDirectory:   "${basedir}/test/java"
-        outputDirectory:       "${basedir}/build/classes"
-        testOutputDirectory:   "${basedir}/build/test-classes"
-        
-        plugins
-            plugin
-                groupId:    org.apache.maven.plugins
-                artifactId: maven-compiler-plugin
-                configuration
-                    source: 1.5
-                    target: 1.5
-        
-        resources
-            resource
-                filtering: true
-                directory: "${basedir}/src/res"
 
     dependencies
         dependency
@@ -51,7 +28,7 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
         dependency
             groupId:    net.innig.sweetxml
             artifactId: sweetxml
-            version:    0.2-SHAPSHOT
+            version:    0.2-SNAPSHOT
         dependency
             groupId:    org.apache.maven
             artifactId: maven-project
@@ -62,20 +39,6 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
             version:    2.0
     
     # Detailed metadata
-    
-    licenses
-        license
-            name: "New BSD License"
-            url:  "http://www.opensource.org/licenses/bsd-license.php"
-            distribution: repo
-            
-    organization
-        name: "Paul Cantrell"
-        url:  "http://innig.net"
-
-    issueManagement
-        system: "Google Code"
-        url:    "http://code.google.com/p/sweetxml/issues/list"
     
     scm
         connection:          "scm:svn:http://sweetxml.googlecode.com/svn/trunk/maven"

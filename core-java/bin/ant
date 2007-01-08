@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ "$1" == "--xml" ]; then
+    shift
+else
+    if [ -f build.sxml ]; then
+        echo "Converting build.sxml..."
+        sweetxml --overwrite build.sxml || exit 1
+        echo "Launching Ant..."
+    fi
+fi
+
+"$ANT_HOME/bin/ant" "$@"
