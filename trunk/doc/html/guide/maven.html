@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <title>SweetXML User Guide - Maven Integration</title>
+    <style type="text/css">@import "../sweetxml.css";</style>
+    <meta name="generator" content="Paul"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>SweetXML User Guide</h1>
+
+<div class="navbar">
+    <a href="../index.html">Home</a> | 
+    <a href="../faq.html">FAQ</a> |
+    <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+    <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+    <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
+    <a href="http://groups.google.com/group/sweetxml">Support</a>
+</div>
+
+
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+<h2>Maven Integration</h2>
+
+<ul class="pagecontents">
+    <li><a href="#maven-plugin">SweetXML Maven Plugin</a></li>
+    <li><a href="#maven-pom">Using SweetXML for the POM</a></li>
+</ul>
+
+
+<h3><a name="maven-plugin">SweetXML Maven Plugin</a></h3>
+<p>
+SweetXML provides an Maven plugin for copying and converting files between XML and SweetXML. This allows you convert any XML file which is bundled into you app at build time to SweetXML, without any code or tools changes. It does take some fiddling in your POM, however.
+</p>    
+<p>
+Typical usage might look like this:
+</p>
+<table class="example-table" cellspacing="0">
+<tr><th>pom.xml</th></tr>
+<tr valign="top">
+<td>&lt;plugin&gt;
+    &lt;groupId&gt;net.innig.sweetxml&lt;/groupId&gt;
+    &lt;artifactId&gt;sweetxml-maven&lt;/artifactId&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;convert-resources&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;</td>
+</tr>
+</table>
+
+<p>
+Alternatively, if you set Maven up to recognize SweetXML POM files (see <a href="#maven-pom">below</a>), your build might include something like this:
+</p>    
+<table class="example-table" cellspacing="0">
+<tr><th>pom.sxml</th></tr>
+<tr valign="top">
+<td>plugin
+    groupId: net.innig.sweetxml
+    artifactId: sweetxml-maven
+    executions
+        execution
+            goals
+                goal: convert-resources</td>
+</tr>
+</table>
+<p>
+(Ah! Isn't that easier on the eyes?)
+</p>
+<p>
+Note that it is currently necessary to explicitly specify execution of the <code>convert-resources</code> goal. This will hopefully change in the future.
+</p>
+<p>
+The plugin converts SweetXML to XML by default, but can convert in either direction. Depending on the conversion mode you choose, it will search for files with the appropriate input extension. By default, it will convert resources in your project's <code>outputDirectory</code>. If this is not what you want, you can provide configuration to the plugin:
+</p>
+<table class="example-table" cellspacing="0">
+<tr><th>pom.sxml</th></tr>
+<tr valign="top">
+<td>plugin
+    groupId: net.innig.sweetxml
+    artifactId: sweetxml-maven
+    configuration
+        inputDirectory: ${basedir}/src/res
+        outputDirectory: ${basedir}/build/classes
+    executions
+        execution
+            goals
+                goal: convert-resources</td>
+</tr>
+</table>
+<p>
+The plugin accepts the following parameters:
+<table class="example-table" cellspacing="0">
+    <tr><th>Parameter</th><th>Description</th><th>Default</th></tr>
+    <tr valign="top">
+        <td class="example">mode</td>
+        <td class="description">Conversion mode. Possible values are:
+            <ul>
+                <li><b>s2x</b>: convert files named "*.sxml" to XML</li>
+                <li><b>x2s</b>: convert files named "*.xml" to SweetXML</li>
+            </ul>
+        </td>
+        <td>s2x</td>
+    </tr>
+    <tr valign="top">
+        <td class="example">inputDirectory</td>
+        <td class="description">The directory in which there are files to be converted</td>
+        <td class="description"><i>plugin's outputDirectory</i></td>
+    </tr>
+    <tr valign="top">
+        <td class="example">outputDirectory</td>
+        <td class="description">Determines where the converted files will go.</td>
+        <td class="description"><i>project's outputDirectory</i></td>
+    </tr>
+    <tr valign="top">
+        <td class="example">overwrite</td>
+        <td class="description">If true, the task will overwrite existing files. If false, the task will skip existing files without failing.</td>
+        <td>true</td>
+    </tr>
+    <tr valign="top">
+        <td class="example">deleteSources</td>
+        <td class="description">If true, the task will remove the input file after converting it. This option is useful if you are converting files in place in a staging directory. Use with caution!</td>
+        <td>false</td>
+    </tr>
+    <tr valign="top">
+        <td class="example">quiet</td>
+        <td class="description">Reduces the output of the task to critical error messages.</td>
+        <td>true</td>
+    </tr>
+</table>
+<p>
+You may find the <a href="cli.html">command-line interface</a> useful for performing the initial conversion of project files from XML to SweetXML.
+</p>
+
+
+<h3><a name="maven-pom">Using SweetXML for the POM</a></h3>
+<p>
+Maven does not have native support for SweetXML. However, it is nonetheless possible to use a <code>pom.sxml</code> instead of a <code>pom.xml</code>. To do this, you will need to use a wrapper script for Maven which converts your <code>pom.sxml</code>, then passes control to Maven.
+</p>
+<p>
+The SweetXML distribution includes a Maven wrapper script for OS X, Linux, and other UNIX-y OSes, in <code>bin/</code>.     (Those of you using MS-DOS are currently on your own; if anybody wants to submit a <code>mvn.bat</code> wrapper script, it would be quite welcome!)
+</p>
+<p>
+Place this script in your path in front of Maven's bin directory, and <code>mvn</code> will automatically use <code>pom.sxml</code> if it is present. Be careful — if <code>pom.sxml</code> exists, it will overwrite <code>pom.xml</code>!
+</p>
+<p>
+For now, until SweetXML achieves wider adoption, we recommend checking in the generated <code>pom.xml</code>, so that others without SweetXML installed can still build your project.
+</p>
+
+
+
+<div class="next">
+Next section: <a href="api.html">Adding SweetXML Support to Your Code</a>
+</div>
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+
+<div class="footer">
+    <div class="navbar">
+        <a href="../index.html">Home</a> | 
+        <a href="../faq.html">FAQ</a> |
+        <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+        <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+        <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
+        <a href="http://groups.google.com/group/sweetxml">Support</a>
+    </div>
+</div>
+
+<div class="opsipod">
+    <a href="http://innig.net/?logo"><img border="0" src="http://innig.net/images/innig_FFFFFF.gif" alt="innig"/></a>
+</div>
+
+</body>
+</html>
+

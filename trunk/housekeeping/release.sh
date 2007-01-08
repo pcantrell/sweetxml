@@ -9,52 +9,18 @@ if [ ! -n "$version" ]; then
     exit 1
 fi
 
-cd "$(dirname "$0")"/..
+sxml_home="$(dirname "$0")"/..
+cd "$sxml_home"
 
-svn status
 if [ $(svn status | wc -l) -gt 0 ]; then
+    svn status
     echo
     echo 'ERROR: uncommitted work'
     echo
     exit 1
 fi
 
-./housekeeping/checkversions.sh
-
-if grep '^    version:' */pom.sxml | grep -v "version: *$version *\$" > /dev/null; then
-    echo
-    echo 'ERROR: poms have incorrect versions'
-    echo
-    exit 1
-fi
-
-tag="release/$version"
-
-for module in core-java maven; do
-    echo
-    echo
-    echo "Building $module..."
-    echo
-    cd $module
-    mvn clean package || exit 1
-    cd -
-done
-
-staging="/tmp/sweetxml-$version"
-rm -rf "$staging"{,.tar.gz,.zip}
-mkdir "$staging" || exit 1
-
-cp -R doc/html/ "$staging/doc" || exit 1
-cp -R core-java/bin/ "$staging/bin" || exit 1
-cp LICENSE.html "$staging" || exit 1
-
-mkdir "$staging/build"
-cp "core-java/build/sweetxml-$version.jar" "$staging/build" || exit 1
-
-find "$staging" -name '.*' -exec rm -rf {} \;
-cd /tmp
-tar cvfz "sweetxml-$version.tar.gz" "sweetxml-$version" || exit 1
-zip -v -r "sweetxml-$version.zip" "sweetxml-$version" || exit 1
+./housekeeping/bundle-dish.sh "$version"
 
 echo
 echo "Ready to release version:   $version"
@@ -62,7 +28,8 @@ echo
 echo -n "Press enter to proceed: "
 read
 
-cd -
+cd "$sxml_home"
+
 svn copy \
     . \
     "https://sweetxml.googlecode.com/svn/tags/release/$version" \

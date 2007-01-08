@@ -5,7 +5,6 @@
     <groupId>net.innig.sweetxml</groupId>
     <artifactId>sweetxml</artifactId>
     <packaging>jar</packaging>
-    <version>0.2-SHAPSHOT</version>
     <name>SweetXML core</name>
     <url>http://innig.net/software/sweetxml/</url>
     <parent>

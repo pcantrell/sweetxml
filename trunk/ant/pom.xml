@@ -5,42 +5,16 @@
     <groupId>net.innig.sweetxml</groupId>
     <artifactId>sweetxml-ant</artifactId>
     <packaging>jar</packaging>
-    <version>0.2-SHAPSHOT</version>
-    <name>SweetXml Ant plugin</name>
+    <name>SweetXML Ant plugin</name>
     <url>http://innig.net/software/sweetxml/</url>
-    <repositories>
-        <repository>
-            <id>ibiblio</id>
-            <url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <build>
-        <directory>${basedir}/build</directory>
-        <sourceDirectory>${basedir}/src/java</sourceDirectory>
-        <scriptSourceDirectory>${basedir}/src/scripts</scriptSourceDirectory>
-        <testSourceDirectory>${basedir}/test/java</testSourceDirectory>
-        <outputDirectory>${basedir}/build/classes</outputDirectory>
-        <testOutputDirectory>${basedir}/build/test-classes</testOutputDirectory>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <filtering>true</filtering>
-                <directory>${basedir}/src/res</directory>
-            </resource>
-        </resources>
-    </build>
+    <parent>
+        <groupId>net.innig.sweetxml</groupId>
+        <artifactId>parent-pom</artifactId>
+        <version>0.2-SNAPSHOT</version>
+        <relativePath>../parent-pom.xml</relativePath>
+    </parent>
+    <description>Ant plugin to convert files to and from SweetXML.
+    </description>
     <dependencies>
         <dependency>
             <groupId>ant</groupId>
@@ -50,7 +24,11 @@
         <dependency>
             <groupId>net.innig.sweetxml</groupId>
             <artifactId>sweetxml</artifactId>
-            <version>0.2-SHAPSHOT</version>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
+    <scm>
+        <connection>scm:svn:http://sweetxml.googlecode.com/svn/trunk/ant</connection>
+        <developerConnection>scm:svn:https://sweetxml.googlecode.com/svn/trunk/ant</developerConnection>
+    </scm>
 </project>

@@ -170,14 +170,16 @@ pre {
 }
 .example-table .example {
     font-weight : bold;
-    color : #DDDDDD;
-    background : #000033;
+    color : #000033;
 }
 .example-table p {
     margin : 0.6em 0em 0em 0cm;
 }
 .example-table code {
     font-size : 11px;
+}
+.example-table ul {
+    margin : 0.4em 0cm .4em 2.2em;
 }
 
 .example-nav {

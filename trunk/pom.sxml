@@ -5,6 +5,8 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     artifactId: parent-pom
     version:    0.2-SNAPSHOT
     packaging:  pom
+    name:       "SweetXML parent POM"
+    url:        "http://innig.net/software/sweetxml/"
     
     repositories
         repository
