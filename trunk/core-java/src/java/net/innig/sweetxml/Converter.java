@@ -25,7 +25,7 @@ public abstract class Converter
      */
     public synchronized void setInput(Reader input, String sourceName)
         {
-        if(input != null)
+        if(this.input != null)
             throw new IllegalStateException("input source already set");
         
         this.input = input;
