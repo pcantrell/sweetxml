@@ -39,8 +39,8 @@ rm -rf "$staging"{,.tar.gz,.zip}
 mkdir "$staging" || die "Can't create $staging"
 
 cp -R doc/site/ "$staging/doc"        || die "Can't copy docs"
-cp -R core-java/bin/ "$staging/bin"   || die "Can't copy bin"
 cp LICENSE.html "$staging"            || die "Can't copy license"
+(mkdir "$staging/bin/" && cp */bin/* "$staging/bin/")   || die "Can't copy bin"
 perl -pe "s/\\\$\\{version\\}/$version/g" doc/release/README.html > "$staging/README.html" || die "Can't filter readme"
 
 cp "core-java/build/sweetxml-$version.jar" "$staging/"   || die "can't copy jars"
