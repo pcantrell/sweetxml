@@ -11,9 +11,11 @@
 = In Development =
 
 == Release 0.2 ==
-  * Ant plugin _(implemented; need docs)_
-  * Maven plugin  _(in progress)_
-  * Improved XML -> SweetXML conversion
+  * Ant plugin _(done)_
+  * Maven plugin  _(done)_
+  * Improved XML -> SweetXML conversion _(done)_
+  * Regression tests _(done)_
+  * Remove backslash escaping _(done)_
 
 = Future Releases =
 
