@@ -34,7 +34,7 @@
     <li> <a href="#download">Where do I get it?</a> </li>
     <li> <a href="#instructions">How do I use it?</a> </li>
     <li> <a href="#help">Where can I get help using SweetXML?</a> </li>
-    <li> <a href="#yaml">It looks kind of like YAML. Is it?</a> </li>
+    <li> <a href="#yaml">It looks kind of like YAML or JSON. Is it?</a> </li>
     <li> <a href="#similar">Are there other similar projects?</a> </li>
     <li> <a href="#contribute">Can I contribute to the project?</a> </li>
     <li> <a href="#license">How is SweetXML licensed?</a> </li>
@@ -123,7 +123,7 @@ Prime candidates are configuration files for <a href="http://innig.net/macker/">
 It’s not good for computer-to-computer communication, such as XML-RPC or syndication feeds. In these situations, human readability is not a major issue — but interoperability is, and changing syntax seriously undermines it. Yes, in theory, "SweetXML-RPC" could save bandwidth, but in practice, it's a bad idea.
 </p>
 <p>
-It’s not good in performance-sensitive situations. The SweetXML converters are not yet optimized for high performance.
+It’s probably not good in very performance-sensitive situations. The SweetXML converters are reasonably fast, but not yet optimized for high performance.
 </p>
 <p>
 It’s not good for formats such as XHTML which consist of large amounts of text interspersed with tags. SweetXML's focus is configuration files, and it is not well suited to marking up documents.
@@ -195,6 +195,9 @@ In spite of its conciseness, YAML actually has a much more complicated document 
 <p>
 The result: SweetXML's syntax and structure are both much simpler than YAML's, while YAML is more expressive. That's not an "X is better than Y" difference; it's a clear trade-off, which you should consider if you're choosing between them for your project.
 </p>
+<p>
+A very similar analysis holds for <a href="http://www.json.org/">JSON</a>. It is more minimal than YAML, but still has more document constructs (arrays, pairs, and different data types) than XML. Its syntax is more complex, but more expressive.  It is not a drop-in replacement for XML.
+</p>
 
 
 <h3><a name="similar">Are there other similar projects?</a></h3>
@@ -203,9 +206,6 @@ Yes. <a href="http://www.langdale.com.au/SOX/">SOX</a> and <a href="http://www.s
 </p>
 <p>
 Why build another option then, you ask? Aesthetic differences. SweetXML's author thinks it is more concise, easier to learn, and looks prettier. (He also talks about himself in the third person.)
-</p>
-<p>
-DeveloperWorks published a <a href="http://www-128.ibm.com/developerworks/xml/library/x-syntax.html">good article</a> on various alternate syntaxes for XML, and the pros and cons of the whole idea. Sadly, the article does not mention SweetXML, because it did not exist at the time! The article comes down somewhat against switching syntax; hopefully, SweetXML will develop into something undeniably awesome, and thus prove him wrong. Naturally, being the person of sharp wits and impeccable taste that you are, you also want SweetXML to be awesome, which leads you to ask the question...
 </p>
 
 
