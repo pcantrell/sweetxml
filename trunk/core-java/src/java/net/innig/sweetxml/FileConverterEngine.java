@@ -98,7 +98,10 @@ public class FileConverterEngine
             }
         
         if(!quiet)
-            System.err.println("Converting " + inFile + " to " + outFile);
+            {
+            System.err.println("Converting " + inFile);
+            System.err.println("        to " + outFile);
+            }
         
         Converter converter = mode.createConverter();
         converter.setInput(new FileReader(inFile), inFile.getPath());
