@@ -130,10 +130,10 @@ Ant does not have native support for SweetXML. However, it is possible (and much
 The SweetXML distribution includes an Ant wrapper script for OS X, Linux, and other UNIX-y OSes, in <code>bin/</code>.     (Those of you using MS-DOS are currently on your own; if anybody wants to submit an <code>ant.bat</code> wrapper script, it would be quite welcome!)
 </p>
 <p>
-Place this script in your path in front of Ant's bin directory, and ant will automatically use <code>build.sxml</code> if it is present. Be careful — if <code>build.sxml</code> exists, it will overwrite <code>build.xml</code>!
+Place this script in your path in front of Ant's bin directory, and ant will automatically use <code>build.sxml</code> if it is present. <i>Be careful — if <code>build.sxml</code> exists, it will overwrite <code>build.xml</code>!</i>
 </p>
 <p>
-For now, until SweetXML achieves wider adoption, we recommend checking in the generated <code>build.xml</code>, so that others without SweetXML installed can still build your project.
+The wrapper script requires that you either have <code>ant</code> and <code>sweetxml</code> in your path, or that you set the environment variables <code>ANT_HOME</code> and <code>SWEETXML_HOME</code>.
 </p>
 
 
