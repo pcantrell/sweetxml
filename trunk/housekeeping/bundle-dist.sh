@@ -28,8 +28,7 @@ for module in . core-java maven ant; do
     echo "Building $module..."
     echo
     cd "$home/$module" || die "No such dir $home/$module"
-    mvn install || die "mvn failed"
-    cd -
+    mvn clean install || die "mvn failed"
 done
 
 set -x
