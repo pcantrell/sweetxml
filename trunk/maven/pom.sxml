@@ -13,7 +13,6 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
         groupId:    net.innig.sweetxml
         artifactId: parent-pom
         version:    0.2-SNAPSHOT
-        relativePath: "../parent-pom.xml"
     
     description
         "Maven plugin to convert files to and from SweetXML."
