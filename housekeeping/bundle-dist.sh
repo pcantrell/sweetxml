@@ -18,7 +18,7 @@ home="$PWD"
 
 echo "Bundling SweetXML $version..."
 
-if grep '^    version:' */pom.sxml | grep -v "version: *$version *\$" > /dev/null; then
+if egrep '^    (    )?version:' */pom.sxml | egrep -v "version: *$version *\$" > /dev/null; then
     die 'ERROR: poms have incorrect versions'
 fi
 
@@ -38,9 +38,10 @@ staging="/tmp/sweetxml-$version"
 rm -rf "$staging"{,.tar.gz,.zip}
 mkdir "$staging" || die "Can't create $staging"
 
-cp -R doc/html/ "$staging/doc"      || die "Can't copy docs"
-cp -R core-java/bin/ "$staging/bin" || die "Can't copy bin"
-cp LICENSE.html "$staging"          || die "Can't copy license"
+cp -R doc/site/ "$staging/doc"        || die "Can't copy docs"
+cp -R core-java/bin/ "$staging/bin"   || die "Can't copy bin"
+cp LICENSE.html "$staging"            || die "Can't copy license"
+perl -pe "s/\\\$\\{version\\}/$version/g" doc/release/README.html > "$staging/README.html" || die "Can't filter readme"
 
 cp "core-java/build/sweetxml-$version.jar" "$staging/"   || die "can't copy jars"
 cp "ant/build/sweetxml-ant-$version.jar" "$staging/"     || die "can't copy jars"
