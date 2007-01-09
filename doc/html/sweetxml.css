@@ -3,8 +3,8 @@ body {
     color:#222;
     font-family: Palatino,Georgia,Times;
 }
-A:link    { color:#070; }
-A:visited { color:#242; }
+A:link    { color:#080; }
+A:visited { color:#262; }
 A:active  { color:#0F0; }
 
 .pagecontents {
