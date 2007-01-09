@@ -14,7 +14,7 @@
   * Ant plugin _(done)_
   * Maven plugin  _(done)_
   * Improved XML -> SweetXML conversion _(done)_
-  * Regression tests _(done)_
+  * Regression tests for core converter code  _(done)_
   * Remove backslash escaping _(done)_
 
 = Future Releases =
