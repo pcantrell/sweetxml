@@ -6,25 +6,28 @@ else
     sweetxml=sweetxml
 fi
 
-if [ "$M2_HOME" ]; then
-    mvn="$M2_HOME/bin/mvn"
+if [ "$ANT_HOME" ]; then
+    ant="$ANT_HOME/bin/ant"
 else
-    mvn=mvn
+    ant=ant
 fi
 
 unset generated_buildfile
 if [ "$1" == "--xml" ]; then
     shift
 else
-    if [ -f pom.sxml ]; then
-        echo "Converting POM..."
-        "$sweetxml" --overwrite pom.sxml || exit 1
-        generated_buildfile=pom.xml
-        echo "Launching Maven..."
+    if [ -f build.sxml ]; then
+        echo "Converting build.sxml..."
+        generated_buildfile=build.xml
+        if [ -f "${generated_buildfile}" ]; then
+            unset generated_buildfile
+        fi
+        "$sweetxml" --overwrite build.sxml || exit 1
+        echo "Launching Ant..."
     fi
 fi
 
-"$mvn" "$@"
+"$ant" "$@"
 result=${PIPESTATUS[0]}
 if [ "${generated_buildfile}" ]; then
     echo "Cleaning generated ${generated_buildfile}."
