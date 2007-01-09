@@ -13,8 +13,7 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
         groupId:    net.innig.sweetxml
         artifactId: parent-pom
         version:    0.2-SNAPSHOT
-        relativePath: "../parent-pom.xml"
-    
+        
     description
         "Core Java library and command-line interface for SweetXML, an
          alternate syntax for XML which focuses on improving the conciseness
