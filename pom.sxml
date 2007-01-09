@@ -65,3 +65,9 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
         system: "Google Code"
         url:    "http://code.google.com/p/sweetxml/issues/list"
     
+    distributionManagement
+        repository
+            id:   "innig.net"
+            name: "innig.net"
+            url:  "file://${user.home}/innig/software/maven-repository/"
+
