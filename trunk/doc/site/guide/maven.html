@@ -36,7 +36,7 @@
 
 <h3><a name="maven-plugin">SweetXML Maven Plugin</a></h3>
 <p>
-SweetXML provides an Maven plugin for copying and converting files between XML and SweetXML. This allows you convert any XML file which is bundled into you app at build time to SweetXML, without any code or tools changes. It does take some fiddling in your POM, however.
+SweetXML provides a Maven 2 plugin for copying and converting files between XML and SweetXML. This allows you convert any XML file which is bundled into you app at build time to SweetXML, without any code or tools changes. It does take some fiddling in your POM, however.
 </p>    
 <p>
 Typical usage might look like this:
@@ -59,7 +59,7 @@ Typical usage might look like this:
 </table>
 
 <p>
-Alternatively, if you set Maven up to recognize SweetXML POM files (see <a href="#maven-pom">below</a>), your build might include something like this:
+Alternatively, if you set Maven up to recognize SweetXML POM files (see <a href="#maven-pom">below</a>), the configuration would look like this:
 </p>    
 <table class="example-table" cellspacing="0">
 <tr><th>pom.sxml</th></tr>
@@ -77,14 +77,14 @@ Alternatively, if you set Maven up to recognize SweetXML POM files (see <a href=
 (Ah! Isn't that easier on the eyes?)
 </p>
 <p>
-The plugin converts SweetXML to XML by default, but can convert in either direction. It convert only files with the appropriate input extension, depending on the conversion mode you choose. By default, it will convert resources in your project's <code>outputDirectory</code> during the <code>process-resources</code> phase.
+The plugin converts SweetXML to XML by default, but can convert in either direction. It converts only files with the appropriate input extension, depending on the conversion mode you choose. By default, it will convert resources in your project's <code>outputDirectory</code> during the <code>process-resources</code> phase.
 </p>
 
 
 
 <h3><a name="maven-advanced">Beyond the Default</a></h3>
 <p>
-This default behavior is not always sufficient. For example, if you are building a webapp, you may wish to have    a <code>web.sxml</code> instead of a <code>web.xml</code>. To accomplish this, you will need to filter not only the usual resources, but also the files in your webapp directory. Theis additional conversion requires additional configuration:
+This default behavior is not always sufficient. For example, if you are building a webapp, you may wish to have a <code>web.sxml</code> instead of a <code>web.xml</code>. To accomplish this, you will need to filter not only the usual resources, but also the files in your webapp directory. Theis additional conversion requires additional configuration:
 </p>
 <table class="example-table" cellspacing="0">
 <tr><th>pom.sxml</th></tr>
@@ -111,7 +111,7 @@ This default behavior is not always sufficient. For example, if you are building
 Note: If you do this, the <code>jetty:run</code> goal will no longer work, because it looks for unfiltered webapp files in your source directory. You will need to use the <code>jetty:run-exploded</code> or <code>jetty:run-war</code> goals instead, both of which use the filtered resources in the build directory.
 </p>
 <p>
-Other situations may require similarly creative solutions. Maven is not always easy to customize, so don't hesitate to seek help in the <a href="http://groups.google.com/group/sweetxml">SweetXML discussion group</a>.
+Other situations may require similarly creative solutions. Maven can be a bit opaque, so don't hesitate to seek help in the <a href="http://groups.google.com/group/sweetxml">SweetXML discussion group</a>.
 </p>
 
 <h3><a name="maven-config">Plugin Options</a></h3>
@@ -168,10 +168,10 @@ Maven does not have native support for SweetXML. However, it is nonetheless poss
 The SweetXML distribution includes a Maven wrapper script for OS X, Linux, and other UNIX-y OSes, in <code>bin/</code>.     (Those of you using MS-DOS are currently on your own; if anybody wants to submit a <code>mvn.bat</code> wrapper script, it would be quite welcome!)
 </p>
 <p>
-Place this script in your path in front of Maven's bin directory, and <code>mvn</code> will automatically use <code>pom.sxml</code> if it is present. Be careful — if <code>pom.sxml</code> exists, it will overwrite <code>pom.xml</code>!
+Place this script in your path in front of Maven's bin directory, and <code>mvn</code> will automatically use <code>pom.sxml</code> if it is present. <i>Be careful — if <code>pom.sxml</code> exists, it will overwrite <code>pom.xml</code>!</i>
 </p>
 <p>
-For now, until SweetXML achieves wider adoption, we recommend checking in the generated <code>pom.xml</code>, so that others without SweetXML installed can still build your project.
+The wrapper script requires that you either have <code>mvn</code> and <code>sweetxml</code> in your path, or that you set the environment variables <code>M2_HOME</code> and <code>SWEETXML_HOME</code>.
 </p>
 
 
