@@ -40,8 +40,7 @@ public class SweetXmlTask
             for(String inFilePath : inScanner.getIncludedFiles())
                 {
                 File inFile = new File(inputDir, inFilePath);
-                File outFile = new File(outputDir, inFilePath);
-                outFile = converter.adjustFileExtentsion(outFile, mode);
+                File outFile = converter.outputFileFor(new File(outputDir, inFilePath), mode);
                 
                 try {
                     if(!outFile.getParentFile().exists())

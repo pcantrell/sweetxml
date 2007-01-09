@@ -5,7 +5,6 @@ import net.innig.sweetxml.FileConverterEngine;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -25,18 +24,18 @@ public class ConvertResourcesMojo
     {
     /**
      * The directory in which there are resources to be converted.
-     * By default, this is the same as the outputDirectory.
+     * By default, this is the project's outputDirectory.
      *
-     * @parameter
+     * @parameter expression="${project.build.outputDirectory}"
+     * @required
      */
     private String inputDirectory;
     
     /**
      * The directory in which to place the converted resources.
-     * By default, this is the project's outputDirectory.
+     * By default, this is the same as the inputDirectory.
      *
-     * @parameter expression="${project.build.outputDirectory}"
-     * @required
+     * @parameter
      */
     private String outputDirectory;
     
@@ -80,14 +79,20 @@ public class ConvertResourcesMojo
         catch(IllegalArgumentException iae)
             { throw new MojoExecutionException("No such mode \"" + mode + "\"; expected \"x2s\" or \"s2x\""); }
         
-        if(inputDirectory == null)
-            inputDirectory = outputDirectory;
+        if(outputDirectory == null)
+            outputDirectory = inputDirectory;
         File inputDir = new File(inputDirectory);
         File outputDir = new File(outputDirectory);
+                
         if(!inputDir.exists())
-            throw new MojoExecutionException("Input directory does not exist: " + inputDir);
+            throw new MojoExecutionException("SweetXML input directory does not exist: " + inputDir);
+        else if(!inputDir.isDirectory())
+            throw new MojoExecutionException("SweetXML input directory is not a directory: " + inputDir);
+            
         if(!outputDir.exists())
-            throw new MojoExecutionException("Output directory does not exist: " + outputDir);
+            outputDir.mkdirs();
+        else if(!outputDir.isDirectory())
+            throw new MojoExecutionException("SweetXML output directory does not exist: " + outputDir);
 
         DirectoryScanner scanner = new DirectoryScanner();
 
@@ -96,11 +101,16 @@ public class ConvertResourcesMojo
         scanner.addDefaultExcludes();
         scanner.scan();
         
-        FileConverterEngine convert = new FileConverterEngine(overwrite, quiet);
+        FileConverterEngine converter = new FileConverterEngine(overwrite, quiet);
         for(String inFileName : scanner.getIncludedFiles())
             try {
-                File inFile = new File(outputDir, inFileName);
-                convert.convertFile(inFile, modeParsed);
+                File inFile = new File(inputDir, inFileName);
+                File outFile = converter.outputFileFor(new File(outputDir, inFileName), modeParsed);
+                if(!outFile.getParentFile().exists())
+                    outFile.getParentFile().mkdirs();
+                
+                converter.convertFile(inFile, outFile, modeParsed);
+                
                 if(deleteSources)
                     inFile.delete();
                 }
