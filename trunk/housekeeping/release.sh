@@ -30,6 +30,10 @@ read
 
 cd "$sxml_home"
 
+./housekeeping/maven-delpoy.sh || exit 1
+
+./housekeeping/maven-repository-bundle.sh || exit 1
+
 svn copy \
     . \
     "https://sweetxml.googlecode.com/svn/tags/release/$version" \
