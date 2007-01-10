@@ -33,6 +33,7 @@ done
 
 set -x
 
+cd "$home"
 staging="/tmp/sweetxml-$version"
 rm -rf "$staging"{,.tar.gz,.zip}
 mkdir "$staging" || die "Can't create $staging"
