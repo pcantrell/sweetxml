@@ -1,0 +1,37 @@
+project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance" xsi/schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+    modelVersion: 4.0.0
+    
+    # Basic metadata
+    
+    groupId:    net.innig.sweetxml
+    artifactId: sweetxml
+    packaging:  jar
+    name:       "SweetXML core"
+    url:        "http://innig.net/software/sweetxml/"
+    
+    parent
+        groupId:    net.innig.sweetxml
+        artifactId: parent-pom
+        version:    0.2
+        
+    description
+        "Core Java library and command-line interface for SweetXML, an
+         alternate syntax for XML which focuses on improving the conciseness
+         and readability of configuration files."
+         
+    # Build
+
+    build
+        plugins
+            plugin
+                groupId: org.apache.maven.plugins
+                artifactId: maven-surefire-plugin
+                configuration
+                    suiteXmlFiles
+                        suiteXmlFile: "${basedir}/test/res/testng.xml"
+    
+    # Detailed metadata
+    
+    scm
+        connection:          "scm:svn:http://sweetxml.googlecode.com/svn/trunk/core-java"
+        developerConnection: "scm:svn:https://sweetxml.googlecode.com/svn/trunk/core-java"

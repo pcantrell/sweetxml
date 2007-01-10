@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <title>SweetXML User Guide - Ant Integration</title>
+    <style type="text/css">@import "../sweetxml.css";</style>
+    <meta name="generator" content="Paul"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>SweetXML User Guide</h1>
+
+<div class="navbar">
+    <a href="../index.html">Home</a> | 
+    <a href="../faq.html">FAQ</a> |
+    <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+    <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+    <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
+    <a href="http://groups.google.com/group/sweetxml">Support</a>
+</div>
+
+
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+<h2>Ant Integration</h2>
+
+<ul class="pagecontents">
+    <li><a href="#ant-task">SweetXML Ant Task</a></li>
+    <li><a href="#ant-build">Using SweetXML for the Build File</a></li>
+</ul>
+
+
+<h3><a name="ant-task">SweetXML Ant Task</a></h3>
+<p>
+SweetXML provides an Ant task for copying and converting files between XML and SweetXML. This allows you convert any XML file which is bundled into you app at build time to SweetXML, without any code or tools changes. The task typically runs as part of a <code>copy-resources</code> target.
+</p>    
+<p>
+Typical usage might look like this:
+</p>
+<table class="example-table" cellspacing="0">
+<tr><th>build.xml</th></tr>
+<tr valign="top">
+<td>&lt;taskdef name="sweetxml" classname="net.innig.sweetxml.ant.SweetXmlTask"&gt;
+    &lt;classpath&gt;
+        &lt;fileset dir="${lib.dir}" includes="sweetxml-*.jar"/&gt;
+    &lt;/classpath&gt;
+&lt;/taskdef&gt;
+
+&lt;sweetxml
+    &lt;inputFileSet dir="${res.dir}" includes="*.sxml"/&gt;
+&lt;/sweetxml&gt;</td>
+</tr>
+</table>
+
+<p>
+Alternatively, if you set Ant up to recognize SweetXML build files (see <a href="#ant-build">below</a>), your build might include something like this:
+</p>    
+<table class="example-table" cellspacing="0">
+<tr><th>build.sxml</th></tr>
+<tr valign="top">
+<td>taskdef name="sweetxml" classname="net.innig.sweetxml.ant.SweetXmlTask"
+    classpath
+        fileset dir="${lib.dir}" includes="sweetxml-*.jar"
+
+sweetxml
+    inputFileSet dir="${res.dir}" includes="*.sxml"</td>
+</tr>
+</table>
+<p>
+The Ant task converts SweetXML to XML by default, but can convert in either direction. It will attempt to convert any files you include in the <code>inputFileSet</code>, regardless of their file extension. It is therefore import to include only the files in need of conversion (thus <code>includes="*.sxml"</code> in the example above).
+</p>
+<p>
+The task accepts one nested element, which is required:
+</p>
+<table class="example-table" cellspacing=0>
+    <tr><th>Nested Element</th><th>Description</th><th>Default</th></tr>
+    <tr valign="top">
+        <td class="example">inputFileSet</td>
+        <td class="description">The set of files to convert. Accepts all the parameters of a normal <a href="http://ant.apache.org/manual/CoreTypes/fileset.html">Ant FileSet</a>.</td>
+        <td><i>required</i></td>
+    </tr>
+</table>
+<p>
+The task accepts the following attributes:
+</p>
+<table class="example-table" cellspacing="0">
+    <tr><th>Attribute</th><th>Description</th><th>Default</th></tr>
+    <tr valign="top">
+        <td class="example">mode</td>
+        <td class="description">Conversion mode. Possible values are:
+            <ul>
+                <li><b>s2x</b>: convert SweetXML to XML</li>
+                <li><b>x2s</b>: convert XML to SweetXML</li>
+            </ul>
+        </td>
+        <td>s2x</td>
+    </tr>
+    <tr valign="top">
+        <td class="example">outputDir</td>
+        <td class="description">Determines where the converted files will go.</td>
+        <td><i>same dir as inputFileSet</i></td>
+    </tr>
+    <tr valign="top">
+        <td class="example">overwrite</td>
+        <td class="description">If true, the task will overwrite existing files. If false, the task will skip existing files without failing.</td>
+        <td>true</td>
+    </tr>
+    <tr valign="top">
+        <td class="example">deleteSources</td>
+        <td class="description">If true, the task will remove the input file after converting it. This option is useful if you are converting files in place in a staging directory. Use with caution!</td>
+        <td>false</td>
+    </tr>
+    <tr valign="top">
+        <td class="example">quiet</td>
+        <td class="description">Reduces the output of the task to critical error messages.</td>
+        <td>false</td>
+    </tr>
+</table>
+<p>
+You may find the <a href="cli.html">command-line interface</a> useful for performing the initial conversion of project files from XML to SweetXML.
+</p>
+
+
+<h3><a name="ant-build">Using SweetXML for the Build File</a></h3>
+<p>
+Ant does not have native support for SweetXML. However, it is possible (and much more readable!) to use a <code>build.sxml</code> instead of a <code>build.xml</code>. To do this, you will need to use a wrapper script for Ant which converts your <code>build.sxml</code>, then passes control to Ant.
+</p>
+<p>
+The SweetXML distribution includes an Ant wrapper script for OS X, Linux, and other UNIX-y OSes, in <code>bin/</code>.     (Those of you using MS-DOS are currently on your own; if anybody wants to submit an <code>ant.bat</code> wrapper script, it would be quite welcome!)
+</p>
+<p>
+Place this script in your path in front of Ant's bin directory, and ant will automatically use <code>build.sxml</code> if it is present. <i>Be careful — if <code>build.sxml</code> exists, it will overwrite <code>build.xml</code>!</i>
+</p>
+<p>
+The wrapper script requires that you either have <code>ant</code> and <code>sweetxml</code> in your path, or that you set the environment variables <code>ANT_HOME</code> and <code>SWEETXML_HOME</code>.
+</p>
+
+
+<div class="next">
+Next section: <a href="maven.html">Maven Integration</a>
+</div>
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+
+<div class="footer">
+    <div class="navbar">
+        <a href="../index.html">Home</a> | 
+        <a href="../faq.html">FAQ</a> |
+        <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+        <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+        <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
+        <a href="http://groups.google.com/group/sweetxml">Support</a>
+    </div>
+</div>
+
+<div class="opsipod">
+    <a href="http://innig.net/?logo"><img border="0" src="http://innig.net/images/innig_FFFFFF.gif" alt="innig"/></a>
+</div>
+
+</body>
+</html>
+

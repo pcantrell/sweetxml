@@ -1,0 +1,7 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+suite name="SweetXML Regression Tests" verbose=1
+    test name="Converter tests"
+        classes
+            class name="net.innig.sweetxml.ConverterTestFactory"
+

@@ -1,0 +1,88 @@
+basic
+————————
+"Pogo Possum"
+————————
+Pogo Possum
+—————————————————————————————————————————————————————
+
+nested
+————————
+name
+    "Pogo Possum"
+————————
+<name>Pogo Possum
+</name>
+—————————————————————————————————————————————————————
+
+multiple nested vs. multiline
+————————
+name
+    "Pogo"
+    "Possum"
+description
+    "Inhabitant of Okefenokee Swamp, and
+    star of the comic strip of the
+    same name."
+————————
+<name>PogoPossum
+</name>
+<description>Inhabitant of Okefenokee Swamp, and
+    star of the comic strip of the
+    same name.
+</description>
+—————————————————————————————————————————————————————
+
+escaped quotes
+————————
+name: "Hayao &quot;Ghibli&quot; Miyazaki"
+remark: 'We&apos;re making a mystery here,
+    so make it mysterious.'
+————————
+<name>Hayao &quot;Ghibli&quot; Miyazaki</name>
+<remark>We&apos;re making a mystery here,
+    so make it mysterious.</remark>
+—————————————————————————————————————————————————————
+
+unescaped quotes
+————————
+name: 'Hayao "Ghibli" Miyazaki'
+remark: "We're making a mystery here,
+    so make it mysterious."
+————————
+<name>Hayao "Ghibli" Miyazaki</name>
+<remark>We're making a mystery here,
+    so make it mysterious.</remark>
+—————————————————————————————————————————————————————
+
+
+same line
+————————
+name: "Pogo Possum"
+————————
+<name>Pogo Possum</name>
+—————————————————————————————————————————————————————
+
+
+same line unquoted
+————————
+name: "Pogo Possum"
+species: opossum
+————————
+<name>Pogo Possum</name>
+<species>opossum</species>
+—————————————————————————————————————————————————————
+
+
+nested tag vs. nested text
+————————
+marco
+    "polo"
+marco
+    polo
+————————
+<marco>polo
+</marco>
+<marco>
+    <polo></polo>
+</marco>
+—————————————————————————————————————————————————————

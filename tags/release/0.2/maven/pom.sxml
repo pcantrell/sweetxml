@@ -1,0 +1,45 @@
+project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance" xsi/schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+    modelVersion: 4.0.0
+    
+    # Basic metadata
+    
+    groupId:    net.innig.sweetxml
+    artifactId: sweetxml-maven
+    packaging:  maven-plugin
+    name:       "SweetXML Maven plugin"
+    url:        "http://innig.net/software/sweetxml/"
+    
+    parent
+        groupId:    net.innig.sweetxml
+        artifactId: parent-pom
+        version:    0.2
+    
+    description
+        "Maven plugin to convert files to and from SweetXML."
+
+    # Build
+
+    dependencies
+        dependency
+            groupId:    org.apache.maven
+            artifactId: maven-plugin-api
+            version:    2.0
+        dependency
+            groupId:    net.innig.sweetxml
+            artifactId: sweetxml
+            version:    0.2
+        dependency
+            groupId:    org.apache.maven
+            artifactId: maven-project
+            version:    2.0
+        dependency
+            groupId:    org.apache.maven
+            artifactId: maven-model
+            version:    2.0
+    
+    # Detailed metadata
+    
+    scm
+        connection:          "scm:svn:http://sweetxml.googlecode.com/svn/trunk/maven"
+        developerConnection: "scm:svn:https://sweetxml.googlecode.com/svn/trunk/maven"
+    
