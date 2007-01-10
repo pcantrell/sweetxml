@@ -20,7 +20,7 @@ if [ $(svn status | wc -l) -gt 0 ]; then
     exit 1
 fi
 
-./housekeeping/bundle-dish.sh "$version"
+./housekeeping/bundle-dist.sh "$version" || exit 1
 
 echo
 echo "Ready to release version:   $version"
