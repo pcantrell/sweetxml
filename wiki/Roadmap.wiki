@@ -1,37 +1,40 @@
 #summary Rough milestones for the project.
 
-= Current Release =
+= Past Releases =
 
-== Release 0.1 ==
+== Version 0.1 ==
   * First draft of syntax _(done)_
   * Converters in both directions _(done)_
   * Command-line interface _(done)_
   * User guide _(done)_
 
-= In Development =
+= Latest Release =
 
-== Release 0.2 ==
+== Version 0.2 ==
   * Ant plugin _(done)_
   * Maven plugin  _(done)_
   * Improved XML -> SweetXML conversion _(done)_
   * Regression tests for core converter code  _(done)_
   * Remove backslash escaping _(done)_
 
-= Future Releases =
+= In Development =
 
-== Release 0.3 ==
+== Version 0.3 ==
   * Support for multi-line tags (for numerous attributes)
   * Possible support for multiple tags on a single line
 
-== Release 0.4 ==
+= Future Releases =
+
+== Version 0.4 ==
   * Consider document preamble with version number
   * Consider multiple encodings
 
-== Release 0.x ==
+== Version 0.x ==
   * I18N
   * ???
 
-== Release 1.0 ==
+== Version 1.0 ==
   * Syntax is stable, and ready to be saddled with backward compatibility
   * Syntax is standardized in a specification
   * All significant bugs fixed
+
