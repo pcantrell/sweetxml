@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <title>SweetXML User Guide - Adding SweetXML Support to Your App</title>
+    <style type="text/css">@import "../sweetxml.css";</style>
+    <meta name="generator" content="Paul"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>SweetXML User Guide</h1>
+
+<div class="navbar">
+    <a href="../index.html">Home</a> | 
+    <a href="../faq.html">FAQ</a> |
+    <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+    <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+    <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
+    <a href="http://groups.google.com/group/sweetxml">Support</a>
+</div>
+
+
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+<h2>Adding SweetXML Support to Your App</h2>
+
+<p>
+Detailed docs on this are forthcoming. In brief, you use an instance of <code>net.innig.sweetxml.SweetToXmlConverter</code> to turn a SweetXML input source into an input source containing plain old XML. The <code>SweetToXmlConverter</code> can map between any combination of a <code>String</code>, <code>Reader</code>, <code>InputStream</code>, or SAX <code>InputSource</code>, which should allow you to interface with just about any XML parser.
+</p>
+<p>
+Your XML parsing code probably has a line that looks something like this:
+</p>
+<pre>mySaxParser.parse(myInput, mySaxHandler);</pre>
+<p>
+Before parsing the normal XML, look first for the file extension <code>.sxml</code>. If it exists, parse it like this:
+</p>
+<pre>mySaxParser.parse(
+    new SweetToXmlConverter(myInput).getResultInputSource(),
+    mySaxHandler);</pre>
+<p>
+And your're done! This example uses SAX, but a very similar approach works with other parsers.
+</p>
+
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+
+<div class="footer">
+    <div class="navbar">
+        <a href="../index.html">Home</a> | 
+        <a href="../faq.html">FAQ</a> |
+        <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+        <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+        <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
+        <a href="http://groups.google.com/group/sweetxml">Support</a>
+    </div>
+</div>
+
+<div class="opsipod">
+    <a href="http://innig.net/?logo"><img border="0" src="http://innig.net/images/innig_FFFFFF.gif" alt="innig"/></a>
+</div>
+
+</body>
+</html>
+

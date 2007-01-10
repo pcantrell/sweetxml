@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <title>SweetXML User Guide - Command-Line Interface</title>
+    <style type="text/css">@import "../sweetxml.css";</style>
+    <meta name="generator" content="Paul"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>SweetXML User Guide</h1>
+
+<div class="navbar">
+    <a href="../index.html">Home</a> | 
+    <a href="../faq.html">FAQ</a> |
+    <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+    <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+    <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
+    <a href="http://groups.google.com/group/sweetxml">Support</a>
+</div>
+
+
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+<h2>Command-Line Interface</h2>
+
+<ul class="pagecontents">
+    <li><a href="#options">Options</a></li>
+    <li><a href="#examples">Examples</a></li>
+</ul>
+
+<p>
+A script for running the command-line interface lives in:
+</p>
+<pre><i>sweetxml-install-path</i>/bin/sweetxml</pre>
+
+<h3><a name="options">Options</a></h3>
+<table class="example-table" cellspacing="0">
+<tr valign="top">
+<td>-x2s</td>
+<td class="description">Convert XML to SweetXML.</td>
+</tr>
+<tr valign="top">
+<td>-s2x</td>
+<td class="description">Convert SweetXML to XML.</td>
+</tr>
+<tr valign="top">
+<td><i>file</i></td>
+<td class="description">Convert <i>file</i> to a new file with the appropriate extension, in the same directory as the input.</td>
+</tr>
+<tr valign="top">
+<td><i>dir</i></td>
+<td class="description">Scan <i>dir</i> for files with the appropriate extension (either <code>.xml</code> or <code>.sxml</code>, depending on whether <code>-x2s</code> or <code>-s2x</code> is specified), converting each.</td>
+</tr>
+<tr valign="top">
+<td>-</td>
+<td class="description">Convert standard input to standard output.</td>
+</tr>
+</table>
+
+<h3><a name="examples">Examples</a></h3>
+<p>
+To convert specific files from XML to SweetXML:
+</p>
+<pre>sweetxml -x2s somefile.xml anotherfile.xml</pre>
+<p>
+This creates two new files named <code>somefile.sxml</code> and  <code>anotherfile.sxml</code>.
+</p>
+<p>
+To convert files from SweetXML to XML:
+</p>
+<pre>sweetxml -s2x somefile.sxml anotherfile.sxml</pre>
+<p>
+This creates two new files named <code>somefile.xml</code> and  <code>anotherfile.xml</code>.
+</p>
+<p>
+To recursively scan a directory, converting all files ending in <code>.xml</code> to SweetXML:
+</p>
+<pre>sweetxml -x2s somedir</pre>
+<p>
+And the reverse:
+</p>
+<pre>sweetxml -s2x somedir</pre>
+<p>
+The converter also provides a stdin / stdout mode, useful for piping. For example, you might print on online XML document formatted as SweetXML as follows:
+</p>
+<pre>curl 'http://foo/bar/somexmldoc' | sweetxml -x2s - | lpr</pre>
+
+
+
+<div class="next">
+Next section: <a href="ant.html">Ant Integration</a>
+</div>
+<div class="toc"><a href="index.html">Table of Contents</a></div>
+
+
+<div class="footer">
+    <div class="navbar">
+        <a href="../index.html">Home</a> | 
+        <a href="../faq.html">FAQ</a> |
+        <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+        <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+        <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
+        <a href="http://groups.google.com/group/sweetxml">Support</a>
+    </div>
+</div>
+
+<div class="opsipod">
+    <a href="http://innig.net/?logo"><img border="0" src="http://innig.net/images/innig_FFFFFF.gif" alt="innig"/></a>
+</div>
+
+</body>
+</html>
+

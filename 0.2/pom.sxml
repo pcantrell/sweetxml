@@ -1,0 +1,73 @@
+project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance" xsi/schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+    modelVersion: 4.0.0
+    
+    groupId:    net.innig.sweetxml
+    artifactId: parent-pom
+    version:    0.2
+    packaging:  pom
+    name:       "SweetXML parent POM"
+    url:        "http://innig.net/software/sweetxml/"
+    
+    repositories
+        repository
+            id: ibiblio
+            url: "http://mirrors.ibiblio.org/pub/mirrors/maven2"
+            snapshots
+                enabled: false
+    
+    build
+        directory:             "${basedir}/build"
+        sourceDirectory:       "${basedir}/src/java"
+        scriptSourceDirectory: "${basedir}/src/scripts"
+        testSourceDirectory:   "${basedir}/test/java"
+        outputDirectory:       "${basedir}/build/classes"
+        testOutputDirectory:   "${basedir}/build/test-classes"
+        
+        plugins
+            plugin
+                groupId: org.apache.maven.plugins
+                artifactId: maven-compiler-plugin
+                configuration
+                    source: 1.5
+                    target: 1.5
+                    encoding: utf-8
+        
+            plugin
+                groupId: org.apache.maven.plugins
+                artifactId: maven-resources-plugin
+                configuration
+                    encoding: utf-8
+            
+        resources
+            resource
+                filtering: true
+                directory: "${basedir}/src/res"
+        
+    dependencies
+        dependency
+            groupId:    org.testng
+            artifactId: testng
+            version:    5.1
+            scope:      test
+            classifier: jdk15
+    
+    licenses
+        license
+            name: "New BSD License"
+            url:  "http://www.opensource.org/licenses/bsd-license.php"
+            distribution: repo
+            
+    organization
+        name: "Paul Cantrell"
+        url:  "http://innig.net"
+
+    issueManagement
+        system: "Google Code"
+        url:    "http://code.google.com/p/sweetxml/issues/list"
+    
+    distributionManagement
+        repository
+            id:   "innig.net"
+            name: "innig.net"
+            url:  "file://${user.home}/innig/software/maven-repository/"
+

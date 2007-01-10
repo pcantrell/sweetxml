@@ -1,0 +1,129 @@
+basic
+————————
+Pogo Possum
+————————
+"Pogo Possum"
+—————————————————————————————————————————————————————
+
+nested
+————————
+<name>
+    Pogo Possum
+</name>
+————————
+name
+    "Pogo Possum"
+—————————————————————————————————————————————————————
+
+multiline
+————————
+<description>
+    Inhabitant of Okefenokee Swamp, and
+    star of the comic strip of the
+    same name.
+</description>
+————————
+description
+    "Inhabitant of Okefenokee Swamp, and
+    star of the comic strip of the
+    same name."
+—————————————————————————————————————————————————————
+
+quote type autoselect
+————————
+<name>Hayao "Ghibli" Miyazaki</name>
+<remark>We're making a mystery here,
+    so make it mysterious.</remark>
+<example-film>"Howl's Moving Castle"</example-film>
+————————
+name: 'Hayao "Ghibli" Miyazaki'
+remark: "We're making a mystery here,
+    so make it mysterious."
+example-film: "&quot;Howl's Moving Castle&quot;"
+—————————————————————————————————————————————————————
+
+same line
+————————
+<name>Pogo Possum</name>
+————————
+name: "Pogo Possum"
+—————————————————————————————————————————————————————
+
+
+same line unquoted
+————————
+<name>Pogo Possum</name>
+<species>opossum</species>
+————————
+name: "Pogo Possum"
+species: opossum
+—————————————————————————————————————————————————————
+
+
+nested tag vs. nested text
+————————
+<marco>
+    polo
+</marco>
+<marco>
+    <polo/>
+</marco>
+————————
+marco
+    "polo"
+marco
+    polo
+—————————————————————————————————————————————————————
+
+
+CDATA
+————————
+<![CDATA[
+    Musn't forget to "escape" anything & everything!
+]]>
+————————
+"
+    Musn't forget to &quot;escape&quot; anything &amp; everything!
+"
+—————————————————————————————————————————————————————
+
+
+CDATA quote selection
+————————
+<![CDATA[
+    apostrophe: '
+]]>
+<![CDATA[
+    quote: "
+]]>
+————————
+"
+    apostrophe: '
+"
+'
+    quote: "
+'
+—————————————————————————————————————————————————————
+
+CDATA and raw text mixed
+————————
+Here is some CDATA: <![CDATA[ This is it! ]]> ...and there it was.
+————————
+"Here is some CDATA:"
+" This is it! "
+"...and there it was."
+—————————————————————————————————————————————————————
+
+CDATA inside tag
+————————
+<tag><![CDATA[ same line ]]></tag>
+<tag>
+    <![CDATA[ next line ]]>
+</tag>
+<tag><![CDATA[no-quotes-necessary]]></tag>
+————————
+tag: " same line "
+tag
+    " next line "
+tag: no-quotes-necessary
+—————————————————————————————————————————————————————

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if [ "$SWEETXML_HOME" ]; then
+    sweetxml="$SWEETXML_HOME/bin/sweetxml"
+else
+    sweetxml=sweetxml
+fi
+
+if [ "$ANT_HOME" ]; then
+    ant="$ANT_HOME/bin/ant"
+else
+    ant=ant
+fi
+
+unset generated_buildfile
+if [ "$1" == "--xml" ]; then
+    shift
+else
+    if [ -f build.sxml ]; then
+        echo "Converting build.sxml..."
+        generated_buildfile=build.xml
+        if [ -f "${generated_buildfile}" ]; then
+            unset generated_buildfile
+        fi
+        "$sweetxml" --overwrite build.sxml || exit 1
+        echo "Launching Ant..."
+    fi
+fi
+
+"$ant" "$@"
+result=${PIPESTATUS[0]}
+if [ "${generated_buildfile}" ]; then
+    echo "Cleaning generated ${generated_buildfile}."
+    rm "${generated_buildfile}"
+fi
+exit $result
+
