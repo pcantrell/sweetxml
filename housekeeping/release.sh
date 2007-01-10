@@ -35,8 +35,9 @@ svn copy \
     "https://sweetxml.googlecode.com/svn/tags/release/$version" \
     -m "Tagging release $version" || exit 1
 
-cd /tmp    
-curl 'http://support.googlecode.com/svn/trunk/scripts/googlecode-upload.py' >/tmp/google-upload.py
-for f in "sweetxml-$version.zip" "sweetxml-$version.tar.gz"; do
-    python /tmp/google-upload.py -s "SweetXML $version" -p sweetxml -l Featured -u paul.cantrell "$f" || exit 1
-done
+# cd /tmp    
+# curl 'http://support.googlecode.com/svn/trunk/scripts/googlecode-upload.py' >/tmp/google-upload.py
+# for f in "sweetxml-$version.zip" "sweetxml-$version.tar.gz"; do
+#     python /tmp/google-upload.py -s "SweetXML $version" -p sweetxml -l Featured -u paul.cantrell "$f" || exit 1
+# done
+
