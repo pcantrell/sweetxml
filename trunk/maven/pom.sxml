@@ -12,7 +12,7 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     parent
         groupId:    net.innig.sweetxml
         artifactId: parent-pom
-        version:    0.2-SNAPSHOT
+        version:    0.2
     
     description
         "Maven plugin to convert files to and from SweetXML."
@@ -27,7 +27,7 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
         dependency
             groupId:    net.innig.sweetxml
             artifactId: sweetxml
-            version:    0.2-SNAPSHOT
+            version:    0.2
         dependency
             groupId:    org.apache.maven
             artifactId: maven-project
