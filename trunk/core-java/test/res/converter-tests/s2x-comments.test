@@ -1,0 +1,72 @@
+simple comment
+————————
+# For now, comments are not translated.
+————————
+—————————————————————————————————————————————————————
+
+
+indented comment
+————————
+things
+    # there are so many things
+and
+    things
+    # they all are breaking things
+    things
+    # all the things that you have
+    things
+    # are they things that you need?
+————————
+<things></things>
+<and>
+    <things></things>
+    <things></things>
+    <things></things>
+</and>
+—————————————————————————————————————————————————————
+
+
+comment on same line
+————————
+things # and things and things and
+things
+————————
+<things></things>
+<things></things>
+—————————————————————————————————————————————————————
+
+
+comment on same line with attributes
+————————
+things quantity="so many" # and things and things and
+things
+————————
+<things quantity="so many"></things>
+<things></things>
+—————————————————————————————————————————————————————
+
+
+comment on same line with text
+————————
+things : "and things"# and things and
+things
+————————
+<things>and things</things>
+<things></things>
+—————————————————————————————————————————————————————
+
+
+multiline with comment
+————————
+pet                     # Declaring a pet.
+| name="Luke"           # It's Luke. He's a big fella.
+
+# Here is some information about Luke.
+# Intervening comments are OK.
+
+| type="cat"            # A black one. Quite charming.
+| status="very_clumsy"  # Falls off the counter, though. Poor guy.
+
+————————
+<pet name="Luke" type="cat" status="very_clumsy"></pet>
+—————————————————————————————————————————————————————

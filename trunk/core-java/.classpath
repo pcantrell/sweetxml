@@ -4,5 +4,7 @@
 	<classpathentry kind="src" path="test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="M2_REPO/org/testng/testng/5.1/testng-5.1-jdk15.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/antlr/stringtemplate/3.0/stringtemplate-3.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/antlr/antlr/3.0b5/antlr-3.0b5.jar"/>
 	<classpathentry kind="output" path="build/eclipse"/>
 </classpath>

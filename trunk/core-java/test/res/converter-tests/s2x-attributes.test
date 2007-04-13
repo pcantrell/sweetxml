@@ -17,3 +17,45 @@ pet type=cat name="Mr. Man"
 <pet type="cat" name="Luke" status="very_clumsy"></pet>
 <pet type="cat" name="Mr. Man"></pet>
 —————————————————————————————————————————————————————
+
+
+multiline
+————————
+pet
+| type=cat
+| name=Luke
+| status=very_clumsy
+    nags
+	| name="Totoro"
+pet type=cat name="Totoro"
+————————
+<pet type="cat" name="Luke" status="very_clumsy">
+    <nags name="Totoro"></nags>
+</pet>
+<pet type="cat" name="Totoro"></pet>
+—————————————————————————————————————————————————————
+
+
+multiline with funny indentation
+————————
+pet
+	| type=cat
+|name=Luke
+		 |       status=very_clumsy
+    nags 
+ |     
+ |
+|
+
+            |  name=                       "Totoro"
+pet type=cat name="Totoro"
+|
+    |
+        |
+————————
+<pet type="cat" name="Luke" status="very_clumsy">
+    <nags name="Totoro"></nags>
+</pet>
+<pet type="cat" name="Totoro"></pet>
+—————————————————————————————————————————————————————
+

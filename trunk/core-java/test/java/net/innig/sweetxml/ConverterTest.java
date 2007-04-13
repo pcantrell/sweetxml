@@ -51,11 +51,11 @@ public class ConverterTest
 
     private String showInvisibles(String s)
         {
-        return s.replaceAll(" ", ".")
-                .replaceAll("\t", "[tab]")
-                .replaceAll("\n", "[CR]");
-//        return s.replaceAll(" ", "‧")
-//                .replaceAll("\t", "➞")
-//                .replaceAll("\n", "↩");
+//        return s.replaceAll(" ", ".")
+//                .replaceAll("\t", "[tab]")
+//                .replaceAll("\n", "[CR]");
+        return s.replaceAll(" ", "‧")
+                .replaceAll("\t", "➞")
+                .replaceAll("\n", "↩");
         }
     }
