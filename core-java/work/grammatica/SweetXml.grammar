@@ -1,0 +1,82 @@
+%header%
+
+GRAMMARTYPE = "LL"
+
+
+%tokens%
+
+NAME_START = <<[A-Za-z_\\xC0-\\xD6\\xD8-\\xF6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD]>>
+
+NAME_CONT = <<[\\-\\.0-9\\xB7\\u0300-\\u036F\\u203F-\\u2040]*>>
+
+DQUOTE = <<["]>>
+SQUOTE = <<[']>>
+NOT_DQUOTE = <<[^"]>>
+NOT_SQUOTE = <<[^']>>
+
+S = <<[ \t]>>
+
+EOL = <<\r\n|\r|\n>>
+NOT_EOL = <<[^\r\n]>>
+
+EQ = "="
+HASH = "#"
+
+%productions%
+
+sweetXml
+    = line (EOL line)*
+    ;
+
+line
+    = indent?
+      element?
+      S*
+      comment?
+    ;
+
+indent
+    = S+
+    ;
+
+element
+    = tag
+    | quotedText;
+    
+tag
+    = name attributes? S* inlineText?
+    ;
+
+attributes
+    = S+ attribute attributes?
+    ;
+
+attribute
+    =  name S* EQ S* text
+    ;
+    
+inlineText
+    = "=" S* (text)?
+    ;
+
+text
+    = quotedText
+    | unquotedText
+    ;
+
+quotedText
+    = DQUOTE NOT_DQUOTE* DQUOTE
+    | SQUOTE NOT_SQUOTE* SQUOTE
+    ;
+    
+unquotedText
+    = (NAME_START | NAME_CONT)+
+    ;
+
+comment
+    = HASH NOT_EOL*;
+    
+name
+    = NAME_START (NAME_START | NAME_CONT)*
+    ;
+

@@ -69,7 +69,7 @@ public class SweetToXmlConverter
         private ConverterInput in;
         private StringBuilder xml;
         private LinkedList<String> tagStack, indentStack;
-        private boolean indenting;
+        private boolean indenting, insideTag;
         private StringBuilder indentWork;
         
         public Conversion()
@@ -133,6 +133,14 @@ public class SweetToXmlConverter
                         in.read(); // skip the quote
                         readQuotedText(c);
                         break;
+                        
+                    case '|':
+                        if(!insideTag)
+                            throw new SweetXmlParseException(in.getPosition(),
+                                "Found a tag continuation symbol (\"|\"), but no tag is open here");
+                        in.read(); // skip the bar
+                        readAttributes();
+                        break;
                     
                     default:
                         handleIndent();
@@ -185,6 +193,8 @@ public class SweetToXmlConverter
 
         private void handleIndent() throws IOException
             {
+            finishTag();
+            
             String indent = indentWork.toString();
             
             boolean first = true;
@@ -219,12 +229,19 @@ public class SweetToXmlConverter
             {
             closeAndPopTag();
             
+            insideTag = true;
             String tagIndent = indentWork.toString();
             String tagName = readName();
             tagStack.addFirst(tagName);
             xml.append(newline).append(tagIndent);
             xml.append('<').append(tagName);
             
+            readAttributes();
+            }
+
+        private void readAttributes()
+            throws IOException, SweetXmlParseException
+            {
             boolean subsequentText = false;
             while(true)
                 {
@@ -232,7 +249,9 @@ public class SweetToXmlConverter
                 int c = in.read();
                 if(c == ':')
                     subsequentText = true;
-                if(c == -1 || c == ':' || c == '\n')
+                if(c == '#')
+                    in.reset();
+                if(c == -1 || c == ':' || c == '\n' || c == '#')
                     break;
                 in.reset();
                 
@@ -246,11 +265,20 @@ public class SweetToXmlConverter
                 readText();
                 xml.append('"');
                 }
-            xml.append('>');
             if(subsequentText)
                 {
+                finishTag();
                 skipWhitespace(false);
                 readText();
+                }
+            }
+
+        private void finishTag()
+            {
+            if(insideTag)
+                {
+                xml.append('>');
+                insideTag = false;
                 }
             }
     
@@ -334,7 +362,7 @@ public class SweetToXmlConverter
         private String explainIndent(String indent)
             {
             if(indent.length() == 0)
-                return "the empty string";
+                return "no indentation";
             
             StringBuilder explanation = new StringBuilder();
             char curChar = indent.charAt(0);
