@@ -58,15 +58,14 @@ things
 
 multiline with comment
 ————————
-pet                     # Declaring a pet.
-| name="Luke"           # It's Luke. He's a big fella.
-
-# Here is some information about Luke.
-# Intervening comments are OK.
-
-| type="cat"            # A black one. Quite charming.
-| status="very_clumsy"  # Falls off the counter, though. Poor guy.
+    pet                     # Declaring a pet.
+    | name="Luke"           # It's Luke. He's a big fella.
+    |
+    | # Here is some information about Luke.
+    |
+    | type="cat"            # A black one. Quite charming.
+    | status="very_clumsy"  # Falls off the counter, though. Poor guy.
 
 ————————
-<pet name="Luke" type="cat" status="very_clumsy"></pet>
+    <pet name="Luke" type="cat" status="very_clumsy"></pet>
 —————————————————————————————————————————————————————
