@@ -256,11 +256,12 @@ public class SweetToXmlConverter
                 in.reset();
                 
                 xml.append(' ').append(readName());
-                skipWhitespace(false);
+                skipAttributeInternalWhitespace();
                 c = in.read();
                 if(c != '=')
-                    throw new SweetXmlParseException(in.getPosition(), "expected '=' while parsing tag attributes, but got '" + (char) c + "'");
-                skipWhitespace(false);
+                    throw new SweetXmlParseException(
+                        in.getPosition(), "expected '=' while parsing tag attributes, but got '" + (char) c + "'");
+                skipAttributeInternalWhitespace();
                 xml.append("=\"");
                 readText();
                 xml.append('"');
@@ -270,6 +271,37 @@ public class SweetToXmlConverter
                 finishTag();
                 skipWhitespace(false);
                 readText();
+                }
+            }
+        
+        private void skipAttributeInternalWhitespace() throws IOException
+            {
+            boolean continuationAllowed = false, continued = true;
+            while(true)
+                {
+                skipWhitespace(false);
+                switch(in.read())
+                    {
+                    case '\n':
+                        continuationAllowed = true;
+                        continued = false;
+                        break;
+                        
+                    case '|':
+                        if(!continuationAllowed)
+                            throw new SweetXmlParseException(
+                                in.getPosition(), "'|' may only appear as the first character on a line");
+                        continuationAllowed = false;
+                        continued = true;
+                        break;
+                    
+                    default:
+                        in.reset();
+                        if(!continued)
+                            throw new SweetXmlParseException(
+                                in.getPosition(), "Attribute on previous line was not complete. Use '|' here to continue the tag, or complete the attribute on the previous line.");
+                        return;
+                    }
                 }
             }
 
@@ -349,7 +381,7 @@ public class SweetToXmlConverter
     
         private boolean isSxmlNameCharacter(int c)
             { return Patterns.charMatches(c, Patterns.xmlNameChar) || c == '/'; }
-    
+        
         private void skipWhitespace(boolean skipNewlines) throws IOException
             {
             int c;

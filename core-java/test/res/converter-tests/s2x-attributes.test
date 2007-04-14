@@ -59,3 +59,32 @@ pet type=cat name="Totoro"
 <pet type="cat" name="Totoro"></pet>
 —————————————————————————————————————————————————————
 
+
+multiline with split attributes
+————————
+pet
+	| type=
+	|cat
+|name
+|=Luke
+		 |       status=very_clumsy
+    nags 
+ |     
+ |
+|
+            |  name=                       "Totoro"
+pet type=
+| cat 
+| name
+| =
+|
+| "Totoro"
+|
+    |
+        |
+————————
+<pet type="cat" name="Luke" status="very_clumsy">
+    <nags name="Totoro"></nags>
+</pet>
+<pet type="cat" name="Totoro"></pet>
+—————————————————————————————————————————————————————

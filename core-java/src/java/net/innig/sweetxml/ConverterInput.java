@@ -11,7 +11,8 @@ class ConverterInput
     {
     private BufferedReader in;
     private String sourceName;
-    private int line = 1, column = 0;
+    private int line = 0, column = 0;
+    private boolean eol = true, markEol;
     private int markLine, markColumn;
     
     public ConverterInput(Reader reader, String sourceName)
@@ -62,6 +63,7 @@ class ConverterInput
         throws IOException
         {
         in.mark(count);
+        markEol = eol;
         markLine = line;
         markColumn = column;
         }
@@ -70,6 +72,7 @@ class ConverterInput
         throws IOException
         {
         in.reset();
+        eol = markEol;
         line = markLine;
         column = markColumn;
         }
@@ -77,6 +80,13 @@ class ConverterInput
     public int countChar(int c)
         throws IOException
         {
+        if(eol)
+            {
+            line++;
+            column = 0;
+            eol = false;
+            }
+        
         if(c == '\r')
             {
             skip('\n', false); // \r\n is one line break, not two
@@ -84,12 +94,9 @@ class ConverterInput
             }
         
         if(c == '\n')
-            {
-            line++;
-            column = 0;
-            }
-        else
-            column++;
+            eol = true;
+        
+        column++;
         
         return c;
         }
