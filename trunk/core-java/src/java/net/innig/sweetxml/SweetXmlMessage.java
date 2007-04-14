@@ -36,18 +36,17 @@ public enum SweetXmlMessage
             ResourceBundle
                 .getBundle(getClass().getName())
                 .getString(name()),
-            massageMessageArgs(args));
+            args);
         }
-
-    private Object[] massageMessageArgs(Object[] args)
+    
+    public static String formatChar(int c)
         {
-        for(int i = 0; i < args.length; i++)
-            if(args[i] instanceof Character)
-                {
-                char c = (Character) args[i];
-                if(c < ' ')
-                    args[i] = "\\x" + Integer.toHexString(0x100 | c);
-                }
-        return args;
+        if(c == -1)
+            return "EOF";
+        if(Character.isISOControl(c))
+            return "\\x" + Integer.toHexString(0x100 | c);
+        if(c != ' ' && Character.isWhitespace(c))
+            return "\\u" + Integer.toHexString(0x10000 | c).substring(1);
+        return String.valueOf(c);
         }
     }
