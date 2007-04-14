@@ -86,3 +86,25 @@ marco
     <polo></polo>
 </marco>
 —————————————————————————————————————————————————————
+
+
+endless double quote
+————————
+marco
+    "polo
+marco
+    polo
+————————
+!ENDLESS_QUOTE 2:5 []
+—————————————————————————————————————————————————————
+
+
+endless single quote
+————————
+marco
+    polo
+marco
+    'polo
+————————
+!ENDLESS_QUOTE 4:5 []
+—————————————————————————————————————————————————————

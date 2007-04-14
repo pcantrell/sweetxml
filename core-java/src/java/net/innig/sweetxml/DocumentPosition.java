@@ -30,4 +30,21 @@ public final class DocumentPosition
     @Override
     public String toString()
         { return sourceName + ':' + line + ':' + column; }
+    
+    @Override
+    public boolean equals(Object o)
+        {
+        if(!(o instanceof DocumentPosition))
+            return false;
+        DocumentPosition that = (DocumentPosition) o;
+        return this.getSourceName().equals(that.getSourceName())
+            && this.getLine() == that.getLine()
+            && this.getColumn() == that.getColumn();
+        }
+    
+    @Override
+    public int hashCode()
+        {
+        return sourceName.hashCode() * 231 + line * 17 + column;
+        }
     }

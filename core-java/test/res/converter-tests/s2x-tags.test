@@ -32,6 +32,29 @@ lakes
 —————————————————————————————————————————————————————
 
 
+nesting with mixed tabs
+————————
+rivers
+    mississippi
+    poudre
+    	north-fork
+lakes
+	superior
+	calhoun
+————————
+<rivers>
+    <mississippi></mississippi>
+    <poudre>
+    	<north-fork></north-fork>
+    </poudre>
+</rivers>
+<lakes>
+	<superior></superior>
+	<calhoun></calhoun>
+</lakes>
+—————————————————————————————————————————————————————
+
+
 nesting with misleading blanks
 ————————
 rivers
@@ -81,3 +104,12 @@ lakes
 </lakes>
 —————————————————————————————————————————————————————
 
+
+inconsistent indentation
+————————
+rivers
+      mississippi
+	  poudre
+————————
+!INCONSISTENT_INDENTATION 3:3 [6 spaces, 1 tab + 2 spaces]
+—————————————————————————————————————————————————————
