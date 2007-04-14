@@ -1,6 +1,7 @@
 package net.innig.sweetxml;
 
 import static net.innig.sweetxml.Patterns.newline;
+import static net.innig.sweetxml.SweetXmlMessage.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -136,8 +137,7 @@ public class SweetToXmlConverter
                         
                     case '|':
                         if(!insideTag)
-                            throw new SweetXmlParseException(in.getPosition(),
-                                "Found a tag continuation symbol (\"|\"), but no tag is open here");
+                            throw new SweetXmlParseException(in.getPosition(), CONTINUATION_OUTSIDE_TAG);
                         in.read(); // skip the bar
                         readAttributes();
                         break;
@@ -211,8 +211,9 @@ public class SweetToXmlConverter
             if(!indentStack.isEmpty() && !indent.startsWith(indentStack.getFirst()))
                 throw new SweetXmlParseException(
                     in.getPosition(),
-                    "Inconsistent indentation: expected a line starting with "
-                        + explainIndent(indentStack.getFirst()) + ", but got " + explainIndent(indent));
+                    INCONSISTENT_INDENTATION,
+                    explainIndent(indentStack.getFirst()),
+                    explainIndent(indent));
             
             indentStack.addFirst(indent);
             tagStack.addFirst(null);
@@ -259,8 +260,7 @@ public class SweetToXmlConverter
                 skipAttributeInternalWhitespace();
                 c = in.read();
                 if(c != '=')
-                    throw new SweetXmlParseException(
-                        in.getPosition(), "expected '=' while parsing tag attributes, but got '" + (char) c + "'");
+                    throw new SweetXmlParseException(in.getPosition(), EXPECTED_EQ_IN_ATTRIBUTE, (char) c);
                 skipAttributeInternalWhitespace();
                 xml.append("=\"");
                 readText();
@@ -276,6 +276,7 @@ public class SweetToXmlConverter
         
         private void skipAttributeInternalWhitespace() throws IOException
             {
+            DocumentPosition startPosition = in.getPosition();
             boolean continuationAllowed = false, continued = true;
             while(true)
                 {
@@ -289,8 +290,7 @@ public class SweetToXmlConverter
                         
                     case '|':
                         if(!continuationAllowed)
-                            throw new SweetXmlParseException(
-                                in.getPosition(), "'|' may only appear as the first character on a line");
+                            throw new SweetXmlParseException(in.getPosition(), CONTINUATION_OUTSIDE_TAG);
                         continuationAllowed = false;
                         continued = true;
                         break;
@@ -298,8 +298,7 @@ public class SweetToXmlConverter
                     default:
                         in.reset();
                         if(!continued)
-                            throw new SweetXmlParseException(
-                                in.getPosition(), "Attribute on previous line was not complete. Use '|' here to continue the tag, or complete the attribute on the previous line.");
+                            throw new SweetXmlParseException(startPosition, SEVERED_ATTRIBUTE);
                         return;
                     }
                 }
@@ -339,7 +338,7 @@ public class SweetToXmlConverter
                 {
                 int c = in.read();
                 if(c == -1)
-                    throw new SweetXmlParseException(quoteStart, "Unterminated quote");
+                    throw new SweetXmlParseException(quoteStart, ENDLESS_QUOTE);
                 if(c == quoteChar)
                     return;
                 if(c == '<')
@@ -368,7 +367,7 @@ public class SweetToXmlConverter
             StringBuilder name = new StringBuilder(32);
             int c;
             if(!isSxmlNameStartCharacter(c = in.read()))
-                throw new SweetXmlParseException(in.getPosition(), "expected name, but found non-name character '" + (char)c + "'");
+                throw new SweetXmlParseException(in.getPosition(), ILLEGAL_NAME_CHARACTER, (char) c);
             name.append((char) c);
             while(isSxmlNameCharacter(c = in.read()))
                 name.append((char) c);
@@ -394,7 +393,7 @@ public class SweetToXmlConverter
         private String explainIndent(String indent)
             {
             if(indent.length() == 0)
-                return "no indentation";
+                return INDENT_NONE.format();
             
             StringBuilder explanation = new StringBuilder();
             char curChar = indent.charAt(0);
@@ -406,17 +405,17 @@ public class SweetToXmlConverter
                     {
                     if(explanation.length() > 0)
                         explanation.append(" + ");
-                    explanation.append(curCount).append(' ');
+                    SweetXmlMessage charMsg;
                     if(curChar == ' ')
-                        explanation.append("space");
+                        charMsg = INDENT_SPACES;
                     else if(curChar == '\t')
-                        explanation.append("tab");
-                    else if(curChar <= 0xff)
-                        explanation.append("\\x").append(Integer.toHexString(0x100 + curChar).substring(1));
+                        charMsg = INDENT_TABS;
                     else
-                        explanation.append("\\u").append(Integer.toHexString(0x10000 + curChar).substring(1));
-                    if(curCount > 1)
-                        explanation.append("s");
+                        charMsg = INDENT_UNICODE;
+                    explanation.append(
+                        charMsg.format(
+                            curCount,
+                            Integer.toHexString(0x10000 | curChar).substring(1)));
                     
                     curChar = (char) c;
                     curCount = 0;
