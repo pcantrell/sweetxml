@@ -136,9 +136,9 @@ public class SweetToXmlConverter
                         break;
                         
                     case '|':
+                        in.read(); // skip the bar
                         if(!insideTag)
                             throw new SweetXmlParseException(in.getPosition(), CONTINUATION_OUTSIDE_TAG);
-                        in.read(); // skip the bar
                         readAttributes();
                         break;
                     
@@ -256,13 +256,14 @@ public class SweetToXmlConverter
                     break;
                 in.reset();
                 
-                xml.append(' ').append(readName());
-                skipAttributeInternalWhitespace();
+                String attrName = readName();
+                xml.append(' ').append(attrName);
+                skipAttributeInternalWhitespace(attrName);
                 c = in.read();
                 if(c != '=')
                     throw new SweetXmlParseException(
                         in.getPosition(), EXPECTED_EQ_IN_ATTRIBUTE, SweetXmlMessage.formatChar(c));
-                skipAttributeInternalWhitespace();
+                skipAttributeInternalWhitespace(attrName);
                 xml.append("=\"");
                 readText();
                 xml.append('"');
@@ -275,9 +276,11 @@ public class SweetToXmlConverter
                 }
             }
         
-        private void skipAttributeInternalWhitespace() throws IOException
+        private void skipAttributeInternalWhitespace(String attrName) throws IOException
             {
+            in.read();
             DocumentPosition startPosition = in.getPosition();
+            in.reset();
             boolean continuationAllowed = false, continued = true;
             while(true)
                 {
@@ -291,15 +294,15 @@ public class SweetToXmlConverter
                         
                     case '|':
                         if(!continuationAllowed)
-                            throw new SweetXmlParseException(in.getPosition(), CONTINUATION_OUTSIDE_TAG);
+                            throw new SweetXmlParseException(in.getPosition(), MISPLACED_CONTINUATION);
                         continuationAllowed = false;
                         continued = true;
                         break;
                     
                     default:
-                        in.reset();
                         if(!continued)
-                            throw new SweetXmlParseException(startPosition, SEVERED_ATTRIBUTE);
+                            throw new SweetXmlParseException(startPosition, SEVERED_ATTRIBUTE, attrName);
+                        in.reset();
                         return;
                     }
                 }
@@ -395,7 +398,7 @@ public class SweetToXmlConverter
         private String explainIndent(String indent)
             {
             if(indent.length() == 0)
-                return INDENT_NONE.format();
+                throw new IllegalArgumentException("explainIndent() called with empty indent string");
             
             StringBuilder explanation = new StringBuilder();
             char curChar = indent.charAt(0);

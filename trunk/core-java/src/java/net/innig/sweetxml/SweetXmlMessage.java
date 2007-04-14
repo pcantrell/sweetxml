@@ -13,7 +13,6 @@ public enum SweetXmlMessage
     CONTINUATION_OUTSIDE_TAG,
     MISPLACED_CONTINUATION,
     
-    INDENT_NONE,
     INDENT_SPACES,
     INDENT_TABS,
     INDENT_UNICODE,
@@ -44,9 +43,9 @@ public enum SweetXmlMessage
         if(c == -1)
             return "EOF";
         if(Character.isISOControl(c))
-            return "\\x" + Integer.toHexString(0x100 | c);
+            return "\\x" + Integer.toHexString(0x100 | c).substring(1);
         if(c != ' ' && Character.isWhitespace(c))
-            return "\\u" + Integer.toHexString(0x10000 | c).substring(1);
-        return String.valueOf(c);
+            return "\\u" + Integer.toHexString(0xFFFF0000 | c).substring(4);
+        return String.valueOf((char) c);
         }
     }

@@ -6,16 +6,27 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.testng.annotations.Factory;
 
 public class ConverterTestFactory
     {
+    private static final Pattern parseErrorPat = Pattern.compile("\\s*!\\s*([A-Z0-9_]+)\\s+(\\d+):(\\d+)\\s+(\\[.*\\])\\s*");
+    
     @Factory
     public Object[] createConverterTests()
         throws IOException
         {
+        Set<SweetXmlMessage> unusedMessages = EnumSet.allOf(SweetXmlMessage.class);
+        unusedMessages.remove(SweetXmlMessage.INDENT_SPACES);
+        unusedMessages.remove(SweetXmlMessage.INDENT_TABS);
+        unusedMessages.remove(SweetXmlMessage.INDENT_UNICODE);
+        
         List<ConverterTest> tests = new ArrayList<ConverterTest>();
         for(File testFile : new File("test/res/converter-tests/").listFiles())
             {
@@ -35,19 +46,44 @@ public class ConverterTestFactory
                 if(testName.length() == 0)
                     break;
                 
-                StringBuilder
-                    input = readChunk(testIn),
-                    expectedOutput = readChunk(testIn);
+                String
+                    name = fileName + ": " + testName,
+                    input = readChunk(testIn).toString(),
+                    expected = readChunk(testIn).toString();
                 
-                tests.add(
-                    new ConverterTest(
-                        fileName + ": " + testName,
-                        input.toString(),
-                        expectedOutput.toString(),
-                        mode));
+                if(expected.trim().startsWith("!"))
+                    {
+                    Matcher m = parseErrorPat.matcher(expected);
+                    if(!m.matches())
+                        throw new IOException("Test \"" + name + "\" has a misformatted expected error output");
+                    SweetXmlMessage message = SweetXmlMessage.valueOf(m.group(1));
+                    unusedMessages.remove(message);
+                    tests.add(
+                        new ParseExceptionTest(
+                            name,
+                            input,
+                            message,
+                            m.group(4),
+                            new DocumentPosition(
+                                name,
+                                Integer.parseInt(m.group(2)),
+                                Integer.parseInt(m.group(3))),
+                            mode));
+                    }
+                else
+                    tests.add(
+                        new ConverterOutputTest(name, input, expected, mode));
                 }
             testIn.close();
             }
+        
+        if(!unusedMessages.isEmpty())
+            {
+            System.err.println("WARNING: The following parse exception messages are not tested:");
+                for(SweetXmlMessage msg : unusedMessages)
+                    System.err.println("    " + msg);
+            }
+        
         return tests.toArray();
         }
     

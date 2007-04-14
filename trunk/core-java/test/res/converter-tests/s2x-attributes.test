@@ -47,10 +47,10 @@ pet
  |
 |
 
-            |  name=                       "Totoro"
+       	   |  name=                       "Totoro"
 pet type=cat name="Totoro"
 |
-    |
+	|
         |
 ————————
 <pet type="cat" name="Luke" status="very_clumsy">
@@ -87,4 +87,66 @@ pet type=
     <nags name="Totoro"></nags>
 </pet>
 <pet type="cat" name="Totoro"></pet>
+—————————————————————————————————————————————————————
+
+
+misplaced continuation at start
+————————
+# tag must come first
+    | thinger
+————————
+!CONTINUATION_OUTSIDE_TAG 2:5 []
+—————————————————————————————————————————————————————
+
+
+misplaced continuation after text
+————————
+bar
+    "text"
+    | foo
+————————
+!CONTINUATION_OUTSIDE_TAG 3:5 []
+—————————————————————————————————————————————————————
+
+
+misplaced continuation after colon
+————————
+bar:
+    | foo
+————————
+!CONTINUATION_OUTSIDE_TAG 2:5 []
+—————————————————————————————————————————————————————
+
+
+misplaced continuation inside attribut
+————————
+bar foo |= bar
+————————
+!MISPLACED_CONTINUATION 1:9 []
+—————————————————————————————————————————————————————
+
+
+missing eq
+————————
+pet type='dog' name:'Goulash'
+————————
+!EXPECTED_EQ_IN_ATTRIBUTE 1:20 [:]
+—————————————————————————————————————————————————————
+
+
+line break before eq
+————————
+pet type='dog' name
+='Goulash'
+————————
+!SEVERED_ATTRIBUTE 1:20 [name]
+—————————————————————————————————————————————————————
+
+
+line break after eq
+————————
+pet type=
+'dog' name='Goulash'
+————————
+!SEVERED_ATTRIBUTE 1:10 [type]
 —————————————————————————————————————————————————————

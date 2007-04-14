@@ -24,7 +24,7 @@ project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2
     build
         plugins
             plugin
-                groupId: org.apache.maven.plugins
+                groupId:    org.apache.maven.plugins
                 artifactId: maven-surefire-plugin
                 configuration
                     suiteXmlFiles
