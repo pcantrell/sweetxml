@@ -1,0 +1,61 @@
+
+illegal char in tag name
+————————
+frutso$plex
+————————
+!ILLEGAL_NAME_CHARACTER 1:7 [$]
+—————————————————————————————————————————————————————
+
+
+illegal control char in tag name
+————————
+frutso
+plex
+————————
+!ILLEGAL_NAME_CHARACTER 2:1 [\x14]
+—————————————————————————————————————————————————————
+
+
+unicode char in tag name
+————————
+ɷ
+    Զਇ
+    આᏇ
+————————
+<ɷ>
+    <Զਇ></Զਇ>
+    <આᏇ></આᏇ>
+</ɷ>
+—————————————————————————————————————————————————————
+
+
+illegal unicode char in tag name
+————————
+ɷԶਇ↷આᏇ
+————————
+!ILLEGAL_NAME_CHARACTER 1:4 [↷]
+—————————————————————————————————————————————————————
+
+
+unicode space indents
+————————
+one
+   two
+   three
+————————
+<one>
+   <two></two>
+   <three></three>
+</one>
+—————————————————————————————————————————————————————
+
+
+inconsistent unicode space indents
+————————
+one
+   two
+   three
+————————
+!INCONSISTENT_INDENTATION 3:3
+[1 character '\u2003' + 1 character '\u2002' + 1 character '\u2006', 1 character '\u2003' + 2 characters '\u2006']
+—————————————————————————————————————————————————————
