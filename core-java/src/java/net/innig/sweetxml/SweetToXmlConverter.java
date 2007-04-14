@@ -260,7 +260,8 @@ public class SweetToXmlConverter
                 skipAttributeInternalWhitespace();
                 c = in.read();
                 if(c != '=')
-                    throw new SweetXmlParseException(in.getPosition(), EXPECTED_EQ_IN_ATTRIBUTE, (char) c);
+                    throw new SweetXmlParseException(
+                        in.getPosition(), EXPECTED_EQ_IN_ATTRIBUTE, SweetXmlMessage.formatChar(c));
                 skipAttributeInternalWhitespace();
                 xml.append("=\"");
                 readText();
@@ -367,7 +368,8 @@ public class SweetToXmlConverter
             StringBuilder name = new StringBuilder(32);
             int c;
             if(!isSxmlNameStartCharacter(c = in.read()))
-                throw new SweetXmlParseException(in.getPosition(), ILLEGAL_NAME_CHARACTER, (char) c);
+                throw new SweetXmlParseException(
+                    in.getPosition(), ILLEGAL_NAME_CHARACTER, SweetXmlMessage.formatChar(c));
             name.append((char) c);
             while(isSxmlNameCharacter(c = in.read()))
                 name.append((char) c);
@@ -415,7 +417,7 @@ public class SweetToXmlConverter
                     explanation.append(
                         charMsg.format(
                             curCount,
-                            Integer.toHexString(0x10000 | curChar).substring(1)));
+                            SweetXmlMessage.formatChar(curChar)));
                     
                     curChar = (char) c;
                     curCount = 0;

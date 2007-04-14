@@ -172,7 +172,8 @@ public class XmlToSweetConverter
                     readAttribute(name, tagStart);
                     }
                 else
-                    throw new SweetXmlParseException(in.getPosition(), UNEXPECTED_CHAR_IN_TAG, (char) c, name);
+                    throw new SweetXmlParseException(
+                        in.getPosition(), UNEXPECTED_CHAR_IN_TAG, SweetXmlMessage.formatChar(c), name);
                 }
             }
         
@@ -182,7 +183,8 @@ public class XmlToSweetConverter
             String name = readName(tagStart);
             readWhitespace(true, false);
             if(!in.lookingAt("="))
-                throw new SweetXmlParseException(in.getPosition(), EXPECTED_EQ_IN_XML_ATTRIBUTE, (char) in.read(), name);
+                throw new SweetXmlParseException(
+                    in.getPosition(), EXPECTED_EQ_IN_XML_ATTRIBUTE, SweetXmlMessage.formatChar(in.read()), name);
             readWhitespace(true, false);
             
             sxml.append(' ').append(name).append('=');
@@ -206,7 +208,8 @@ public class XmlToSweetConverter
                 printQuoted(text.toString(), false);
                 }
             else
-                throw new SweetXmlParseException(in.getPosition(), EXPECTED_XML_ATTRIBUTE_VALUE, (char) in.read(), name);
+                throw new SweetXmlParseException(
+                    in.getPosition(), EXPECTED_XML_ATTRIBUTE_VALUE, SweetXmlMessage.formatChar(in.read()), name);
             }
 
         private void readEndTag()
@@ -217,7 +220,8 @@ public class XmlToSweetConverter
             String name = readName(in.getPosition());
             readWhitespace(true, false);
             if(!in.lookingAt(">"))
-                throw new SweetXmlParseException(in.getPosition(), UNEXPECTED_CHAR_IN_END_TAG, (char) in.read(), name);
+                throw new SweetXmlParseException(
+                    in.getPosition(), UNEXPECTED_CHAR_IN_END_TAG, SweetXmlMessage.formatChar(in.read()), name);
             tagEnded(name, tagStart);
             }
         
@@ -247,7 +251,8 @@ public class XmlToSweetConverter
             if(c == -1)
                 throw new SweetXmlParseException(tagStart, EOF_IN_ANONYMOUS_TAG);
             if(!Patterns.charMatches(c, Patterns.xmlNameStartChar))
-                throw new SweetXmlParseException(in.getPosition(), UNEXPECTED_CHAR_IN_ANONYMOUS_TAG, (char) c);
+                throw new SweetXmlParseException(
+                    in.getPosition(), UNEXPECTED_CHAR_IN_ANONYMOUS_TAG, SweetXmlMessage.formatChar(c));
             name.append((char) c);
             
             while(true)
