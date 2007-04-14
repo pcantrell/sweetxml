@@ -1,6 +1,7 @@
 package net.innig.sweetxml;
 
 import static net.innig.sweetxml.Patterns.newline;
+import static net.innig.sweetxml.SweetXmlMessage.*;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -92,7 +93,7 @@ public class XmlToSweetConverter
                         if(c == '>')
                             break;
                         if(c == -1)
-                            throw new SweetXmlParseException(start, "XML declaration runs off end of file");
+                            throw new SweetXmlParseException(start, EOF_IN_XML_DECLARATION);
                         }
                     }
                 else if(in.lookingAt("<!--"))
@@ -105,7 +106,7 @@ public class XmlToSweetConverter
                         {
                         int c = in.read();
                         if(c == -1)
-                            throw new SweetXmlParseException(start, "Processing directive runs off end of file");
+                            throw new SweetXmlParseException(start, EOF_IN_DIRECTIVE);
                         sxml.append((char) c);
                         if(c == '<')
                             nest++;
@@ -157,7 +158,7 @@ public class XmlToSweetConverter
                 
                 int c = in.read();
                 if(c == -1)
-                    throw new SweetXmlParseException(tagStart, "Tag <" + name + "> runs off end of file");
+                    throw new SweetXmlParseException(tagStart, EOF_IN_TAG, name);
                 else if(c == '>')
                     return;
                 else if(c == '/' && in.lookingAt(">"))
@@ -171,7 +172,7 @@ public class XmlToSweetConverter
                     readAttribute(name, tagStart);
                     }
                 else
-                    throw new SweetXmlParseException(in.getPosition(), "Unexpected character '" + (char) c + "' in tag <" + name + ">");
+                    throw new SweetXmlParseException(in.getPosition(), UNEXPECTED_CHAR_IN_TAG, (char) c, name);
                 }
             }
         
@@ -181,14 +182,14 @@ public class XmlToSweetConverter
             String name = readName(tagStart);
             readWhitespace(true, false);
             if(!in.lookingAt("="))
-                throw new SweetXmlParseException(in.getPosition(), "Expected '=' but found '" + (char) in.read() + "' in tag <" + name + ">");
+                throw new SweetXmlParseException(in.getPosition(), EXPECTED_EQ_IN_XML_ATTRIBUTE, (char) in.read(), name);
             readWhitespace(true, false);
             
             sxml.append(' ').append(name).append('=');
             
             int c = in.read();
             if(c == -1)
-                throw new SweetXmlParseException(tagStart, "Tag <" + name + "> runs off end of file");
+                throw new SweetXmlParseException(tagStart, EOF_IN_TAG, name);
             if(c == '\'' || c == '"')
                 {
                 int quote = c;
@@ -197,7 +198,7 @@ public class XmlToSweetConverter
                     {
                     c = in.read();
                     if(c == -1)
-                        throw new SweetXmlParseException(tagStart, "Tag <" + name + "> runs off end of file");
+                        throw new SweetXmlParseException(tagStart, EOF_IN_TAG, name);
                     if(c == quote)
                         break;
                     text.append((char) c);
@@ -205,7 +206,7 @@ public class XmlToSweetConverter
                 printQuoted(text.toString(), false);
                 }
             else
-                throw new SweetXmlParseException(in.getPosition(), "Expected quoted attribute value, but found '" + (char) in.read() + "' in tag <" + name + ">");
+                throw new SweetXmlParseException(in.getPosition(), EXPECTED_XML_ATTRIBUTE_VALUE, (char) in.read(), name);
             }
 
         private void readEndTag()
@@ -216,7 +217,7 @@ public class XmlToSweetConverter
             String name = readName(in.getPosition());
             readWhitespace(true, false);
             if(!in.lookingAt(">"))
-                throw new SweetXmlParseException(in.getPosition(), "Unexpected content in end tag </" + name + ">");
+                throw new SweetXmlParseException(in.getPosition(), UNEXPECTED_CHAR_IN_END_TAG, (char) in.read(), name);
             tagEnded(name, tagStart);
             }
         
@@ -224,10 +225,10 @@ public class XmlToSweetConverter
             throws IOException
             {
             if(tagStack.isEmpty())
-                throw new SweetXmlParseException(tagStart, "Unexpected closing tag </" + name + ">");
+                throw new SweetXmlParseException(tagStart, UNEXPECTED_END_TAG, name);
             String popped = tagStack.removeLast();
             if(!popped.equals(name))
-                throw new SweetXmlParseException(tagStart, "Mismatched closing tag: expected </" + popped + ">, but found </" + name + ">");
+                throw new SweetXmlParseException(tagStart, MISMATCHED_END_TAG, popped, name);
             
             if(onTagLine)
                 lineFull = true;
@@ -244,16 +245,16 @@ public class XmlToSweetConverter
             
             int c = in.read();
             if(c == -1)
-                throw new SweetXmlParseException(tagStart, "Tag runs off end of file");
+                throw new SweetXmlParseException(tagStart, EOF_IN_ANONYMOUS_TAG);
             if(!Patterns.charMatches(c, Patterns.xmlNameStartChar))
-                throw new SweetXmlParseException(in.getPosition(), "Unexpected character in tag: '" + (char) c + '\'');
+                throw new SweetXmlParseException(in.getPosition(), UNEXPECTED_CHAR_IN_ANONYMOUS_TAG, (char) c);
             name.append((char) c);
             
             while(true)
                 {
                 c = in.read();
                 if(c == -1)
-                    throw new SweetXmlParseException(tagStart, "Tag <" + name + "> runs off end of file");
+                    throw new SweetXmlParseException(tagStart, EOF_IN_TAG, name);
                 if(c == ':')
                     name.append('/');
                 else if(Patterns.charMatches(c, Patterns.xmlNameChar))
