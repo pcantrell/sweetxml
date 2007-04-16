@@ -43,6 +43,14 @@ EOF in attribute value
 —————————————————————————————————————————————————————
 
 
+EOF after attribute
+————————
+<pet type="budgie"
+————————
+!EOF_IN_TAG 1:1 [pet]
+—————————————————————————————————————————————————————
+
+
 unquoted attribute
 ————————
 <pet
