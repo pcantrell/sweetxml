@@ -1,0 +1,162 @@
+simple comment
+————————
+<!--simple comment-->
+————————
+# simple comment
+—————————————————————————————————————————————————————
+
+
+indented comment
+————————
+<things></things>
+    <!-- there are so many things -->
+<and>
+    <things></things>
+    <!-- they all are breaking things -->
+    <things></things>
+    <!-- all the things that you have -->
+    <things></things>
+    <!-- are they things that you need? -->
+</and>
+————————
+things
+# there are so many things 
+and
+    things
+    # they all are breaking things 
+    things
+    # all the things that you have 
+    things
+    # are they things that you need? 
+—————————————————————————————————————————————————————
+
+
+comment on same line inside
+————————
+<things><!-- and things and things and --></things>
+<things></things>
+————————
+things# and things and things and 
+things
+—————————————————————————————————————————————————————
+
+
+comment on same line after
+————————
+<things></things><!-- and things and things and -->
+<things></things>
+————————
+things
+# and things and things and 
+things
+—————————————————————————————————————————————————————
+
+
+comment on same line with text
+————————
+<things>and things<!-- and things --> and </things>
+<things></things>
+————————
+things: "and things"
+    # and things 
+    "and"
+things
+—————————————————————————————————————————————————————
+
+
+multiline comment
+————————
+<things>
+    and things and things
+    <!-- A maddeningly catchy song by
+    Mr. Todd Harper -->
+    and
+</things>
+————————
+things
+    "and things and things"
+    # A maddeningly catchy song by
+    # Mr. Todd Harper 
+    "and"
+—————————————————————————————————————————————————————
+
+
+multiline comment with blanks
+————————
+<things>
+    and things and things
+    <!-- 
+    
+    A maddeningly catchy song by
+    Mr. Todd Harper 
+    
+    -->
+    and
+</things>
+————————
+things
+    "and things and things"
+    # 
+    # 
+    # A maddeningly catchy song by
+    # Mr. Todd Harper 
+    # 
+    # 
+    "and"
+—————————————————————————————————————————————————————
+
+
+multiline comment with indentation correction
+————————
+<things>
+    and things and things
+    <!-- A maddeningly catchy
+                
+song by
+
+        Mr. Todd Harper -->
+    and
+</things>
+————————
+things
+    "and things and things"
+    # A maddeningly catchy
+    # 
+    # song by
+    # 
+    # Mr. Todd Harper 
+    "and"
+—————————————————————————————————————————————————————
+
+
+multiline comment with text on closing line
+————————
+<things><!-- and
+    things-->and
+</things>
+————————
+things# and
+    # things
+    "and"
+—————————————————————————————————————————————————————
+
+
+multiline comment with text on bare closing line
+————————
+<things><!-- and things
+    -->and
+</things>
+————————
+things# and things
+    # 
+    "and"
+—————————————————————————————————————————————————————
+
+
+unterminated comment
+————————
+<things>and things<!-- and things and
+————————
+things: "and things"
+    # and things and 
+—————————————————————————————————————————————————————

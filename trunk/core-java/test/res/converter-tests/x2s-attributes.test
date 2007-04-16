@@ -18,6 +18,15 @@ pet type=cat name=Luke status=very_clumsy
 pet type=cat name="Mr. Man"
 —————————————————————————————————————————————————————
 
+namespace attributes
+————————
+<pet x:type="budgie" y:name="Pegasus"/>
+<pet x:type='dog' y:name='Goulash'></pet>
+————————
+pet x/type=budgie y/name=Pegasus
+pet x/type=dog y/name=Goulash
+—————————————————————————————————————————————————————
+
 
 EOF in attribute name
 ————————

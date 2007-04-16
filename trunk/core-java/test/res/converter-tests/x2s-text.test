@@ -76,7 +76,7 @@ marco
 —————————————————————————————————————————————————————
 
 
-CDATA
+CDATA with escaped quotes
 ————————
 <![CDATA[
     Musn't forget to "escape" anything & everything!
@@ -88,7 +88,7 @@ CDATA
 —————————————————————————————————————————————————————
 
 
-CDATA quote selection
+CDATA auto quote selection
 ————————
 <![CDATA[
     apostrophe: '
@@ -126,4 +126,12 @@ tag: " same line "
 tag
     " next line "
 tag: no-quotes-necessary
+—————————————————————————————————————————————————————
+
+
+unterminated CDATA
+————————
+<![CDATA[infinite text goes here
+————————
+"infinite text goes here"
 —————————————————————————————————————————————————————
