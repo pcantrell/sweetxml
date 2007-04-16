@@ -81,7 +81,7 @@ public class XmlToSweetConverter
             {
             while(true)
                 {
-                readWhitespace(true, true);
+                readWhitespace(true);
                 
                 in.read();
                 DocumentPosition start = in.getPosition();
@@ -157,11 +157,11 @@ public class XmlToSweetConverter
             
             while(true)
                 {
-                readWhitespace(true, false);
+                readWhitespace(false);
                 
                 int c = in.read();
                 if(c == -1)
-                    throw new SweetXmlParseException(tagStart, EOF_IN_TAG, name);
+                    throw new SweetXmlParseException(tagStart, EOF_IN_TAG, s2xName(name));
                 else if(c == '>')
                     return;
                 else if(c == '/' && in.lookingAt(">"))
@@ -176,7 +176,7 @@ public class XmlToSweetConverter
                     }
                 else
                     throw new SweetXmlParseException(
-                        in.getPosition(), UNEXPECTED_CHAR_IN_TAG, SweetXmlMessage.formatChar(c), name);
+                        in.getPosition(), UNEXPECTED_CHAR_IN_TAG, SweetXmlMessage.formatChar(c), s2xName(name));
                 }
             }
         
@@ -184,18 +184,19 @@ public class XmlToSweetConverter
             throws IOException
             {
             String name = readName(tagStart, tagName);
-            readWhitespace(true, false);
+            readWhitespace(false);
             int c = in.read();
             if(c != '=')
                 throw new SweetXmlParseException(
-                    in.getPosition(), EXPECTED_EQ_IN_XML_ATTRIBUTE, SweetXmlMessage.formatChar(c), tagName, name);
-            readWhitespace(true, false);
+                    in.getPosition(), EXPECTED_EQ_IN_XML_ATTRIBUTE,
+                    SweetXmlMessage.formatChar(c), s2xName(tagName), s2xName(name));
+            readWhitespace(false);
             
             sxml.append(' ').append(name).append('=');
             
             c = in.read();
             if(c == -1)
-                throw new SweetXmlParseException(tagStart, EOF_IN_TAG, tagName);
+                throw new SweetXmlParseException(tagStart, EOF_IN_TAG, s2xName(tagName));
             if(c == '\'' || c == '"')
                 {
                 int quote = c;
@@ -204,7 +205,7 @@ public class XmlToSweetConverter
                     {
                     c = in.read();
                     if(c == -1)
-                        throw new SweetXmlParseException(tagStart, EOF_IN_TAG, tagName);
+                        throw new SweetXmlParseException(tagStart, EOF_IN_TAG, s2xName(tagName));
                     if(c == quote)
                         break;
                     text.append((char) c);
@@ -214,7 +215,7 @@ public class XmlToSweetConverter
             else
                 throw new SweetXmlParseException(
                     in.getPosition(), EXPECTED_XML_ATTRIBUTE_VALUE,
-                    SweetXmlMessage.formatChar(c), tagName, name);
+                    SweetXmlMessage.formatChar(c), s2xName(tagName), s2xName(name));
             }
 
         private void readEndTag()
@@ -223,11 +224,11 @@ public class XmlToSweetConverter
             flushText(true);
             DocumentPosition tagStart = in.getPosition();
             String name = readName(in.getPosition(), null);
-            readWhitespace(true, false);
+            readWhitespace(false);
             int c = in.read();
             if(c != '>')
                 throw new SweetXmlParseException(
-                    in.getPosition(), UNEXPECTED_CHAR_IN_END_TAG, SweetXmlMessage.formatChar(c), name);
+                    in.getPosition(), UNEXPECTED_CHAR_IN_END_TAG, SweetXmlMessage.formatChar(c), s2xName(name));
             tagEnded(name, tagStart);
             }
         
@@ -235,10 +236,10 @@ public class XmlToSweetConverter
             throws IOException
             {
             if(tagStack.isEmpty())
-                throw new SweetXmlParseException(tagStart, UNEXPECTED_END_TAG, name);
+                throw new SweetXmlParseException(tagStart, UNEXPECTED_END_TAG, s2xName(name));
             String popped = tagStack.removeLast();
             if(!popped.equals(name))
-                throw new SweetXmlParseException(tagStart, MISMATCHED_END_TAG, popped, name);
+                throw new SweetXmlParseException(tagStart, MISMATCHED_END_TAG, s2xName(popped), s2xName(name));
             
             if(onTagLine)
                 lineFull = true;
@@ -257,7 +258,7 @@ public class XmlToSweetConverter
             if(c == -1)
                 {
                 if(tagName != null)
-                    throw new SweetXmlParseException(tagStart, EOF_IN_TAG, tagName);
+                    throw new SweetXmlParseException(tagStart, EOF_IN_TAG, s2xName(tagName));
                 else
                     throw new SweetXmlParseException(tagStart, EOF_IN_ANONYMOUS_TAG);
                 }
@@ -270,14 +271,7 @@ public class XmlToSweetConverter
                 {
                 c = in.read();
                 if(c == -1)
-                    {
-                    if(tagName != null)
-                        throw new SweetXmlParseException(tagStart, EOF_IN_TAG, tagName);
-                    else if(name.length() > 0)
-                        throw new SweetXmlParseException(tagStart, EOF_IN_TAG, name);
-                    else
-                        throw new SweetXmlParseException(tagStart, EOF_IN_ANONYMOUS_TAG);
-                    }
+                    throw new SweetXmlParseException(tagStart, EOF_IN_TAG, s2xName((tagName != null) ? tagName : name));
                 if(c == ':')
                     name.append('/');
                 else if(Patterns.charMatches(c, Patterns.xmlNameChar))
@@ -290,12 +284,15 @@ public class XmlToSweetConverter
             return name.toString();
             }
         
+        private String s2xName(CharSequence name)
+            { return name.toString().replace('/', ':'); }
+        
         private void readComment()
             throws IOException
             {
             flush();
-            sxml.append('#');
-            boolean hashed = true;
+            sxml.append("# ");
+            boolean lineStarted = false;
             while(true)
                 {
                 int c = in.read();
@@ -305,27 +302,20 @@ public class XmlToSweetConverter
                     break;
                 else if(c == '\n')
                     {
-                    if(!hashed)
-                        {
-                        indent();
-                        sxml.append("# ");
-                        }
                     sxml.append(newline);
-                    hashed = false;
+                    indent();
+                    sxml.append("# ");
+                    lineStarted = false;
                     }
                 else 
                     {
-                    if(!Character.isSpaceChar(c) && !hashed)
-                        {
-                        indent();
-                        sxml.append("# ");
-                        hashed = true;
-                        }
-                    if(hashed)
-                        sxml.append((char) c);
+                    if(!lineStarted && Character.isSpaceChar(c))
+                        continue;
+                    lineStarted = true;
+                    sxml.append((char) c);
                     }
                 }
-            lineFull = hashed;
+            lineFull = true;
             }
         
         private void readCData()
@@ -347,20 +337,15 @@ public class XmlToSweetConverter
             flushText(false);
             }
 
-        private CharSequence readWhitespace(boolean includeNewlines, boolean countBreaks)
+        private CharSequence readWhitespace(boolean countBreaks)
             throws IOException
             {
             StringBuilder spaces = new StringBuilder(32);
             int c;
             while(Character.isWhitespace(c = in.read()))
                 {
-                if(c == '\n')
-                    {
-                    if(!includeNewlines)
-                        break;
-                    if(countBreaks)
-                        lineBreaksPending++;
-                    }
+                if(c == '\n' && countBreaks)
+                    lineBreaksPending++;
                 spaces.append(c);
                 }
             in.unread();

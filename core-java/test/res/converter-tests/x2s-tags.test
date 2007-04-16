@@ -13,6 +13,15 @@ tag
 another-tag
 —————————————————————————————————————————————————————
 
+tag with namespace
+————————
+<x:tag></x:tag>
+<y:another-tag></y:another-tag>
+————————
+x/tag
+y/another-tag
+—————————————————————————————————————————————————————
+
 
 nesting
 ————————
@@ -52,6 +61,22 @@ mismatched end tag with nesting
     <b><c></c></b></frongle>
 ————————
 !MISMATCHED_END_TAG 3:20 [frutso, frongle]
+—————————————————————————————————————————————————————
+
+
+mismatched end tag namespace
+————————
+<x:frutso></y:frutso>
+————————
+!MISMATCHED_END_TAG 1:12 [x:frutso, y:frutso]
+—————————————————————————————————————————————————————
+
+
+mismatched end tag local name
+————————
+<frutso:x></frutso:y>
+————————
+!MISMATCHED_END_TAG 1:12 [frutso:x, frutso:y]
 —————————————————————————————————————————————————————
 
 
