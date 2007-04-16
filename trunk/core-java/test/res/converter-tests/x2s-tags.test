@@ -30,3 +30,109 @@ lakes
     superior
     calhoun
 —————————————————————————————————————————————————————
+
+
+mismatched end tag
+————————
+<frutso></frongle>
+————————
+!MISMATCHED_END_TAG 1:10 [frutso, frongle]
+—————————————————————————————————————————————————————
+
+
+mismatched end tag with nesting
+————————
+<frutso>
+    <a></a>
+    <b><c></c></b></frongle>
+————————
+!MISMATCHED_END_TAG 3:20 [frutso, frongle]
+—————————————————————————————————————————————————————
+
+
+unbalanced end tag
+————————
+<frutso></frutso></frongle>
+————————
+!UNEXPECTED_END_TAG 1:19 [frongle]
+—————————————————————————————————————————————————————
+
+
+unbalanced end tag at start
+————————
+</frongle>
+————————
+!UNEXPECTED_END_TAG 1:2 [frongle]
+—————————————————————————————————————————————————————
+
+
+EOF before tag name
+————————
+<
+————————
+!EOF_IN_ANONYMOUS_TAG 1:1 []
+—————————————————————————————————————————————————————
+
+
+EOF after tag name
+————————
+<frutso
+————————
+!EOF_IN_TAG 1:1 [frutso]
+—————————————————————————————————————————————————————
+
+
+EOF before end tag name
+————————
+<frutso></
+————————
+!EOF_IN_ANONYMOUS_TAG 1:10 []
+—————————————————————————————————————————————————————
+
+
+EOF after end tag name
+————————
+<frutso></frutso
+————————
+!EOF_IN_TAG 1:10 [frutso]
+—————————————————————————————————————————————————————
+
+
+space before tag name
+————————
+< frutso></frutso>
+————————
+!UNEXPECTED_CHAR_IN_ANONYMOUS_TAG 1:2 [ ]
+—————————————————————————————————————————————————————
+
+
+space before end tag name
+————————
+<frutso></ frutso>
+————————
+!UNEXPECTED_CHAR_IN_ANONYMOUS_TAG 1:11 [ ]
+—————————————————————————————————————————————————————
+
+
+space before end tag slash
+————————
+<frutso>< /frutso>
+————————
+!UNEXPECTED_CHAR_IN_ANONYMOUS_TAG 1:10 [ ]
+—————————————————————————————————————————————————————
+
+
+illegal char in tag
+————————
+<frut#so></frutso>
+————————
+!UNEXPECTED_CHAR_IN_TAG 1:6 [#, frut]
+—————————————————————————————————————————————————————
+
+
+illegal char in end tag
+————————
+<frutso></frut@so>
+————————
+!UNEXPECTED_CHAR_IN_END_TAG 1:15 [@, frut]
+—————————————————————————————————————————————————————

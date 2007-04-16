@@ -43,9 +43,9 @@ class ConverterInput
     public boolean lookingAt(String str)
         throws IOException
         {
-        mark(str.length() * 2);
+        mark(str.length() * 2); // doubled because of CRLF -> LF conversion
         for(char c : str.toCharArray())
-            if(in.read() != c)
+            if(countChar(in.read()) != c)
                 {
                 reset();
                 return false;
