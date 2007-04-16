@@ -1,77 +1,59 @@
-
-attributes
+illegal control char in tag name
 ————————
-<pet type="budgie" name="Pegasus"/>
-<pet type='dog' name='Goulash'></pet>
+<frutsoplex>
 ————————
-pet type=budgie name=Pegasus
-pet type=dog name=Goulash
+!UNEXPECTED_CHAR_IN_TAG 1:8 [\x14, frutso]
 —————————————————————————————————————————————————————
 
 
-quoted attributes
+unicode char in tag name
 ————————
-<pet type="cat" name="Luke" status="very_clumsy"/>
-<pet type="cat" name="Mr. Man"></pet>
+<ɷ>
+    <Զਇ></Զਇ>
+    <આᏇ></આᏇ>
+</ɷ>
 ————————
-pet type=cat name=Luke status=very_clumsy
-pet type=cat name="Mr. Man"
+ɷ
+    Զਇ
+    આᏇ
 —————————————————————————————————————————————————————
 
 
-EOF in attribute name
+illegal unicode char in tag name
 ————————
-<pet type
+<ɷԶਇ↷આᏇ>
 ————————
-!EOF_IN_TAG 1:1 [pet]
+!UNEXPECTED_CHAR_IN_TAG 1:5 [↷, ɷԶਇ]
 —————————————————————————————————————————————————————
 
 
-EOF in attribute after eq
+CRLF line endings
 ————————
-<pets><pet type=
+<one>\r\n<two>\r\n\r\n    <*
 ————————
-!EOF_IN_TAG 1:7 [pet]
+!UNEXPECTED_CHAR_IN_ANONYMOUS_TAG 4:6 [*]
 —————————————————————————————————————————————————————
 
 
-EOF in attribute value
+CR line endings
 ————————
-<pet type="budg
+<one>\r<two>\r\r    <*
 ————————
-!EOF_IN_TAG 1:1 [pet]
+!UNEXPECTED_CHAR_IN_ANONYMOUS_TAG 4:6 [*]
 —————————————————————————————————————————————————————
 
 
-unquoted attribute
+LF line endings
 ————————
-<pet
-    type="budgie"
-    name=Pegasus/>
+<one>\n<two>\n\n    <*
 ————————
-!EXPECTED_XML_ATTRIBUTE_VALUE 3:10 [P, pet, name]
+!UNEXPECTED_CHAR_IN_ANONYMOUS_TAG 4:6 [*]
 —————————————————————————————————————————————————————
 
 
-illegal char in attribute before name
+Mixed line endings
 ————————
-<pet type="budgie" $ name="Pegasus"/>
+<one>\n\r\n\n<two>\n\r    <*
 ————————
-!UNEXPECTED_CHAR_IN_TAG 1:20 [$, pet]
-—————————————————————————————————————————————————————
-
-
-illegal char in attribute after name
-————————
-<pet type@="budgie" name="Pegasus"/>
-————————
-!EXPECTED_EQ_IN_XML_ATTRIBUTE 1:10 [@, pet, type]
-—————————————————————————————————————————————————————
-
-
-illegal char in attribute after eq
-————————
-<pet type=#"budgie" name="Pegasus"/>
-————————
-!EXPECTED_XML_ATTRIBUTE_VALUE 1:11 [#, pet, type]
+!UNEXPECTED_CHAR_IN_ANONYMOUS_TAG 6:6 [*]
 —————————————————————————————————————————————————————
