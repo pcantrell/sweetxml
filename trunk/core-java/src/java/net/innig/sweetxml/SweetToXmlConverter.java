@@ -132,7 +132,7 @@ public class SweetToXmlConverter
                     case '\'':
                         handleIndent();
                         in.read(); // skip the quote
-                        readQuotedText(c);
+                        readQuotedText(c, false);
                         break;
                         
                     case '|':
@@ -157,6 +157,7 @@ public class SweetToXmlConverter
         
         private void readProcessingDirectives() throws IOException
             {
+            boolean first = true;
             while(true)
                 {
                 skipWhitespace(true);
@@ -167,7 +168,12 @@ public class SweetToXmlConverter
                     }
                 if(!in.lookingAt("<!"))
                     break;
-                in.reset();
+                in.unread();
+                
+                if(first)
+                    first = false;
+                else
+                    xml.append("\n");
                 
                 int nest = 0;
                 while(true)
@@ -251,10 +257,10 @@ public class SweetToXmlConverter
                 if(c == ':')
                     subsequentText = true;
                 if(c == '#')
-                    in.reset();
+                    in.unread();
                 if(c == -1 || c == ':' || c == '\n' || c == '#')
                     break;
-                in.reset();
+                in.unread();
                 
                 String attrName = readName();
                 xml.append(' ').append(attrName);
@@ -265,14 +271,14 @@ public class SweetToXmlConverter
                         in.getPosition(), EXPECTED_EQ_IN_ATTRIBUTE, SweetXmlMessage.formatChar(c));
                 skipAttributeInternalWhitespace(attrName);
                 xml.append("=\"");
-                readText();
+                readText(true);
                 xml.append('"');
                 }
             if(subsequentText)
                 {
                 finishTag();
                 skipWhitespace(false);
-                readText();
+                readText(false);
                 }
             }
         
@@ -280,7 +286,7 @@ public class SweetToXmlConverter
             {
             in.read();
             DocumentPosition startPosition = in.getPosition();
-            in.reset();
+            in.unread();
             boolean continuationAllowed = false, continued = true;
             while(true)
                 {
@@ -299,10 +305,12 @@ public class SweetToXmlConverter
                         continued = true;
                         break;
                     
+                    case -1:
+                        continued = false;
                     default:
                         if(!continued)
                             throw new SweetXmlParseException(startPosition, SEVERED_ATTRIBUTE, attrName);
-                        in.reset();
+                        in.unread();
                         return;
                     }
                 }
@@ -317,17 +325,17 @@ public class SweetToXmlConverter
                 }
             }
     
-        private void readText() throws IOException
+        private void readText(boolean escapeQuot) throws IOException
             {
             int c = in.read();
             if(c == '"' || c == '\'')
-                readQuotedText(c);
+                readQuotedText(c, escapeQuot);
             else
                 while(true)
                     {
                     if(c == -1 || Patterns.charMatches(c, Patterns.quotingRequired))
                         {
-                        in.reset();
+                        in.unread();
                         break;
                         }
                     xml.append((char) c);
@@ -335,7 +343,7 @@ public class SweetToXmlConverter
                     }
             }
 
-        private void readQuotedText(int quoteChar) throws IOException
+        private void readQuotedText(int quoteChar, boolean escapeQuot) throws IOException
             {
             DocumentPosition quoteStart = in.getPosition();
             while(true)
@@ -349,8 +357,8 @@ public class SweetToXmlConverter
                     xml.append("&lt;");
                 else if(c == '>')
                     xml.append("&gt;");
-                else if(c == quoteChar)
-                    xml.append((c == '"') ? "&quot;" : "&apos;");
+                else if(c == '"' && escapeQuot)
+                    xml.append("&quot;");
                 else
                     xml.append((char) c);
                 }
@@ -376,7 +384,7 @@ public class SweetToXmlConverter
             name.append((char) c);
             while(isSxmlNameCharacter(c = in.read()))
                 name.append((char) c);
-            in.reset();
+            in.unread();
             return name.toString().replace('/', ':');
             }
         
@@ -390,9 +398,11 @@ public class SweetToXmlConverter
             {
             int c;
             while(Character.isWhitespace(c = in.read()))
+                {
                 if(c == '\n' && !skipNewlines)
                     break;
-            in.reset();
+                }
+            in.unread();
             }
         
         private String explainIndent(String indent)

@@ -39,9 +39,17 @@ public class ParseExceptionTest
             }
         catch(SweetXmlParseException pe)
             {
-            assertEquals(expectedMessage, pe.getMessageId());
-            assertEquals(expectedMessageArgs, Arrays.toString(pe.getMessageArgs()));
-            assertEquals(expectedPosition, pe.getPosition());
+            assertEquals(
+                
+                Arrays.asList(
+                    expectedPosition,
+                    expectedMessage,
+                    expectedMessageArgs),
+                    
+                Arrays.asList(
+                    pe.getPosition(),
+                    pe.getMessageId(),
+                    Arrays.toString(pe.getMessageArgs())));
             }
         }
     }

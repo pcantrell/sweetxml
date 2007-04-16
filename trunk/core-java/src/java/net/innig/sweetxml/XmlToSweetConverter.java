@@ -168,7 +168,7 @@ public class XmlToSweetConverter
                     }
                 else if(Patterns.charMatches(c, Patterns.xmlNameStartChar))
                     {
-                    in.reset();
+                    in.unread();
                     readAttribute(name, tagStart);
                     }
                 else
@@ -267,7 +267,7 @@ public class XmlToSweetConverter
                 else
                     break;
                 }
-            in.reset();
+            in.unread();
             
             return name.toString();
             }
@@ -345,7 +345,7 @@ public class XmlToSweetConverter
                     }
                 spaces.append(c);
                 }
-            in.reset();
+            in.unread();
             return spaces;
             }
         

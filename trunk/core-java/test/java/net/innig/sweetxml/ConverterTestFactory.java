@@ -47,9 +47,9 @@ public class ConverterTestFactory
                     break;
                 
                 String
-                    name = fileName + ": " + testName,
-                    input = readChunk(testIn).toString(),
-                    expected = readChunk(testIn).toString();
+                    name     = fileName + ": " + testName,
+                    input    = unescape(readChunk(testIn).toString()),
+                    expected = unescape(readChunk(testIn).toString());
                 
                 if(expected.trim().startsWith("!"))
                     {
@@ -87,6 +87,14 @@ public class ConverterTestFactory
         return tests.toArray();
         }
     
+    private String unescape(String text)
+        {
+        return text
+            .replace("\\t", "\t")
+            .replace("\\r", "\r")
+            .replace("\\n", "\n");
+        }
+
     private StringBuilder readChunk(BufferedReader in)
         throws IOException
         {

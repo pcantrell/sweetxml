@@ -37,20 +37,20 @@ nesting with mixed tabs
 rivers
     mississippi
     poudre
-    	north-fork
+    \tnorth-fork
 lakes
-	superior
-	calhoun
+\tsuperior
+\tcalhoun
 ————————
 <rivers>
     <mississippi></mississippi>
     <poudre>
-    	<north-fork></north-fork>
+    \t<north-fork></north-fork>
     </poudre>
 </rivers>
 <lakes>
-	<superior></superior>
-	<calhoun></calhoun>
+\t<superior></superior>
+\t<calhoun></calhoun>
 </lakes>
 —————————————————————————————————————————————————————
 
@@ -109,7 +109,7 @@ inconsistent indentation
 ————————
 rivers
       mississippi
-	  poudre
+\t  poudre
 ————————
 !INCONSISTENT_INDENTATION 3:3 [6 spaces, 1 tab + 2 spaces]
 —————————————————————————————————————————————————————
