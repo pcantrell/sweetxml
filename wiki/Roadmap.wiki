@@ -22,6 +22,7 @@
 == Version 0.3 ==
   * Support for multi-line tags (for numerous attributes)
   * Possible support for multiple tags on a single line
+  * I18N
 
 = Future Releases =
 
@@ -30,11 +31,11 @@
   * Consider multiple encodings
 
 == Version 0.x ==
-  * I18N
+  * Localization
+  * Ports to other languages
   * ???
 
 == Version 1.0 ==
   * Syntax is stable, and ready to be saddled with backward compatibility
   * Syntax is standardized in a specification
   * All significant bugs fixed
-
