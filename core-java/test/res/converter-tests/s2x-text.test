@@ -55,6 +55,22 @@ remark: "We're making a mystery here,
 —————————————————————————————————————————————————————
 
 
+escape quoted XML
+————————
+xml: "<name>Pogo Possum</name>"
+————————
+<xml>&lt;name&gt;Pogo Possum&lt;/name&gt;</xml>
+—————————————————————————————————————————————————————
+
+
+escape quotes in attribute
+————————
+book title='"G.O. Physical Pogo"'
+————————
+<book title="&quot;G.O. Physical Pogo&quot;"></book>
+—————————————————————————————————————————————————————
+
+
 same line
 ————————
 name: "Pogo Possum"

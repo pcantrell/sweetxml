@@ -25,8 +25,8 @@ public class ConverterOutputTest
         {
         String output = convert();
         assert expectedOutput.equals(output)
-            : "Mismatched conversion result."
-                + "\n\nExpected:\n" + showInvisibles(expectedOutput)
-                + "\n\nActual:\n" + showInvisibles(output);
+            : "Mismatched conversion result for " + getTestName()
+                + "\n" + showInvisibles(expectedOutput)
+                + "\n" + showInvisibles(output);
         }
     }

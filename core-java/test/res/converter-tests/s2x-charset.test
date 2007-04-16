@@ -59,3 +59,35 @@ one
 !INCONSISTENT_INDENTATION 3:3
 [1 character '\u2003' + 1 character '\u2002' + 1 character '\u2006', 1 character '\u2003' + 2 characters '\u2006']
 —————————————————————————————————————————————————————
+
+
+CRLF line endings
+————————
+one\r\ntwo\r\n\r\n    *
+————————
+!ILLEGAL_NAME_CHARACTER 4:5 [*]
+—————————————————————————————————————————————————————
+
+
+CR line endings
+————————
+onex\rtwo\r\r    *
+————————
+!ILLEGAL_NAME_CHARACTER 4:5 [*]
+—————————————————————————————————————————————————————
+
+
+LF line endings
+————————
+one\ntwo\n\n    *
+————————
+!ILLEGAL_NAME_CHARACTER 4:5 [*]
+—————————————————————————————————————————————————————
+
+
+Mixed line endings
+————————
+one\n\r\n\ntwo\n\r    *
+————————
+!ILLEGAL_NAME_CHARACTER 6:5 [*]
+—————————————————————————————————————————————————————

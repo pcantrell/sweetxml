@@ -1,0 +1,53 @@
+DOCTYPE
+————————
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+here-I-am
+————————
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<here-I-am></here-I-am>
+—————————————————————————————————————————————————————
+
+
+DOCTYPE with surrounding comments
+————————
+# This is the wrong doctype, to test that converter does not validate
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+# Here is a a tag:
+here-I-am
+————————
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<here-I-am></here-I-am>
+—————————————————————————————————————————————————————
+
+
+multiple inline DOCTYPEs
+————————
+<!DOCTYPE note [
+    <!ELEMENT something (somethingelse)>
+    <!ELEMENT somethingelse      (#PCDATA)>
+]>
+
+# Is this even legal? Regardless, we support it!
+
+<!DOCTYPE note [
+    <!ENTITY % Whatever "CDATA">
+    <!ATTLIST something
+        dood #CDATA>
+]>
+
+here-I-am
+————————
+<!DOCTYPE note [
+    <!ELEMENT something (somethingelse)>
+    <!ELEMENT somethingelse      (#PCDATA)>
+]>
+<!DOCTYPE note [
+    <!ENTITY % Whatever "CDATA">
+    <!ATTLIST something
+        dood #CDATA>
+]>
+<here-I-am></here-I-am>
+—————————————————————————————————————————————————————
