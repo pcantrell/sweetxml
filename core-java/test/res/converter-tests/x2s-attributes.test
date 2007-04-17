@@ -18,6 +18,7 @@ pet type=cat name=Luke status=very_clumsy
 pet type=cat name="Mr. Man"
 —————————————————————————————————————————————————————
 
+
 namespace attributes
 ————————
 <pet x:type="budgie" y:name="Pegasus"/>
@@ -28,35 +29,45 @@ pet x/type=dog y/name=Goulash
 —————————————————————————————————————————————————————
 
 
-EOF in attribute name
+multiline attributes
 ————————
-<pet type
+<pets>
+    <pet type="cat"
+         name="Luke"
+         status="very_clumsy"/>
+    <pet
+
+        type
+            ="cat"
+        
+        name
+="Mr. Man">
+    </pet>
+</pets>
 ————————
-!EOF_IN_TAG 1:1 [pet]
+pets
+    pet type=cat
+    |   name=Luke
+    |   status=very_clumsy
+    pet
+    | 
+    |  type
+    |      =cat
+    |  
+    |  name
+    | ="Mr. Man"
 —————————————————————————————————————————————————————
 
 
-EOF in attribute after eq
+attribute whitespace preservation
 ————————
-<pets><pet type=
+<pet type   = "cat"
+     name   = "Luke"
+     status = "very_clumsy"/>
 ————————
-!EOF_IN_TAG 1:7 [pet]
-—————————————————————————————————————————————————————
-
-
-EOF in attribute value
-————————
-<pet type="budg
-————————
-!EOF_IN_TAG 1:1 [pet]
-—————————————————————————————————————————————————————
-
-
-EOF after attribute
-————————
-<pet type="budgie"
-————————
-!EOF_IN_TAG 1:1 [pet]
+pet type   = cat
+|   name   = Luke
+|   status = very_clumsy
 —————————————————————————————————————————————————————
 
 
@@ -91,4 +102,36 @@ illegal char in attribute after eq
 <pet type=#"budgie" name="Pegasus"/>
 ————————
 !EXPECTED_XML_ATTRIBUTE_VALUE 1:11 [#, pet, type]
+—————————————————————————————————————————————————————
+
+
+EOF in attribute name
+————————
+<pet type
+————————
+!EOF_IN_TAG 1:1 [pet]
+—————————————————————————————————————————————————————
+
+
+EOF in attribute after eq
+————————
+<pets><pet type=
+————————
+!EOF_IN_TAG 1:7 [pet]
+—————————————————————————————————————————————————————
+
+
+EOF in attribute value
+————————
+<pet type="budg
+————————
+!EOF_IN_TAG 1:1 [pet]
+—————————————————————————————————————————————————————
+
+
+EOF after attribute
+————————
+<pet type="budgie"
+————————
+!EOF_IN_TAG 1:1 [pet]
 —————————————————————————————————————————————————————

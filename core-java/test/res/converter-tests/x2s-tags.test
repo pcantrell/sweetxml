@@ -45,6 +45,24 @@ lakes
     calhoun
 —————————————————————————————————————————————————————
 
+internal whitespace
+————————
+<one        ></one>
+<two></two  >
+<three
+></three>
+<four></four
+>
+five!
+————————
+one        
+two
+three
+| 
+four
+"five!"
+—————————————————————————————————————————————————————
+
 
 mismatched end tag
 ————————

@@ -8,7 +8,7 @@ macker
         
         <foreach var="module" class="${module-base}.(**).impl.**">
 
-            <pattern name="inside" class="${module-base}.${module}.impl.**" />
+            <pattern name="inside"  class="${module-base}.${module}.impl.**" />
             <pattern name="factory" class="${module-base}.${module}.*Factory" />
             
             <access-rule>
@@ -24,21 +24,21 @@ macker
 ————————————————————————
 macker
     ruleset name="Modularity rules"
-        var name=module-base value=net.innig.macker.example.modularity
+        var name=module-base value=net.innig.macker.example.modularity 
         
         foreach var=module class="${module-base}.(**).impl.**"
             
-            pattern name=inside class="${module-base}.${module}.impl.**"
-            pattern name=factory class="${module-base}.${module}.*Factory"
+            pattern name=inside  class="${module-base}.${module}.impl.**" 
+            pattern name=factory class="${module-base}.${module}.*Factory" 
             
             access-rule
                 message: "${from} must access the ${module} module through its API"
                 deny
-                    to pattern=inside
+                    to pattern=inside 
                 allow
-                    from pattern=inside
+                    from pattern=inside 
                 allow
-                    from pattern=factory
+                    from pattern=factory 
 —————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————————
 
 ant
@@ -119,7 +119,8 @@ ant
     <!-- Copies resource files to the build directory                      -->
     <!-- ================================================================= -->
 
-    <target name="copy-resources" 
+    <target
+        name="copy-resources" 
         depends="prepare"
         description="Copies resource files to the build directory">
         
@@ -169,39 +170,41 @@ ant
     </target>
 </project>
 ————————————————————————
+
+
 project name="web app" default=war basedir=.
     
     # ================================================================= 
     # Properties                                                        
     # ================================================================= 
     
-    property file=build.local.properties
-    property file=build.properties
+    property file=build.local.properties 
+    property file=build.properties 
     
-    property name=src.dir location="${basedir}/src/java"
-    property name=res.dir location="${basedir}/src/res"
-    property name=web.dir location="${basedir}/src/web"
-    property name=webinf.dir location="${basedir}/src/web/WEB-INF"
-    property name=sql.dir location="${basedir}/src/sql"
-    property name=lib.dir location="${basedir}/lib"
-    property name=conf.dir location="${basedir}/conf"
-    property name=test.dir location="${basedir}/test"
-    property name=doc.dir location="${basedir}/doc"
-    property name=build.lib.dir location="${lib.dir}/build-only"
+    property name=src.dir              location="${basedir}/src/java" 
+    property name=res.dir              location="${basedir}/src/res" 
+    property name=web.dir              location="${basedir}/src/web" 
+    property name=webinf.dir           location="${basedir}/src/web/WEB-INF" 
+    property name=sql.dir              location="${basedir}/src/sql" 
+    property name=lib.dir              location="${basedir}/lib" 
+    property name=conf.dir             location="${basedir}/conf" 
+    property name=test.dir             location="${basedir}/test" 
+    property name=doc.dir              location="${basedir}/doc" 
+    property name=build.lib.dir        location="${lib.dir}/build-only" 
     
-    property name=build.dir location="${java.io.tmpdir}/ant/${name}"
-    property name=build.classes.dir location="${build.dir}/classes"
-    property name=build.web.dir location="${build.dir}/web/"
-    property name=build.webinf.dir location="${build.dir}/web/WEB-INF"
-    property name=build.test.dir location="${build.dir}/test"
-    property name=dist.dir location="${build.dir}/dist"
+    property name=build.dir            location="${java.io.tmpdir}/ant/${name}" 
+    property name=build.classes.dir    location="${build.dir}/classes" 
+    property name=build.web.dir        location="${build.dir}/web/" 
+    property name=build.webinf.dir     location="${build.dir}/web/WEB-INF" 
+    property name=build.test.dir       location="${build.dir}/test" 
+    property name=dist.dir             location="${build.dir}/dist" 
     
-    property name=web.context.name value="${name}"
-    property name=war.file location="${build.dir}/${web.context.name}.war"
-    property name=war.manifest location="${web.dir}/META-INF/MANIFEST.MF"
+    property name=web.context.name     value="${name}" 
+    property name=war.file             location="${build.dir}/${web.context.name}.war" 
+    property name=war.manifest         location="${web.dir}/META-INF/MANIFEST.MF" 
     
-    property name=javadoc.dir location="${doc.dir}/javadoc"
-    property name=javadoc.packages value="${base.package}.*"
+    property name=javadoc.dir          location="${doc.dir}/javadoc"
+    property name=javadoc.packages     value="${base.package}.*"
     
     # ================================================================= 
     # prepare:                                                          
@@ -209,38 +212,41 @@ project name="web app" default=war basedir=.
     # ================================================================= 
     
     target name=prepare
-        mkdir dir="${build.dir}"
-        mkdir dir="${build.classes.dir}"
-        mkdir dir="${build.lib.dir}"
+        mkdir dir="${build.dir}" 
+        mkdir dir="${build.classes.dir}" 
+        mkdir dir="${build.lib.dir}" 
         # because it's often empty 
         
         path id=build.classpath
-            fileset dir="${lib.dir}" includes="**/*.jar"
-            fileset dir="${build.lib.dir}"
-        property name=build.classpath refid=build.classpath
+            fileset dir="${lib.dir}" includes="**/*.jar" 
+            fileset dir="${build.lib.dir}" 
+        property name=build.classpath refid=build.classpath 
         
         path id=run.classpath
-            pathelement location="${build.classes.dir}"
-            fileset dir="${lib.dir}" includes="**/*.jar"
-        property name=run.classpath refid=run.classpath
+            pathelement location="${build.classes.dir}" 
+            fileset dir="${lib.dir}" includes="**/*.jar" 
+        property name=run.classpath refid=run.classpath 
         
         path id=test.classpath
-            pathelement location="${build.test.dir}"
-            path refid=run.classpath
+            pathelement location="${build.test.dir}" 
+            path refid=run.classpath 
         
         tstamp
             format property=timestamp pattern="yyyy/MM/dd HH:mm:ss z" locale=en
         condition property=dist.version.long value="version ${dist.version}"
-            isset property=dist.version
-        property name=dist.version value="[${timestamp}]"
-        property name=dist.version.long value="built at ${timestamp}"
+            isset property=dist.version 
+        property name=dist.version value="[${timestamp}]" 
+        property name=dist.version.long value="built at ${timestamp}" 
     
     # ================================================================= 
     # copy-resources:                                                   
     # Copies resource files to the build directory                      
     # ================================================================= 
     
-    target name=copy-resources depends=prepare description="Copies resource files to the build directory"
+    target
+    |  name=copy-resources 
+    |  depends=prepare
+    |  description="Copies resource files to the build directory"
         
         copy todir="${build.classes.dir}"
             fileset dir="${res.dir}"
@@ -248,9 +254,9 @@ project name="web app" default=war basedir=.
                 exclude name="**/*.xml"
         copy todir="${build.classes.dir}" overwrite=yes
             filterset
-                filtersfile file=build.local.properties
-                filtersfile file=build.properties
-                filter token=dist.version value="${dist.version}"
+                filtersfile file=build.local.properties 
+                filtersfile file=build.properties 
+                filter token=dist.version      value="${dist.version}"
                 filter token=dist.version.long value="${dist.version.long}"
                 filter token=web.context.name value="${web.context.name}"
             fileset dir="${res.dir}"
@@ -263,11 +269,11 @@ project name="web app" default=war basedir=.
                 exclude name="**/*.xml"
         copy todir="${build.web.dir}" preservelastmodified=yes overwrite=yes
             filterset
-                filtersfile file=build.local.properties
-                filtersfile file=build.properties
-                filter token=dist.version value="${dist.version}"
+                filtersfile file=build.local.properties 
+                filtersfile file=build.properties 
+                filter token=dist.version      value="${dist.version}"
                 filter token=dist.version.long value="${dist.version.long}"
-                filter token=web.context.name value="${web.context.name}"
+                filter token=web.context.name  value="${web.context.name}"
             fileset dir="${web.dir}"
                 include name="**/*.properties"
                 include name="**/*.xml"
@@ -281,7 +287,10 @@ maven
 ————————————————————————
 <?xml version="1.0"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         
     <modelVersion>4.0.0</modelVersion>
     
     <groupId>   net.innig.sweetxml</groupId>
@@ -364,7 +373,10 @@ maven
     </issueManagement>
 </project>
 ————————————————————————
-project xmlns="http://maven.apache.org/POM/4.0.0" xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance" xsi/schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+project xmlns="http://maven.apache.org/POM/4.0.0"
+|       xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance"
+|       xsi/schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+
     modelVersion: 4.0.0
     
     groupId:    net.innig.sweetxml
