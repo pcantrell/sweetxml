@@ -1,0 +1,622 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <style type="text/css">@import "example.css";</style>
+</head>
+<body>
+
+
+<table class="example-table" cellspacing="0">
+<tr><th>This SweetXML...</th><th>...is equivalent to this XML.</th></tr>
+<tr valign="top">
+<td>
+project name="Macker" default="build" basedir="."
+    
+    # ================================================================= 
+    # Properties                                                        
+    # ================================================================= 
+    
+    # Global 
+    
+    property name="Name"                 value="Macker" 
+    property name="name"                 value="macker" 
+    
+    property name="src.dir"              location="${basedir}/src/java" 
+    property name="res.dir"              location="${basedir}/src/res" 
+    property name="lib.dir"              location="${basedir}/lib" 
+    property name="test.dir"             location="${basedir}/test" 
+    property name="doc.dir"              location="${basedir}/doc" 
+    property name="build.lib.dir"        location="${lib.dir}/build-only" 
+    property name="example.dir"          location="${doc.dir}/example" 
+    
+    property file="${basedir}/build.properties" 
+    
+    # Targets 
+    
+    property name="build.dir"            location="${basedir}/build/ant/" 
+    property name="build.classes.dir"    location="${build.dir}/classes" 
+    property name="build.test.dir"       location="${build.dir}/test" 
+    property name="dist.dir"             location="${build.dir}/dist" 
+    
+    property name="jar.file"             location="${build.dir}/${name}.jar" 
+    property name="jar.manifest"         location="${basedir}/src/manifest.mf" 
+    
+    property name="javadoc.dir"          location="${doc.dir}/javadoc"
+    property name="javadoc.packages"     value="net.innig.macker.*" 
+    
+    property name="run.mainclass"        value="net.innig.macker.Macker" 
+    property name="run.args"             value="" 
+    
+    # ================================================================= 
+    # prepare:                                                          
+    # Sets up directories and such for compilation                      
+    # ================================================================= 
+    
+    target name="prepare"
+        mkdir dir="${build.dir}" 
+        mkdir dir="${build.classes.dir}" 
+        mkdir dir="${build.lib.dir}" 
+        # because it's usually empty 
+        
+        path id="build.classpath"
+            fileset dir="${lib.dir}" includes="**/*.jar" 
+            fileset dir="${build.lib.dir}" includes="**/*.jar" 
+        property name="build.classpath" refid="build.classpath" 
+        
+        path id="run.classpath"
+            pathelement location="${build.classes.dir}" 
+            fileset dir="${lib.dir}" includes="**/*.jar" 
+        property name="run.classpath" refid="run.classpath" 
+        
+        path id="test.classpath"
+            pathelement location="${build.test.dir}" 
+            path refid="run.classpath" 
+        
+        tstamp
+            format property="timestamp" pattern="yyyy/MM/dd HH:mm:ss z" locale="en"
+        condition property="dist.version.long" value="version ${dist.version}"
+            isset property="dist.version" 
+        property name="dist.version" value="nonrelease" 
+        property name="dist.version.long" value="non-release build [${timestamp}]" 
+    
+    # ================================================================= 
+    # compile:                                                          
+    # Compiles the source code                                          
+    # ================================================================= 
+    
+    target name="compile"
+    |  depends="prepare"
+    |  description="Compiles the source code"
+        
+        javac
+        |  srcdir="${src.dir}"
+        |  destdir="${build.classes.dir}"
+        |  source="1.5"
+        |  target="1.5"
+            classpath refid="build.classpath" 
+    
+    
+    # ================================================================= 
+    # copy-resources:                                                   
+    # Copies resource files to the build directory                      
+    # ================================================================= 
+    
+    target name="copy-resources" 
+    |  depends="prepare"
+    |  description="Copies resource files to the build directory"
+        
+        copy todir="${build.classes.dir}"
+            fileset dir="${res.dir}"
+                exclude name="**/*.properties"
+        
+        copy todir="${build.classes.dir}" overwrite="yes"
+            filterset
+                filter token="dist.version"      value="${dist.version}"
+                filter token="dist.version.long" value="${dist.version.long}"
+            fileset dir="${res.dir}"
+                include name="**/*.properties"
+    
+    
+    # ================================================================= 
+    # build:                                                            
+    # The default target                                                
+    # ================================================================= 
+    
+    target name="build" 
+    |  depends="jar,compile-tests"
+    |  description="Builds an executable target (default)"
+    
+    
+    # ================================================================= 
+    # jar:                                                              
+    # Creates jar file                                                  
+    # ================================================================= 
+    
+    target name="jar" depends="compile,copy-resources" description="Creates a jar file"
+        
+        delete file="${jar.file}"
+        
+        jar 
+        |  manifest="${jar.manifest}" 
+        |  jarfile="${jar.file}" 
+        |  compress="false"
+            
+            fileset dir="${build.classes.dir}" 
+    
+    
+    # ================================================================= 
+    # run:                                                              
+    # Runs the darn thing                                               
+    # ================================================================= 
+    
+    target name="run" depends="build" description="Runs the darn thing"
+        
+        java classname="${run.mainclass}" fork="yes"
+            arg line="${run.args}"
+            classpath refid="run.classpath" 
+    
+    
+    # ================================================================= 
+    # test:                                                             
+    # Runs JUnit test suites                                            
+    # ================================================================= 
+    
+    target name="compile-tests"
+    |  depends="jar"
+        
+        mkdir dir="${build.test.dir}" 
+        
+        javac
+        |  srcdir="${test.dir}/java/"
+        |  destdir="${build.test.dir}"
+        |  source="1.5"
+        |  target="1.5"
+            classpath refid="test.classpath" 
+    
+    target name="test"
+    |  depends="compile-tests"
+    |  description="Runs JUnit test suites"
+        
+        property name="test.build.recording.dir"
+        |        location="${build.test.dir}/recording-tests" 
+        delete dir="${test.build.recording.dir}" 
+        mkdir  dir="${test.build.recording.dir}" 
+        
+        taskdef name="junit"
+        |  classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"
+        |  classpath="${test.junit.lib}"
+        
+        junit
+        |  printsummary="${junit.printsummary}"
+        |  timeout="${junit.timeout}"
+        |  showoutput="${junit.showoutput}"
+        |  haltonerror="yes"
+        |  haltonfailure="yes"
+        |  fork="no"
+            
+            formatter type="plain" usefile="no" 
+            classpath refid="test.classpath" 
+            sysproperty key="Macker.RecordingTest.testDir"
+            |           value="${test.dir}/recording-tests" 
+            sysproperty key="Macker.RecordingTest.buildDir"
+            |           value="${test.build.recording.dir}" 
+            
+            batchtest
+                fileset dir="${test.dir}/java/"
+                    include name="**/*Test.java"
+        
+        
+        # We need some actual tests around the Ant task — but for now,
+        # just make sure it doesn't blow up! 
+        ant antfile="${test.dir}/ant-test/build.xml" target="go" inheritall="no"
+    
+    
+    # ================================================================= 
+    # javadoc:                                                          
+    # Generates javadoc                                                 
+    # ================================================================= 
+    
+    target
+    |  name="javadoc"
+    |  description="Builds javadoc"
+    |  depends="prepare"
+        
+        property name="javadoc.title" value="${Name} API ${dist.version.long}"
+        mkdir dir="${javadoc.dir}" 
+        javadoc sourcepath="${src.dir}"
+        |  destdir="${javadoc.dir}"
+        |  packagenames="${javadoc.packages}"
+        |  public="true"
+        |  windowtitle="${javadoc.title}" 
+        |  use="true"
+            classpath refid="build.classpath" 
+            link href="http://java.sun.com/j2se/1.3/docs/api/" 
+        copy todir="${javadoc.dir}"
+            fileset dir="${src.dir}"
+                include name="**/*.gif"
+                include name="**/*.jpeg"
+                include name="**/*.jpg"
+                include name="**/*.png"
+                include name="**/*.pdf"
+                include name="**/*.svg"
+    
+    
+    # ================================================================= 
+    # clean:                                                            
+    # Removes all build files                                           
+    # ================================================================= 
+    
+    target name="clean" description="Removes all build files"
+        delete dir="${javadoc.dir}" 
+        delete dir="${build.classes.dir}" 
+        delete dir="${build.dir}" 
+        delete dir="${dist.dir}" 
+    
+    # ================================================================= 
+    # dist:                                                             
+    # Package distribution version                                      
+    # ================================================================= 
+    
+    target
+    |  name="dist"
+    |  depends="clean,test,javadoc"
+    |  description="Prepares distribution-ready archives (uses dist.version parameter)"
+        
+        echo: "Bundling dist: ${dist.version.long}"
+        property name="dist.name" value="${name}-${dist.version}" 
+        property name="dist.file" value="${dist.dir}/${dist.name}" 
+        
+        property name="dist.tmp.dir" value="${dist.dir}/tmp" 
+        property name="dist.staging.dir" value="${dist.tmp.dir}/${dist.name}" 
+        mkdir  dir="${dist.staging.dir}" 
+        copy todir="${dist.staging.dir}"
+            fileset dir="${basedir}"
+                include name="**" 
+                exclude name="build/**" 
+                exclude name="**/.DS_Store" 
+        copy todir="${dist.staging.dir}"
+            fileset dir="${build.dir}" includes="${name}.jar" 
+        copy todir="${dist.staging.dir}" overwrite="yes"
+            filterset
+                filter token="dist.version"      value="${dist.version}"
+                filter token="dist.version.long" value="${dist.version.long}"
+            fileset dir="${basedir}" includes="README.html" 
+        tar basedir="${dist.tmp.dir}"
+        |   destfile="${dist.file}.tar.gz"
+        |   compression="gzip"
+        |   longfile="gnu" 
+        zip basedir="${dist.tmp.dir}"
+        |   destfile="${dist.file}.zip"
+        |   filesonly="no" 
+        delete dir="${dist.tmp.dir}" 
+
+
+
+</td>
+<td>
+&lt;?xml version="1.0"?&gt;
+
+&lt;project name="Macker" default="build" basedir="."&gt;
+    
+    &lt;!-- ================================================================= --&gt;
+    &lt;!-- Properties                                                        --&gt;
+    &lt;!-- ================================================================= --&gt;
+    
+    &lt;!-- Global --&gt;
+    
+    &lt;property name="Name"                 value="Macker" /&gt;
+    &lt;property name="name"                 value="macker" /&gt;
+    
+    &lt;property name="src.dir"              location="${basedir}/src/java" /&gt;
+    &lt;property name="res.dir"              location="${basedir}/src/res" /&gt;
+    &lt;property name="lib.dir"              location="${basedir}/lib" /&gt;
+    &lt;property name="test.dir"             location="${basedir}/test" /&gt;
+    &lt;property name="doc.dir"              location="${basedir}/doc" /&gt;
+    &lt;property name="build.lib.dir"        location="${lib.dir}/build-only" /&gt;
+    &lt;property name="example.dir"          location="${doc.dir}/example" /&gt;
+    
+    &lt;property file="${basedir}/build.properties" /&gt;
+    
+    &lt;!-- Targets --&gt;
+    
+    &lt;property name="build.dir"            location="${basedir}/build/ant/" /&gt;
+    &lt;property name="build.classes.dir"    location="${build.dir}/classes" /&gt;
+    &lt;property name="build.test.dir"       location="${build.dir}/test" /&gt;
+    &lt;property name="dist.dir"             location="${build.dir}/dist" /&gt;
+    
+    &lt;property name="jar.file"             location="${build.dir}/${name}.jar" /&gt;
+    &lt;property name="jar.manifest"         location="${basedir}/src/manifest.mf" /&gt;
+    
+    &lt;property name="javadoc.dir"          location="${doc.dir}/javadoc"/&gt;
+    &lt;property name="javadoc.packages"     value="net.innig.macker.*" /&gt;
+    
+    &lt;property name="run.mainclass"        value="net.innig.macker.Macker" /&gt;
+    &lt;property name="run.args"             value="" /&gt;
+    
+    &lt;!-- ================================================================= --&gt;
+    &lt;!-- prepare:                                                          --&gt;
+    &lt;!-- Sets up directories and such for compilation                      --&gt;
+    &lt;!-- ================================================================= --&gt;
+    
+    &lt;target name="prepare"&gt;
+        &lt;mkdir dir="${build.dir}" /&gt;
+        &lt;mkdir dir="${build.classes.dir}" /&gt;
+        &lt;mkdir dir="${build.lib.dir}" /&gt; &lt;!-- because it's usually empty --&gt;
+
+        &lt;path id="build.classpath"&gt;
+            &lt;fileset dir="${lib.dir}" includes="**/*.jar" /&gt;
+            &lt;fileset dir="${build.lib.dir}" includes="**/*.jar" /&gt;
+        &lt;/path&gt;
+        &lt;property name="build.classpath" refid="build.classpath" /&gt;
+        
+        &lt;path id="run.classpath"&gt;
+            &lt;pathelement location="${build.classes.dir}" /&gt;
+            &lt;fileset dir="${lib.dir}" includes="**/*.jar" /&gt;
+        &lt;/path&gt;
+        &lt;property name="run.classpath" refid="run.classpath" /&gt;
+
+        &lt;path id="test.classpath"&gt;
+            &lt;pathelement location="${build.test.dir}" /&gt;
+            &lt;path refid="run.classpath" /&gt;
+        &lt;/path&gt;
+
+        &lt;tstamp&gt;&lt;format property="timestamp" pattern="yyyy/MM/dd HH:mm:ss z" locale="en"/&gt;&lt;/tstamp&gt;
+        &lt;condition property="dist.version.long" value="version ${dist.version}"&gt;
+            &lt;isset property="dist.version" /&gt;
+        &lt;/condition&gt;
+        &lt;property name="dist.version" value="nonrelease" /&gt;
+        &lt;property name="dist.version.long" value="non-release build [${timestamp}]" /&gt;
+    &lt;/target&gt;
+
+    &lt;!-- ================================================================= --&gt;
+    &lt;!-- compile:                                                          --&gt;
+    &lt;!-- Compiles the source code                                          --&gt;
+    &lt;!-- ================================================================= --&gt;
+
+    &lt;target name="compile"
+        depends="prepare"
+        description="Compiles the source code"&gt;
+
+        &lt;javac
+            srcdir="${src.dir}"
+            destdir="${build.classes.dir}"
+            source="1.5"
+            target="1.5"&gt;
+            &lt;classpath refid="build.classpath" /&gt;
+        &lt;/javac&gt;
+
+    &lt;/target&gt;
+
+    &lt;!-- ================================================================= --&gt;
+    &lt;!-- copy-resources:                                                   --&gt;
+    &lt;!-- Copies resource files to the build directory                      --&gt;
+    &lt;!-- ================================================================= --&gt;
+
+    &lt;target name="copy-resources" 
+        depends="prepare"
+        description="Copies resource files to the build directory"&gt;
+        
+        &lt;copy todir="${build.classes.dir}"&gt;
+            &lt;fileset dir="${res.dir}"&gt;
+                &lt;exclude name="**/*.properties"/&gt;
+            &lt;/fileset&gt;
+        &lt;/copy&gt;
+        
+        &lt;copy todir="${build.classes.dir}" overwrite="yes"&gt;
+            &lt;filterset&gt;
+                &lt;filter token="dist.version"      value="${dist.version}"/&gt;
+                &lt;filter token="dist.version.long" value="${dist.version.long}"/&gt;
+            &lt;/filterset&gt;
+            &lt;fileset dir="${res.dir}"&gt;
+                &lt;include name="**/*.properties"/&gt;
+            &lt;/fileset&gt;
+        &lt;/copy&gt;
+
+    &lt;/target&gt;
+
+    &lt;!-- ================================================================= --&gt;
+    &lt;!-- build:                                                            --&gt;
+    &lt;!-- The default target                                                --&gt;
+    &lt;!-- ================================================================= --&gt;
+
+    &lt;target name="build" 
+        depends="jar,compile-tests"
+        description="Builds an executable target (default)"&gt;
+
+    &lt;/target&gt;
+
+    &lt;!-- ================================================================= --&gt;
+    &lt;!-- jar:                                                              --&gt;
+    &lt;!-- Creates jar file                                                  --&gt;
+    &lt;!-- ================================================================= --&gt;
+    
+    &lt;target name="jar" depends="compile,copy-resources" description="Creates a jar file"&gt;
+
+        &lt;delete file="${jar.file}"/&gt;
+
+        &lt;jar 
+            manifest="${jar.manifest}" 
+            jarfile="${jar.file}" 
+            compress="false"&gt;
+
+            &lt;fileset dir="${build.classes.dir}" /&gt;
+        &lt;/jar&gt;
+
+    &lt;/target&gt;
+
+    &lt;!-- ================================================================= --&gt;
+    &lt;!-- run:                                                              --&gt;
+    &lt;!-- Runs the darn thing                                               --&gt;
+    &lt;!-- ================================================================= --&gt;
+
+    &lt;target name="run" depends="build" description="Runs the darn thing"&gt;
+
+        &lt;java classname="${run.mainclass}" fork="yes"&gt;
+            &lt;arg line="${run.args}"/&gt;
+            &lt;classpath refid="run.classpath" /&gt;
+        &lt;/java&gt;
+
+    &lt;/target&gt;
+
+    &lt;!-- ================================================================= --&gt;
+    &lt;!-- test:                                                             --&gt;
+    &lt;!-- Runs JUnit test suites                                            --&gt;
+    &lt;!-- ================================================================= --&gt;
+
+    &lt;target name="compile-tests"
+        depends="jar"&gt;
+        
+        &lt;mkdir dir="${build.test.dir}" /&gt;
+
+        &lt;javac
+            srcdir="${test.dir}/java/"
+            destdir="${build.test.dir}"
+            source="1.5"
+            target="1.5"&gt;
+            &lt;classpath refid="test.classpath" /&gt;
+        &lt;/javac&gt;
+    &lt;/target&gt;
+    
+    &lt;target name="test"
+        depends="compile-tests"
+        description="Runs JUnit test suites"&gt;
+        
+        &lt;property name="test.build.recording.dir"
+            location="${build.test.dir}/recording-tests" /&gt;
+        &lt;delete dir="${test.build.recording.dir}" /&gt;
+        &lt;mkdir  dir="${test.build.recording.dir}" /&gt;
+        
+        &lt;taskdef name="junit"
+            classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"
+            classpath="${test.junit.lib}"/&gt;
+        
+        &lt;junit
+            printsummary="${junit.printsummary}"
+            timeout="${junit.timeout}"
+            showoutput="${junit.showoutput}"
+            haltonerror="yes"
+            haltonfailure="yes"
+            fork="no"&gt;
+            
+            &lt;formatter type="plain" usefile="no" /&gt;
+            &lt;classpath refid="test.classpath" /&gt;
+            &lt;sysproperty key="Macker.RecordingTest.testDir"
+                value="${test.dir}/recording-tests" /&gt;
+            &lt;sysproperty key="Macker.RecordingTest.buildDir"
+                value="${test.build.recording.dir}" /&gt;
+
+            &lt;batchtest&gt;
+                &lt;fileset dir="${test.dir}/java/"&gt;
+                    &lt;include name="**/*Test.java"/&gt;
+                &lt;/fileset&gt;
+            &lt;/batchtest&gt;
+
+        &lt;/junit&gt;
+    	
+    	&lt;!-- We need some actual tests around the Ant task — but for now,
+    	    just make sure it doesn't blow up! --&gt;
+    	&lt;ant antfile="${test.dir}/ant-test/build.xml" target="go" inheritall="no"/&gt;
+
+    &lt;/target&gt;
+
+    &lt;!-- ================================================================= --&gt;
+    &lt;!-- javadoc:                                                          --&gt;
+    &lt;!-- Generates javadoc                                                 --&gt;
+    &lt;!-- ================================================================= --&gt;
+
+    &lt;target
+        name="javadoc"
+        description="Builds javadoc"
+        depends="prepare"&gt;
+        
+        &lt;property name="javadoc.title" value="${Name} API ${dist.version.long}"/&gt;
+        &lt;mkdir dir="${javadoc.dir}" /&gt;
+        &lt;javadoc sourcepath="${src.dir}"
+            destdir="${javadoc.dir}"
+            packagenames="${javadoc.packages}"
+            public="true"
+            windowtitle="${javadoc.title}" 
+            use="true"&gt;
+            &lt;classpath refid="build.classpath" /&gt;
+            &lt;link href="http://java.sun.com/j2se/1.3/docs/api/" /&gt;
+        &lt;/javadoc&gt;
+        &lt;copy todir="${javadoc.dir}"&gt;
+            &lt;fileset dir="${src.dir}"&gt;
+                &lt;include name="**/*.gif"/&gt;
+                &lt;include name="**/*.jpeg"/&gt;
+                &lt;include name="**/*.jpg"/&gt;
+                &lt;include name="**/*.png"/&gt;
+                &lt;include name="**/*.pdf"/&gt;
+                &lt;include name="**/*.svg"/&gt;
+            &lt;/fileset&gt;
+        &lt;/copy&gt;
+        
+    &lt;/target&gt;
+
+    &lt;!-- ================================================================= --&gt;
+    &lt;!-- clean:                                                            --&gt;
+    &lt;!-- Removes all build files                                           --&gt;
+    &lt;!-- ================================================================= --&gt;
+
+    &lt;target name="clean" description="Removes all build files"&gt;
+        &lt;delete dir="${javadoc.dir}" /&gt;
+        &lt;delete dir="${build.classes.dir}" /&gt;
+        &lt;delete dir="${build.dir}" /&gt;
+        &lt;delete dir="${dist.dir}" /&gt;
+    &lt;/target&gt;
+
+    &lt;!-- ================================================================= --&gt;
+    &lt;!-- dist:                                                             --&gt;
+    &lt;!-- Package distribution version                                      --&gt;
+    &lt;!-- ================================================================= --&gt;
+
+    &lt;target
+		name="dist"
+		depends="clean,test,javadoc"
+    	description="Prepares distribution-ready archives (uses dist.version parameter)"&gt;
+	
+        &lt;echo&gt;Bundling dist: ${dist.version.long}&lt;/echo&gt;
+        &lt;property name="dist.name" value="${name}-${dist.version}" /&gt;
+        &lt;property name="dist.file" value="${dist.dir}/${dist.name}" /&gt;
+        
+        &lt;property name="dist.tmp.dir" value="${dist.dir}/tmp" /&gt;
+        &lt;property name="dist.staging.dir" value="${dist.tmp.dir}/${dist.name}" /&gt;
+        &lt;mkdir  dir="${dist.staging.dir}" /&gt;
+        &lt;copy todir="${dist.staging.dir}"&gt;
+            &lt;fileset dir="${basedir}"&gt;
+                &lt;include name="**" /&gt;
+                &lt;exclude name="build/**" /&gt;
+                &lt;exclude name="**/.DS_Store" /&gt;
+            &lt;/fileset&gt;
+        &lt;/copy&gt;
+        &lt;copy todir="${dist.staging.dir}"&gt;
+            &lt;fileset dir="${build.dir}" includes="${name}.jar" /&gt;
+        &lt;/copy&gt;
+        &lt;copy todir="${dist.staging.dir}" overwrite="yes"&gt;
+            &lt;filterset&gt;
+                &lt;filter token="dist.version"      value="${dist.version}"/&gt;
+                &lt;filter token="dist.version.long" value="${dist.version.long}"/&gt;
+            &lt;/filterset&gt;
+            &lt;fileset dir="${basedir}" includes="README.html" /&gt;
+        &lt;/copy&gt;
+        &lt;tar basedir="${dist.tmp.dir}"
+             destfile="${dist.file}.tar.gz"
+             compression="gzip"
+             longfile="gnu" /&gt;
+        &lt;zip basedir="${dist.tmp.dir}"
+             destfile="${dist.file}.zip"
+             filesonly="no" /&gt;
+        &lt;delete dir="${dist.tmp.dir}" /&gt;
+
+    &lt;/target&gt;
+    
+&lt;/project&gt;
+
+</td>
+</tr>
+</table>
+
+
+</body>
+</html>
+

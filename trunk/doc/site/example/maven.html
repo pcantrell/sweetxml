@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <style type="text/css">@import "example.css";</style>
+</head>
+<body>
+
+
+<table class="example-table" cellspacing="0">
+<tr><th>This SweetXML...</th><th>...is equivalent to this XML.</th></tr>
+<tr valign="top">
+<td>
+project xmlns="http://maven.apache.org/POM/4.0.0"
+| xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance"
+| xsi/schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    modelVersion: 4.0.0
+    
+    groupId:     com.mycompany.app
+    artifactId:  my-app
+    packaging:   jar
+    version:     1.0-SNAPSHOT
+    name:        "Maven Quick Start Archetype"
+    url:         "http://maven.apache.org"
+    
+    dependencies
+        dependency
+            groupId:     junit
+            artifactId:  junit
+            version:     3.8.1
+            scope:       test
+        dependency       
+            groupId:     org.apache.codehaus.plexus
+            artifactId:  plexus-utils
+            version:     1.0.4
+            
+    build
+        filters
+            filter: "src/main/filters/filters.properties"
+        resources
+            resource
+                directory: "src/main/resources"
+                filtering: true
+                
+    distributionManagement
+        repository
+            id:   mycompany-repository
+            name: "MyCompany Repository"
+            url:  "scp://repository.mycompany.com/repository/maven2"
+
+</td>
+<td>
+&lt;?xml version="1.0"?&gt;
+
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  
+  &lt;groupId&gt;com.mycompany.app&lt;/groupId&gt;
+  &lt;artifactId&gt;my-app&lt;/artifactId&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  &lt;name&gt;Maven Quick Start Archetype&lt;/name&gt;
+  &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+  
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;junit&lt;/groupId&gt;
+      &lt;artifactId&gt;junit&lt;/artifactId&gt;
+      &lt;version&gt;3.8.1&lt;/version&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.codehaus.plexus&lt;/groupId&gt;
+      &lt;artifactId&gt;plexus-utils&lt;/artifactId&gt;
+      &lt;version&gt;1.0.4&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+  
+  &lt;build&gt;
+    &lt;filters&gt;
+      &lt;filter&gt;src/main/filters/filters.properties&lt;/filter&gt;
+    &lt;/filters&gt;
+    &lt;resources&gt;
+      &lt;resource&gt;
+        &lt;directory&gt;src/main/resources&lt;/directory&gt;
+        &lt;filtering&gt;true&lt;/filtering&gt;
+      &lt;/resource&gt;
+    &lt;/resources&gt;
+  &lt;/build&gt;
+  
+  &lt;distributionManagement&gt;
+    &lt;repository&gt;
+      &lt;id&gt;mycompany-repository&lt;/id&gt;
+      &lt;name&gt;MyCompany Repository&lt;/name&gt;
+      &lt;url&gt;scp://repository.mycompany.com/repository/maven2&lt;/url&gt;
+    &lt;/repository&gt;
+  &lt;/distributionManagement&gt;
+&lt;/project&gt;
+
+</td>
+</tr>
+</table>
+
+
+</body>
+</html>
+

@@ -204,3 +204,27 @@ pre {
     margin : 1em;
     text-align : right;
 }
+
+.example-select {
+    margin-top : 2em;
+    margin-left : 2%;
+    background : #eee;
+    border : 1px solid #ccc;
+    border-bottom : none;
+    padding : 0 0.4em;
+    font-family : Verdana,Monaco,Courier,'Courier New';
+    font-size : 1.2em;
+}
+.example-select td {
+    padding : 0.6em 1em;
+}
+.example-select td.selected {
+    font-weight : bold;
+}
+.example-frame {
+    width : 98%;
+    margin : 0 1%;
+    height : 40em;
+    border : none;
+    border-top : 1px solid #888;
+}
