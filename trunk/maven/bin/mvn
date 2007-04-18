@@ -9,7 +9,8 @@ fi
 if [ "$M2_HOME" ]; then
     mvn="$M2_HOME/bin/mvn"
 else
-    mvn=mvn
+    echo "M2_HOME environment variable not set" >&2
+    exit 1
 fi
 
 unset generated_buildfile
