@@ -21,9 +21,8 @@
 
 == Version 0.3 ==
   * Support for multi-line tags (for numerous attributes)  _(done)_
-  * Possible support for multiple tags on a single line
-  * Consider future-proofing for multiple tags on a single line
-  * I18N
+  * I18N  _(in progress)_
+  * Full regression test suite for converters  _(done)_
 
 = Future Releases =
 
@@ -31,11 +30,13 @@
   * Consider support for multiple tags on a single line
   * Consider document preamble with version number
   * Consider multiple encodings
+  * Full regression test suite for entire core
 
 == Version 0.x ==
   * Localization
   * Ports to other languages
   * ???
+  * Full regression test suite for plugins
 
 == Version 1.0 ==
   * Syntax is stable, and ready to be saddled with backward compatibility
