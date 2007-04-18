@@ -212,7 +212,7 @@ public class XmlToSweetConverter
                         break;
                     text.append((char) c);
                     }
-                printQuoted(text.toString(), false);
+                printQuoted(text.toString(), true);
                 }
             else
                 throw new SweetXmlParseException(
