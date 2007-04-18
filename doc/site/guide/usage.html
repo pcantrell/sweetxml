@@ -14,7 +14,8 @@
     <a href="../index.html">Home</a> | 
     <a href="../faq.html">FAQ</a> |
     <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
-    <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+    <a href="index.html">User Guide</a> |
+        <a href="../example/index.html">Examples</a> |
     <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
     <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
     <a href="http://groups.google.com/group/sweetxml">Support</a>
@@ -38,7 +39,7 @@
 
 <h3><a name="patterns">Basic Usage Patterns</a></h3>
 <p>
-How you use SweetXML essentially boils down to one question: Where does the conversion to plain XML happen? There are different answers to that question, which fall into four categories:
+How you use SweetXML essentially boils down to one question: Where does the conversion to plain XML happen? There are several possible answers to that question, depending on the situation.
 </p>
 
 <h4><a name="build">Conversion at Build Time</a></h4>
@@ -46,7 +47,7 @@ How you use SweetXML essentially boils down to one question: Where does the conv
 If your application needs XML configuration files at runtime and does not have built-in support for SweetXML, you can convert the files at build time. This is the most common way to use SweetXML: include a conversion step in your build process, during the resource copying phase.
 </p>
 <p>
-SweetXML plans to provide support for doing this in several different build tools; see the <a href="plugins.html">tool integration</a> section for more information.
+SweetXML provides built-in support for doing this with <a href="ant.html">Ant</a> and <a href="maven.html">Maven</a>. Most other tools will be able to use the <a href="cli.html">command line interface</a>.
 </p>
 <p>
 <i>Applies to: configuration files for Macker, Hibernate, Tapestry, web application context, JSF, etc.</i>
@@ -60,18 +61,7 @@ Sometimes, you cannot convert a file at build time. This is usually for one of t
 In either case, your best bet is to whip together a little shell script which first calls SweetXML's <a href="cli.html">command-line interface</a> to convert the necessary files, then launches the tool in question. Place that script so that your shell finds it instead of the tool's own launch script, and you'll hardly notice that it doesn't have native SweetXML support.
 </p>
 <p>
-For example, I have the following code in <code>~/scripts/mvn</code>, which is the first entry in my <code>PATH</code>:
-</p>
-<pre>#!/bin/bash
-
-if [ -f pom.sxml ]; then
-    sweetxml -s2x --overwrite pom.sxml || exit 1
-fi
-
-exec "/usr/local/java/maven/bin/mvn" $@
-</pre>
-<p>
-(You'll need to adapt that to your own OS and environment, of course.)
+The SweetXML distribution includes such scripts for converting Ant and Maven build files, in the <code>bin</code> directory.
 </p>
 <p>
 <i>Applies to: Ant's <code>build.xml</code>, Maven's <code>pom.xml</code>, Jetty's <code>jetty.xml</code>, etc.</i>
@@ -103,7 +93,8 @@ Next section: <a href="cli.html">Command-Line Interface</a>
         <a href="../index.html">Home</a> | 
         <a href="../faq.html">FAQ</a> |
         <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
-        <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+        <a href="index.html">User Guide</a> |
+        <a href="../example/index.html">Examples</a> |
         <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
     <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
         <a href="http://groups.google.com/group/sweetxml">Support</a>

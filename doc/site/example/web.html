@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <style type="text/css">@import "example.css";</style>
+</head>
+<body>
+
+
+<table class="example-table" cellspacing="0">
+<tr><th>This SweetXML...</th><th>...is equivalent to this XML.</th></tr>
+<tr valign="top">
+<td>
+web-app version=2.4
+|   xmlns="http://java.sun.com/xml/ns/j2ee"
+|   xmlns/xsi="http://www.w3.org/2001/XMLSchema-instance"
+|   xsi/schemaLocation="http://java.sun.com/xml/ns/j2ee
+                        http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+
+    # Filters
+    
+    filter
+        filter-name: ServletTimingFilter
+        filter-class: net.innig.framework.web.ServletTimingFilter
+    filter
+        filter-name: HibernateRequestFilter
+        filter-class: net.innig.framework.persistence.hibernate.HibernateRequestFilter
+        init-param
+            param-name: default-action
+            param-value: rollback
+    
+    # Filter mappings
+    
+    filter-mapping
+        filter-name: ServletTimingFilter
+        url-pattern: "/*"
+    filter-mapping
+        filter-name: HibernateRequestFilter
+        url-pattern: "/*"
+    filter-mapping
+        filter-name: ImreContextFilter
+        url-pattern: "/*"
+    
+    # Servlets
+    
+    servlet
+        servlet-name: tapestry
+        servlet-class: org.apache.tapestry.ApplicationServlet
+        load-on-startup: 1
+    servlet-mapping
+        servlet-name: tapestry
+        url-pattern:  "/app"
+    servlet-mapping
+        servlet-name: tapestry
+        url-pattern:  "*.page"
+    servlet-mapping
+        servlet-name: tapestry
+        url-pattern:  "*.direct"
+    servlet-mapping
+        servlet-name: tapestry
+        url-pattern:  "*.sdirect"
+    servlet-mapping
+        servlet-name: tapestry
+        url-pattern:  "/article/*"
+    servlet-mapping
+        servlet-name: tapestry
+        url-pattern:  "/category/*"
+    
+    # Error page
+    
+    error-page
+        error-code: 500
+        location:   /error
+
+</td>
+<td>
+&lt;?xml version="1.0"?&gt;
+
+&lt;web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+                        http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;ServletTimingFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;net.innig.framework.web.ServletTimingFilter&lt;/filter-class&gt;
+    &lt;/filter&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;HibernateRequestFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;net.innig.framework.persistence.hibernate.HibernateRequestFilter&lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;default-action&lt;/param-name&gt;
+            &lt;param-value&gt;rollback&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;ServletTimingFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;HibernateRequestFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;ImreContextFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;tapestry&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.apache.tapestry.ApplicationServlet&lt;/servlet-class&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;tapestry&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/app&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;tapestry&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;*.page&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;tapestry&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;*.direct&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;tapestry&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;*.sdirect&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;tapestry&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/article/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;tapestry&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/category/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;error-page&gt;
+        &lt;error-code&gt;500&lt;/error-code&gt;
+        &lt;location&gt;/error&lt;/location&gt;
+    &lt;/error-page&gt;
+&lt;/web-app&gt;</td>
+</tr>
+</table>
+
+
+</body>
+</html>
+

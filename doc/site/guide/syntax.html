@@ -14,7 +14,8 @@
     <a href="../index.html">Home</a> | 
     <a href="../faq.html">FAQ</a> |
     <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
-    <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+    <a href="index.html">User Guide</a> |
+    <a href="../example/index.html">Examples</a> |
     <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
     <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
     <a href="http://groups.google.com/group/sweetxml">Support</a>
@@ -80,7 +81,7 @@ SweetXML requires consistent indentation. <b>Be careful of tabs!</b> If differen
 </p>
 
 <p>
-Each tag appear on a line by itself. There is currently no syntax that allows multiple tags on the same line. This feature is in the <a href="http://code.google.com/p/sweetxml/wiki/Roadmap">roadmap</a>.
+Each tag appear on a line by itself. There is currently no syntax that allows multiple tags on the same line. Exploration of this feature is in the <a href="http://code.google.com/p/sweetxml/wiki/Roadmap">roadmap</a>.
 </p>
 
 
@@ -114,7 +115,29 @@ Note that the attribute value <code>"Mr. Man"</code> requires quotes because it 
 </p>
 
 <p>
-There is currently no way to split a long tag with many attributes across multiple lines. This feature is in the <a href="http://code.google.com/p/sweetxml/wiki/Roadmap">roadmap</a>.
+You can split a tag across multiple lines with a vertical bar:
+</p>
+<table class="example-table" cellspacing="0">
+<tr valign="top">
+<td>pet
+| type="cat"
+| name="Luke"
+| color="black"
+| size="large"
+| likable="very"
+| clumsy="very"
+</td>
+<td>&lt;pet
+    type="cat"
+    name="Luke"
+    color="black"
+    size="large"
+    likable="very"
+    clumsy="very" /&gt;</td>
+</tr>
+</table>
+<p>
+Note that the attribute value <code>"Mr. Man"</code> requires quotes because it contains a space.
 </p>
 
 <h3><a name="text">Text</a></h3>
@@ -239,6 +262,20 @@ Entities have exactly the same syntax as in XML.
 </tr>
 </table>
 
+<p>
+Because the colon is already used for inline text, namespaces use a slash:
+</p>
+<table class="example-table" cellspacing="0">
+<tr valign="top">
+<td>document
+|   xmlns/xsi="..."
+|   xsi/schemaLocation="..."</td>
+<td>&lt;document
+    xmlns:xsi="..."
+    xsi:schemaLocation="..."&gt;</td>
+</tr>
+</table>
+
 <h3><a name="preamble">Document Preamble</a></h3>
 
 <p>SweetXML documents have no place to specify a version number or encoding. Consideration of this feature is in the <a href="http://code.google.com/p/sweetxml/wiki/Roadmap">roadmap</a>.</p>
@@ -270,7 +307,11 @@ hibernate-configuration
 </table>
 
 <p>
-That is the complete syntax of SweetXML.
+This is the complete syntax of SweetXML.
+</p>
+
+<p>
+Check out the <a href="../example/index.html">examples</a> to see how it all fits together.
 </p>
 
 <div class="next">
@@ -284,9 +325,10 @@ Next section: <a href="usage.html">Using SweetXML</a>
         <a href="../index.html">Home</a> | 
         <a href="../faq.html">FAQ</a> |
         <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
-        <a href="index.html">Guide&nbsp;&amp;&nbsp;Examples</a> |
+        <a href="index.html">User Guide</a> |
+        <a href="../example/index.html">Examples</a> |
         <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
-    <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
+        <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
         <a href="http://groups.google.com/group/sweetxml">Support</a>
     </div>
 </div>

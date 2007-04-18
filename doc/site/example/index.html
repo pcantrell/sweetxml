@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+<head>
+    <script type="text/javascript">
+        examples = 
+            {
+            "maven" : "Maven POM",
+            "ant"   : "Ant build file",
+            "web"   : "Java web descriptor"
+            }
+        exampleSelected = window.location.search.substring(1)
+        if(!exampleSelected)
+            exampleSelected = "maven"
+    </script>
+    <title>SweetXML Examples</title>
+    <style type="text/css">@import "../sweetxml.css";</style>
+    <meta name="generator" content="Paul"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<h1>SweetXML Examples</h1>
+
+<div class="navbar">
+    <a href="../index.html">Home</a> | 
+    <a href="../faq.html">FAQ</a> |
+    <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+    <a href="../guide/index.html">User Guide</a> |
+    <a href="../example/index.html">Examples</a> |
+    <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+    <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
+    <a href="http://groups.google.com/group/sweetxml">Support</a>
+</div>
+
+
+<table class="example-select">
+<tr>
+    <script type="text/javascript">
+        for(var ex in examples)
+            {
+            if(ex == exampleSelected)
+                document.write("<td class=\"selected\">")
+            else
+                {
+                document.write("<td>")
+                document.write("<a href=\"./index.html?" + ex + "\">")
+                }
+            document.write(examples[ex])
+            if(ex != exampleSelected)
+                document.write("</a>")
+            document.write("</td>")
+            }
+    </script>
+</tr>
+</table>
+
+<script type="text/javascript">
+    if(exampleSelected)
+        {
+        document.write("<iframe id='example-frame' class='example-frame' onload='resizeIframe(this)' src='" + exampleSelected + ".html'>")
+        document.write("</iframe>")
+        }
+
+    function resizeIframe(frame)
+        {
+        frameDoc = (frame.document) ? frame.document : frame.contentDocument;
+    	frame.style.height = frameDoc.body.scrollHeight + 32 + "px"
+        }
+</script>
+
+
+<div class="footer">
+    <div class="navbar">
+        <a href="../index.html">Home</a> | 
+        <a href="../faq.html">FAQ</a> |
+        <a href="http://code.google.com/p/sweetxml/downloads/list">Download</a> |
+        <a href="../guide/index.html">User Guide</a> |
+        <a href="../example/index.html">Examples</a> |
+        <a href="http://code.google.com/p/sweetxml/w/list">Wiki</a> |
+        <a href="http://code.google.com/p/sweetxml/issues/list">Issues</a> |
+        <a href="http://groups.google.com/group/sweetxml">Support</a>
+    </div>
+</div>
+
+<div class="opsipod">
+    <a href="http://innig.net/?logo"><img border="0" src="http://innig.net/images/innig_FFFFFF.gif" alt="innig"/></a>
+</div>
+
+</body>
+</html>
+

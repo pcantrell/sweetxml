@@ -1,0 +1,16 @@
+@import "../sweetxml.css";
+
+.example-table {
+    margin : 0.8em 0;
+    width : 100%;
+}
+
+.example-table th {
+    font-size : 1.2em;
+    color : #444;
+}
+
+.example-table td {
+    font-size : 0.9em;
+    font-family : Monaco,Courier,'Courier New';
+}
