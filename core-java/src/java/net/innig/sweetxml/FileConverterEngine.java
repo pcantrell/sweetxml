@@ -104,7 +104,8 @@ public class FileConverterEngine
             }
         
         Converter converter = mode.createConverter();
-        converter.setInput(new FileReader(inFile), inFile.getPath());
+        converter.setInput(
+            new ConverterInput(new FileReader(inFile), inFile.getPath()));
         
         FileWriter out = new FileWriter(outFile);
         out.write(converter.getResult());

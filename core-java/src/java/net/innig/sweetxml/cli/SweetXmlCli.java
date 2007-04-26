@@ -1,12 +1,12 @@
 package net.innig.sweetxml.cli;
 
 import net.innig.sweetxml.Converter;
+import net.innig.sweetxml.ConverterInput;
 import net.innig.sweetxml.FileConverterEngine;
 import net.innig.sweetxml.SweetXmlParseException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  * Entry point for the SweetXML command line interface.
@@ -37,7 +37,8 @@ public class SweetXmlCli
             try
                 {
                 Converter c = config.getExplicitMode().createConverter();
-                c.setInput(new InputStreamReader(System.in), "<stdin>");
+                c.setInput(
+                    new ConverterInput(System.in, "<stdin>"));
                 System.out.print(c.getResult());
                 }
             catch(Exception e)

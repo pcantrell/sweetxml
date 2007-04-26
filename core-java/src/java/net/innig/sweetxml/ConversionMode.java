@@ -12,7 +12,8 @@ public enum ConversionMode
     /**
      * Converion from XML to SweetXML.
      */
-    X2S("xml", "sxml") {
+    X2S("xml", "sxml")
+        {
         public Converter createConverter()
             { return new XmlToSweetConverter(); }
         },
@@ -20,9 +21,28 @@ public enum ConversionMode
     /**
      * Converion from SweetXML to XML.
      */
-    S2X("sxml", "xml") {
+    S2X("sxml", "xml")
+        {
         public Converter createConverter()
             { return new SweetToXmlConverter(); }
+        },
+        
+    /**
+     * Conversion from any recognized format to XML.
+     */
+    AUTO2X(null, "xml")
+        {
+        public Converter createConverter()
+            { return new AutoToXmlConverter(); }
+        },
+        
+    /**
+     * Conversion from any recognized format to SweetXML.
+     */
+    AUTO2S(null, "sxml")
+        {
+        public Converter createConverter()
+            { return new AutoToSweetConverter(); }
         };
         
     // ---
@@ -33,10 +53,11 @@ public enum ConversionMode
     static
         {
         for(ConversionMode mode : values())
-            {
-            bySourceExt.put(mode.getSourceExtension(), mode);
-            byTargetExt.put(mode.getTargetExtension(), mode);
-            }
+            if(mode.getSourceExtension() != null)
+                {
+                bySourceExt.put(mode.getSourceExtension(), mode);
+                byTargetExt.put(mode.getTargetExtension(), mode);
+                }
         }
     
     /**

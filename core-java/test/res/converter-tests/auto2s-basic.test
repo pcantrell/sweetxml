@@ -1,0 +1,52 @@
+
+x2s
+————————
+<pet type="budgie" name="Pegasus"></pet>
+<pet type="dog" name="Goulash"></pet>
+————————
+pet type="budgie" name="Pegasus"
+pet type="dog" name="Goulash"
+—————————————————————————————————————————————————————
+
+
+s2s
+————————
+pet type="budgie" name="Pegasus"
+pet type='dog' name='Goulash'
+————————
+pet type="budgie" name="Pegasus"
+pet type='dog' name='Goulash'
+—————————————————————————————————————————————————————
+
+
+s2s with comment
+————————
+# test case
+
+pet type="budgie" name="Pegasus"
+pet type='dog' name='Goulash'
+————————
+# test case
+
+pet type="budgie" name="Pegasus"
+pet type='dog' name='Goulash'
+—————————————————————————————————————————————————————
+
+
+x2s with preamble
+————————
+<?xml version="1.0"?>
+<pet type="budgie" name="Pegasus"></pet>
+<pet type="dog" name="Goulash"></pet>
+————————
+pet type="budgie" name="Pegasus"
+pet type="dog" name="Goulash"
+—————————————————————————————————————————————————————
+
+
+unknown type
+————————
+*who knows <not xml>
+————————
+!CONVERSION_TYPE_UNKNOWN 1:1 [*]
+—————————————————————————————————————————————————————

@@ -1,13 +1,22 @@
 package net.innig.sweetxml;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Tracks positional information and provides look-ahead utilities during coversion.
  */
-class ConverterInput
+public class ConverterInput
     {
     private BufferedReader in;
     private String sourceName;
@@ -15,15 +24,43 @@ class ConverterInput
     private boolean eol = true, markEol;
     private int markLine, markColumn;
     private boolean unreadAllowed;
+    private List<ConverterInputListener> listeners;
     
-    public ConverterInput(Reader reader, String sourceName)
+    /**
+     * @param  input       The text to be converted.
+     * @param  sourceName  An identifying string for the input to be used in error messages,
+     *                     e.g. a filename.
+     */
+    public ConverterInput(Reader input, String sourceName)
         {
-        this.in = (reader instanceof BufferedReader)
-            ? (BufferedReader) reader
-            : new BufferedReader(reader);
+        this.in = (input instanceof BufferedReader)
+            ? (BufferedReader) input
+            : new BufferedReader(input);
         this.sourceName = sourceName;
         }
     
+    public ConverterInput(InputStream in, String sourceName)
+        throws UnsupportedEncodingException
+        { this(new InputStreamReader(in, "utf-8"), sourceName); }
+
+    public ConverterInput(InputStream in, String encoding, String sourceName)
+        throws UnsupportedEncodingException
+        { this(new InputStreamReader(in, encoding), sourceName); }
+    
+    public ConverterInput(File document)
+        throws UnsupportedEncodingException, FileNotFoundException
+        { this(new FileInputStream(document), document.getPath()); }
+
+    public ConverterInput(URL document)
+        throws IOException
+        { this(document.openStream(), document.toExternalForm()); }
+    
+    public Reader getReader()
+        { return in; }
+
+    public String getSourceName()
+        { return sourceName; }
+
     public DocumentPosition getPosition()
         { return new DocumentPosition(sourceName, line, column); }
 
@@ -106,6 +143,21 @@ class ConverterInput
         
         column++;
         
+        if(listeners != null)
+            for(ConverterInputListener listener : listeners)
+                listener.countChar(c);
+        
         return c;
         }
+    
+    public void addListener(ConverterInputListener listener)
+        {
+        if(listeners == null)
+            listeners = new ArrayList<ConverterInputListener>();
+        listeners.add(listener);
+        }
+
+    public void close() throws IOException
+        { in.close(); }
+
     }

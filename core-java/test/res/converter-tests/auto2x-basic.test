@@ -1,0 +1,55 @@
+
+s2x
+————————
+pet type="budgie" name="Pegasus"
+pet type='dog' name='Goulash'
+————————
+<?xml version="1.0"?>
+
+<pet type="budgie" name="Pegasus"></pet>
+<pet type="dog" name="Goulash"></pet>
+—————————————————————————————————————————————————————
+
+
+x2x
+————————
+<pet type="budgie" name="Pegasus"></pet>
+<pet type="dog" name="Goulash"></pet>
+————————
+<pet type="budgie" name="Pegasus"></pet>
+<pet type="dog" name="Goulash"></pet>
+—————————————————————————————————————————————————————
+
+
+s2x with comment
+————————
+# test case
+
+pet type="budgie" name="Pegasus"
+pet type='dog' name='Goulash'
+————————
+<?xml version="1.0"?>
+
+<pet type="budgie" name="Pegasus"></pet>
+<pet type="dog" name="Goulash"></pet>
+—————————————————————————————————————————————————————
+
+
+x2x with preamble
+————————
+<?xml version="1.0"?>
+<pet type="budgie" name="Pegasus"></pet>
+<pet type="dog" name="Goulash"></pet>
+————————
+<?xml version="1.0"?>
+<pet type="budgie" name="Pegasus"></pet>
+<pet type="dog" name="Goulash"></pet>
+—————————————————————————————————————————————————————
+
+
+unknown type
+————————
+?who knows <not xml>
+————————
+!CONVERSION_TYPE_UNKNOWN 1:1 [?]
+—————————————————————————————————————————————————————
