@@ -1,17 +1,18 @@
 package net.innig.sweetxml;
 
 import static net.innig.sweetxml.Patterns.newline;
-import static net.innig.sweetxml.SweetXmlMessage.*;
+import static net.innig.sweetxml.SweetXmlMessage.CONTINUATION_OUTSIDE_TAG;
+import static net.innig.sweetxml.SweetXmlMessage.ENDLESS_QUOTE;
+import static net.innig.sweetxml.SweetXmlMessage.EXPECTED_EQ_IN_ATTRIBUTE;
+import static net.innig.sweetxml.SweetXmlMessage.ILLEGAL_NAME_CHARACTER;
+import static net.innig.sweetxml.SweetXmlMessage.INCONSISTENT_INDENTATION;
+import static net.innig.sweetxml.SweetXmlMessage.INDENT_SPACES;
+import static net.innig.sweetxml.SweetXmlMessage.INDENT_TABS;
+import static net.innig.sweetxml.SweetXmlMessage.INDENT_UNICODE;
+import static net.innig.sweetxml.SweetXmlMessage.MISPLACED_CONTINUATION;
+import static net.innig.sweetxml.SweetXmlMessage.SEVERED_ATTRIBUTE;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.util.LinkedList;
 
 import org.xml.sax.InputSource;
@@ -36,24 +37,8 @@ public class SweetToXmlConverter
     public SweetToXmlConverter()
         { }
     
-    public SweetToXmlConverter(Reader in, String sourceName)
-        { setInput(in, sourceName); }
-    
-    public SweetToXmlConverter(InputStream in, String sourceName)
-        throws UnsupportedEncodingException
-        { this(new InputStreamReader(in, "utf-8"), sourceName); }
-
-    public SweetToXmlConverter(InputStream in, String encoding, String sourceName)
-        throws UnsupportedEncodingException
-        { this(new InputStreamReader(in, encoding), sourceName); }
-    
-    public SweetToXmlConverter(File document)
-        throws UnsupportedEncodingException, FileNotFoundException
-        { this(new FileInputStream(document), document.getPath()); }
-
-    public SweetToXmlConverter(URL document)
-        throws IOException
-        { this(document.openStream(), document.toExternalForm()); }
+    public SweetToXmlConverter(ConverterInput input)
+        { setInput(input); }
 
     public InputSource getResultInputSource() throws IOException
         { return new InputSource(getResultReader()); }
@@ -66,6 +51,7 @@ public class SweetToXmlConverter
         }
         
     private class Conversion
+        implements ConverterInputListener
         {
         private ConverterInput in;
         private StringBuilder xml;
@@ -75,29 +61,8 @@ public class SweetToXmlConverter
         
         public Conversion()
             {
-            this.in = new ConverterInput(getInput(), getSourceName())
-                {
-                public int countChar(int c)
-                    throws IOException
-                    {
-                    c = super.countChar(c);
-                    
-                    if(c == '\n')
-                        {
-                        indentWork = new StringBuilder(64);
-                        indenting = true;
-                        }
-                    else if(indenting)
-                        {
-                        if(Character.isWhitespace(c))
-                            indentWork.append((char) c);
-                        else
-                            indenting = false;
-                        }
-                    
-                    return c;
-                    }
-                };
+            in = getInput();
+            in.addListener(this);
             }
 
         public CharSequence go()
@@ -403,6 +368,22 @@ public class SweetToXmlConverter
                     break;
                 }
             in.unread();
+            }
+        
+        public void countChar(int c)
+            {
+            if(c == '\n')
+                {
+                indentWork = new StringBuilder(64);
+                indenting = true;
+                }
+            else if(indenting)
+                {
+                if(Character.isWhitespace(c))
+                    indentWork.append((char) c);
+                else
+                    indenting = false;
+                }
             }
         
         private String explainIndent(String indent)

@@ -30,7 +30,9 @@ public abstract class ConverterTest
         throws IOException
         {
         Converter converter = mode.createConverter();
-        converter.setInput(new StringReader(input.toString()), name);
+        converter.setInput(
+            new ConverterInput(
+                new StringReader(input.toString()), name));
         converter.setHeaderIncluded(false);
         String output = trim(converter.getResult());
         return output;

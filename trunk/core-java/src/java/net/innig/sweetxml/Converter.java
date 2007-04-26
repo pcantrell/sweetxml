@@ -11,25 +11,20 @@ import java.io.StringReader;
  */
 public abstract class Converter
     {
-    private Reader input;
+    private ConverterInput input;
     private String output;
-    private String sourceName;
     private boolean header = true;
     
     /**
      * Sets the input source for this converter.
-     * @param  input       The text to be converted.
-     * @param  sourceName  An identifying string for the input to be used in error messages,
-     *                  e.g. a filename.
      * @throws IllegalStateException If the input has already been set.
      */
-    public synchronized void setInput(Reader input, String sourceName)
+    public synchronized void setInput(ConverterInput input)
         {
         if(this.input != null)
             throw new IllegalStateException("input source already set");
         
         this.input = input;
-        this.sourceName = sourceName;
         }
 
     /**
@@ -82,14 +77,8 @@ public abstract class Converter
     /**
      * Used by implementations during conversion.
      */
-    protected final synchronized Reader getInput()
+    protected final synchronized ConverterInput getInput()
         { return input; }
-    
-    /**
-     * Used by implementations during conversion.
-     */
-    protected final synchronized String getSourceName()
-        { return sourceName; }
     
     /**
      * Implementations override this to perform the conversion. The method will be called

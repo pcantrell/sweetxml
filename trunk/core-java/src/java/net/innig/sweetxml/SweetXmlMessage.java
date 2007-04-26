@@ -27,7 +27,9 @@ public enum SweetXmlMessage
     UNEXPECTED_END_TAG,
     MISMATCHED_END_TAG,
     EXPECTED_EQ_IN_XML_ATTRIBUTE,
-    EXPECTED_XML_ATTRIBUTE_VALUE;
+    EXPECTED_XML_ATTRIBUTE_VALUE,
+    
+    CONVERSION_TYPE_UNKNOWN;
     
     public String format(Object... args)
         {

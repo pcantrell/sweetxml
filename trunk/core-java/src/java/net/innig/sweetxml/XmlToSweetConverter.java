@@ -42,7 +42,7 @@ public class XmlToSweetConverter
         private boolean insideTag, onTagLine, lineFull;
         
         public Conversion()
-            { this.in = new ConverterInput(getInput(), getSourceName()); }
+            { this.in = getInput(); }
 
         public CharSequence go()
             throws IOException
