@@ -23,6 +23,7 @@
   * Support for multi-line tags (for numerous attributes)  _(done)_
   * I18N  _(in progress)_
   * Full regression test suite for converters  _(done)_
+  * Auto-detect converters _(done)_
 
 = Future Releases =
 
