@@ -40,15 +40,24 @@ public class ConverterInput
         }
     
     public ConverterInput(InputStream in, String sourceName)
-        throws UnsupportedEncodingException
-        { this(new InputStreamReader(in, "utf-8"), sourceName); }
+        { this(utf8Reader(in), sourceName); }
+
+    private static Reader utf8Reader(InputStream in)
+        {
+        try { return new InputStreamReader(in, "utf-8"); }
+        catch(UnsupportedEncodingException e)
+            {
+            throw new UnsupportedOperationException(
+                "This Java platform does not support UTF-8, but all Java implementations should!", e);
+            }
+        }
 
     public ConverterInput(InputStream in, String encoding, String sourceName)
         throws UnsupportedEncodingException
         { this(new InputStreamReader(in, encoding), sourceName); }
     
     public ConverterInput(File document)
-        throws UnsupportedEncodingException, FileNotFoundException
+        throws FileNotFoundException
         { this(new FileInputStream(document), document.getPath()); }
 
     public ConverterInput(URL document)
