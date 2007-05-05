@@ -12,7 +12,13 @@ import static net.innig.sweetxml.SweetXmlMessage.INDENT_UNICODE;
 import static net.innig.sweetxml.SweetXmlMessage.MISPLACED_CONTINUATION;
 import static net.innig.sweetxml.SweetXmlMessage.SEVERED_ATTRIBUTE;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.LinkedList;
 
 import org.xml.sax.InputSource;
@@ -40,6 +46,24 @@ public class SweetToXmlConverter
     public SweetToXmlConverter(ConverterInput input)
         { setInput(input); }
 
+    public SweetToXmlConverter(Reader in, String sourceName)
+        { this(new ConverterInput(in, sourceName)); }
+        
+    public SweetToXmlConverter(InputStream in, String sourceName)
+        { this(new ConverterInput(in, sourceName)); }
+    
+    public SweetToXmlConverter(InputStream in, String encoding, String sourceName)
+        throws UnsupportedEncodingException
+        { this(new ConverterInput(in, encoding)); }
+    
+    public SweetToXmlConverter(File document)
+        throws FileNotFoundException
+        { this(new ConverterInput(document)); }
+    
+    public SweetToXmlConverter(URL document)
+        throws IOException
+        { this(new ConverterInput(document)); }
+    
     public InputSource getResultInputSource() throws IOException
         { return new InputSource(getResultReader()); }
     

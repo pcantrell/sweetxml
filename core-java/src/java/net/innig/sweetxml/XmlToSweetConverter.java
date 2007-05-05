@@ -3,7 +3,13 @@ package net.innig.sweetxml;
 import static net.innig.sweetxml.Patterns.newline;
 import static net.innig.sweetxml.SweetXmlMessage.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 
@@ -23,6 +29,27 @@ public class XmlToSweetConverter
         parserFactory.setValidating(false);
         parserFactory.setNamespaceAware(false);
         }
+    
+    public XmlToSweetConverter(ConverterInput input)
+        { setInput(input); }
+
+    public XmlToSweetConverter(Reader in, String sourceName)
+        { this(new ConverterInput(in, sourceName)); }
+        
+    public XmlToSweetConverter(InputStream in, String sourceName)
+        { this(new ConverterInput(in, sourceName)); }
+    
+    public XmlToSweetConverter(InputStream in, String encoding, String sourceName)
+        throws UnsupportedEncodingException
+        { this(new ConverterInput(in, encoding)); }
+    
+    public XmlToSweetConverter(File document)
+        throws FileNotFoundException
+        { this(new ConverterInput(document)); }
+    
+    public XmlToSweetConverter(URL document)
+        throws IOException
+        { this(new ConverterInput(document)); }
 
     protected String convert()
         throws IOException
